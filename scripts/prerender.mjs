@@ -24,7 +24,7 @@ for (const t of TOOLS) {
   mkdirSync(dir, { recursive: true })
   writeFileSync(
     new URL('index.html', dir),
-    page({ title: `${t.title} | ${SITE.name}`, description: t.description, url: `${SITE.url}/${t.slug}` }),
+    page({ title: `${t.title} | ${SITE.name}`, description: t.description, url: `${SITE.url}/${t.slug}/` }),
   )
 }
 
@@ -32,7 +32,7 @@ for (const t of TOOLS) {
 writeFileSync(new URL('404.html', dist), base)
 
 const today = new Date().toISOString().slice(0, 10)
-const urls = ['', ...TOOLS.map((t) => t.slug)]
+const urls = ['', ...TOOLS.map((t) => `${t.slug}/`)]
   .map((p) => `  <url><loc>${SITE.url}/${p}</loc><lastmod>${today}</lastmod></url>`)
   .join('\n')
 writeFileSync(
