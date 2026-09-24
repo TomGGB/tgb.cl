@@ -1,0 +1,45 @@
+import { useState } from 'react'
+import { PARAMS } from '../lib/sueldo'
+import { formatCLP } from '../lib/format'
+import { Field, NumberInput, Segmented, ResultTable } from '../components/ui'
+
+export default function Iva() {
+  const [modo, setModo] = useState('neto')
+  const [monto, setMonto] = useState(100_000)
+  const t = PARAMS.iva
+
+  const neto = modo === 'neto' ? monto : Math.round(monto / (1 + t))
+  const total = modo === 'neto' ? Math.round(monto * (1 + t)) : monto
+  const iva = total - neto
+
+  return (
+    <>
+      <div className="card">
+        <Segmented
+          label="Tipo de monto"
+          value={modo}
+          onChange={setModo}
+          options={[
+            { value: 'neto', label: 'Agregar IVA (neto → total)' },
+            { value: 'total', label: 'Quitar IVA (total → neto)' },
+          ]}
+        />
+        <div className="form-grid">
+          <Field label={modo === 'neto' ? 'Monto neto' : 'Monto total con IVA'}>
+            {(id) => <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />}
+          </Field>
+        </div>
+      </div>
+
+      <div className="card result">
+        <ResultTable
+          rows={[
+            { label: 'Neto', value: formatCLP(neto) },
+            { label: 'IVA (19%)', value: formatCLP(iva) },
+            { label: 'Total', value: formatCLP(total), strong: true },
+          ]}
+        />
+      </div>
+    </>
+  )
+}

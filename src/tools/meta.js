@@ -1,0 +1,128 @@
+// Metadatos de cada herramienta. Datos puros: lo usa la app y el script de build
+// que genera un HTML por ruta (títulos y descripciones para buscadores).
+
+export const SITE = {
+  name: 'tgb.cl',
+  tagline: 'Herramientas útiles para Chile',
+  url: 'https://tgb.cl',
+  description:
+    'Indicadores económicos, calculadora de sueldo líquido, validador de RUT, feriados, boletas de honorarios y más herramientas gratuitas para Chile.',
+}
+
+export const CATEGORIES = [
+  { id: 'dinero', name: 'Dinero e indicadores' },
+  { id: 'trabajo', name: 'Trabajo e impuestos' },
+  { id: 'calendario', name: 'Calendario' },
+  { id: 'tramites', name: 'Trámites y datos' },
+]
+
+export const TOOLS = [
+  {
+    slug: 'indicadores',
+    title: 'Indicadores económicos',
+    short: 'UF, UTM, dólar, euro e IPC de hoy, con gráfico histórico.',
+    description: 'Valor de la UF, UTM, dólar observado, euro e IPC hoy en Chile, con historial de los últimos 30 días.',
+    category: 'dinero',
+    icon: '📈',
+    keywords: 'uf hoy utm dolar euro ipc valor',
+  },
+  {
+    slug: 'conversor',
+    title: 'Conversor UF, UTM y monedas',
+    short: 'Convierte entre pesos, UF, UTM, dólares y euros.',
+    description: 'Convierte pesos chilenos a UF, UTM, dólares y euros (y viceversa) con los valores del día.',
+    category: 'dinero',
+    icon: '🔁',
+    keywords: 'convertir uf a pesos utm dolar euro clp',
+  },
+  {
+    slug: 'reajuste-arriendo',
+    title: 'Reajuste de arriendo',
+    short: 'Calcula el reajuste de tu arriendo según la variación de la UF.',
+    description: 'Calcula cuánto sube tu arriendo entre dos fechas según la variación de la UF (reajuste por IPC).',
+    category: 'dinero',
+    icon: '🏠',
+    keywords: 'reajuste arriendo ipc uf variacion',
+  },
+  {
+    slug: 'dividendo',
+    title: 'Simulador de crédito hipotecario',
+    short: 'Estima el dividendo mensual de un crédito en UF.',
+    description: 'Simula el dividendo mensual de un crédito hipotecario en UF según monto, pie, plazo y tasa.',
+    category: 'dinero',
+    icon: '🏦',
+    keywords: 'dividendo credito hipotecario simulador uf tasa pie',
+  },
+  {
+    slug: 'sueldo-liquido',
+    title: 'Calculadora de sueldo líquido',
+    short: 'De bruto a líquido y de líquido a bruto, con AFP, salud e impuesto.',
+    description: 'Calcula tu sueldo líquido 2026 en Chile: AFP, Fonasa o Isapre, seguro de cesantía e impuesto único. También de líquido a bruto.',
+    category: 'trabajo',
+    icon: '💼',
+    keywords: 'sueldo liquido bruto afp fonasa isapre impuesto unico cesantia',
+  },
+  {
+    slug: 'boleta-honorarios',
+    title: 'Boleta de honorarios',
+    short: 'Calcula la retención 2026 (15,25%) en bruto o líquido.',
+    description: 'Calcula el monto bruto, líquido y la retención de una boleta de honorarios 2026 (15,25%).',
+    category: 'trabajo',
+    icon: '🧾',
+    keywords: 'boleta honorarios retencion 15,25 bruto liquido sii',
+  },
+  {
+    slug: 'iva',
+    title: 'Calculadora de IVA',
+    short: 'Agrega o quita el 19% de IVA a un monto.',
+    description: 'Calcula el IVA (19%) en Chile: neto a bruto, bruto a neto y monto del impuesto.',
+    category: 'trabajo',
+    icon: '➗',
+    keywords: 'iva 19 neto bruto calcular',
+  },
+  {
+    slug: 'feriados',
+    title: 'Feriados de Chile',
+    short: 'Próximo feriado, calendario anual y fines de semana largos.',
+    description: 'Calendario de feriados de Chile: próximo feriado, lista completa del año, irrenunciables y fines de semana largos.',
+    category: 'calendario',
+    icon: '📅',
+    keywords: 'feriados chile proximo feriado fin de semana largo irrenunciable',
+  },
+  {
+    slug: 'dias-habiles',
+    title: 'Calculadora de días hábiles',
+    short: 'Cuenta días hábiles entre fechas o suma plazos.',
+    description: 'Cuenta los días hábiles entre dos fechas en Chile descontando feriados, o calcula la fecha de vencimiento de un plazo.',
+    category: 'calendario',
+    icon: '🗓️',
+    keywords: 'dias habiles plazo contar fechas feriados',
+  },
+  {
+    slug: 'rut',
+    title: 'Validador de RUT',
+    short: 'Valida, formatea y calcula el dígito verificador.',
+    description: 'Valida un RUT chileno, calcula el dígito verificador y formatea con puntos y guion. Genera RUT de prueba.',
+    category: 'tramites',
+    icon: '🪪',
+    keywords: 'rut validar digito verificador formatear generar',
+  },
+  {
+    slug: 'tramites',
+    title: 'Directorio de trámites',
+    short: 'Enlaces oficiales: ClaveÚnica, SII, Registro Civil y más.',
+    description: 'Accesos directos a los trámites y servicios más usados en Chile: ClaveÚnica, SII, Registro Civil, AFC, Fonasa y más.',
+    category: 'tramites',
+    icon: '🏛️',
+    keywords: 'tramites claveunica sii registro civil certificado afc fonasa',
+  },
+  {
+    slug: 'emergencias',
+    title: 'Teléfonos de emergencia',
+    short: 'Ambulancia, bomberos, carabineros y otros números útiles.',
+    description: 'Números de emergencia en Chile: SAMU 131, Bomberos 132, Carabineros 133, PDI 134 y otros teléfonos útiles.',
+    category: 'tramites',
+    icon: '🚨',
+    keywords: 'emergencia telefono samu bomberos carabineros pdi numero',
+  },
+]
