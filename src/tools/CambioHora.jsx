@@ -57,7 +57,10 @@ function describir(c) {
 
 export default function CambioHora() {
   const now = useNow()
-  const cambios = useMemo(() => proximosCambios(TZ, new Date(), 2), [now.getUTCHours()])
+  const horaActual = now.getUTCHours()
+  // se recalcula una vez por hora, no en cada tic del reloj
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const cambios = useMemo(() => proximosCambios(TZ, new Date(), 2), [horaActual])
   const proximo = cambios[0]
   const info = proximo && describir(proximo)
 

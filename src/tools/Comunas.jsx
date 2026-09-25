@@ -3,23 +3,13 @@ import regiones from '../data/regiones.json'
 import { formatNum } from '../lib/format'
 import { CopyButton } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { descargar } from '../lib/download'
 
 const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
 const FILAS = regiones.flatMap((r) =>
   r.comunas.map((c) => ({ ...c, region: r.nombre, regionId: r.id, romano: r.romano })),
 )
-
-function descargar(nombre, contenido, tipo) {
-  const url = URL.createObjectURL(new Blob([contenido], { type: tipo }))
-  const a = document.createElement('a')
-  a.href = url
-  a.download = nombre
-  document.body.appendChild(a)
-  a.click()
-  a.remove()
-  setTimeout(() => URL.revokeObjectURL(url), 1000)
-}
 
 const toCSV = (rows) => {
   const cols = ['cut', 'nombre', 'provincia', 'region', 'region_id', 'superficie_km2', 'lat', 'lon']

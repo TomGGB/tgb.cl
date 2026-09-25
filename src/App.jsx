@@ -24,6 +24,15 @@ const COMPONENTS = {
   clima: lazy(() => import('./tools/Clima')),
   'cambio-de-hora': lazy(() => import('./tools/CambioHora')),
   comunas: lazy(() => import('./tools/Comunas')),
+  'credito-consumo': lazy(() => import('./tools/CreditoConsumo')),
+  'comparador-historico': lazy(() => import('./tools/ComparadorHistorico')),
+  apv: lazy(() => import('./tools/Apv')),
+  bencinas: lazy(() => import('./tools/Bencinas')),
+  'costo-viaje': lazy(() => import('./tools/CostoViaje')),
+  'consumo-electrico': lazy(() => import('./tools/ConsumoElectrico')),
+  'dividir-cuenta': lazy(() => import('./tools/DividirCuenta')),
+  'fechas-clave': lazy(() => import('./tools/FechasClave')),
+  'fines-de-semana-largos': lazy(() => import('./tools/FinesLargos')),
 }
 
 function NotFound() {

@@ -24,8 +24,14 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - run: npm run lint
       - run: npm test
       - run: npm run build
+      - name: Prueba de humo (todas las rutas renderizan sin errores)
+        run: |
+          npx vite preview --port 4173 --strictPort &
+          for i in $(seq 1 30); do curl -sf http://localhost:4173 >/dev/null && break; sleep 1; done
+          node scripts/smoke.mjs
       - uses: actions/upload-pages-artifact@v5
         with:
           path: dist

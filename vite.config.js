@@ -36,6 +36,7 @@ export default defineConfig({
       },
       workbox: {
         globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
+        globIgnores: ['og/**'],
         navigateFallback: '/index.html',
         navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
         cleanupOutdatedCaches: true,
@@ -43,7 +44,7 @@ export default defineConfig({
           {
             // Datos en vivo: siempre intenta la red y usa la última respuesta si no hay conexión
             urlPattern: ({ url }) =>
-              ['mindicador.cl', 'api.open-meteo.com', 'air-quality-api.open-meteo.com', 'earthquake.usgs.gov'].includes(url.hostname),
+              ['mindicador.cl', 'api.open-meteo.com', 'air-quality-api.open-meteo.com', 'earthquake.usgs.gov', 'api.bencinaenlinea.cl'].includes(url.hostname),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'datos-en-vivo',

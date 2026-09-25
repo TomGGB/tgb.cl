@@ -65,6 +65,8 @@ export function useIndicadores() {
     return () => {
       alive = false
     }
+    // solo al montar: si ya hay datos en caché no se vuelve a consultar
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const get = (code) => state.data?.[code]?.valor ?? FALLBACK[code]?.valor

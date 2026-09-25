@@ -4,8 +4,9 @@ import { CATEGORIES, TOOLS } from '../tools/meta'
 import { useIndicadores } from '../lib/indicadores'
 import { proximoFeriado } from '../lib/feriados'
 import { formatCLP, formatNum } from '../lib/format'
+import { buscarHerramientas } from '../components/CommandPalette'
+import { useFavoritos, useRecientes } from '../lib/preferencias'
 
-const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
 function QuickStats() {
   const { get, loading, error } = useIndicadores()
@@ -43,11 +44,12 @@ function QuickStats() {
 export default function Home() {
   const [q, setQ] = useState('')
 
-  const filtered = useMemo(() => {
-    const nq = normalize(q.trim())
-    if (!nq) return TOOLS
-    return TOOLS.filter((t) => normalize(`${t.title} ${t.short} ${t.keywords}`).includes(nq))
-  }, [q])
+  const filtered = useMemo(() => buscarHerramientas(q), [q])
+  const { favs } = useFavoritos()
+  const { recientes } = useRecientes()
+  const bySlug = (s) => TOOLS.find((t) => t.slug === s)
+  const favTools = favs.map(bySlug).filter(Boolean)
+  const recTools = recientes.filter((s) => !favs.includes(s)).map(bySlug).filter(Boolean).slice(0, 3)
 
   return (
     <>
@@ -57,7 +59,7 @@ export default function Home() {
         <div className="search">
           <input
             type="search"
-            placeholder="Buscar: sueldo, UF, RUT, feriados…"
+            placeholder="Buscar: sueldo, UF, bencina, finiquito…"
             value={q}
             onChange={(e) => setQ(e.target.value)}
             aria-label="Buscar herramienta"
@@ -66,6 +68,19 @@ export default function Home() {
       </section>
 
       {!q && <QuickStats />}
+
+      {!q && favTools.length > 0 && (
+        <section className="category">
+          <h2>★ Tus favoritos</h2>
+          <ToolGrid tools={favTools} />
+        </section>
+      )}
+      {!q && recTools.length > 0 && (
+        <section className="category">
+          <h2>Usadas recientemente</h2>
+          <ToolGrid tools={recTools} />
+        </section>
+      )}
 
       {q ? (
         <section className="category">
@@ -85,16 +100,28 @@ export default function Home() {
 }
 
 function ToolGrid({ tools }) {
+  const { isFav, toggle } = useFavoritos()
   return (
     <div className="tool-grid">
       {tools.map((t) => (
-        <Link key={t.slug} to={`/${t.slug}`} className="tool-card">
-          <span className="tool-card-icon" aria-hidden="true">{t.icon}</span>
-          <span className="tool-card-body">
-            <strong>{t.title}</strong>
-            <span>{t.short}</span>
-          </span>
-        </Link>
+        <div key={t.slug} className="tool-card-wrap">
+          <Link to={`/${t.slug}/`} className="tool-card">
+            <span className="tool-card-icon" aria-hidden="true">{t.icon}</span>
+            <span className="tool-card-body">
+              <strong>{t.title}</strong>
+              <span>{t.short}</span>
+            </span>
+          </Link>
+          <button
+            type="button"
+            className={`star ${isFav(t.slug) ? 'on' : ''}`}
+            onClick={() => toggle(t.slug)}
+            aria-pressed={isFav(t.slug)}
+            aria-label={isFav(t.slug) ? `Quitar ${t.title} de favoritos` : `Agregar ${t.title} a favoritos`}
+          >
+            {isFav(t.slug) ? '★' : '☆'}
+          </button>
+        </div>
       ))}
     </div>
   )

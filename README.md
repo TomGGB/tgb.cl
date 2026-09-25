@@ -1,11 +1,11 @@
 # tgb.cl: herramientas útiles para Chile
 
-Hub de 19 herramientas gratuitas: indicadores económicos, conversor UF/UTM, sueldo líquido, finiquito, horas extra,
-gratificación, boleta de honorarios, IVA, reajuste de arriendo, simulador hipotecario, sismos, clima y UV, feriados,
-días hábiles, cambio de hora, validador de RUT, regiones y comunas, directorio de trámites y teléfonos de emergencia.
+Hub de 28 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, APV, crédito de consumo,
+precios de bencinas, sismos, clima, feriados, fines de semana largos, fechas clave, RUT, comunas y más.
 
 Hecho con Vite + React, instalable como app (PWA) y hospedado gratis en GitHub Pages. Datos en vivo de
-[mindicador.cl](https://mindicador.cl), [USGS](https://earthquake.usgs.gov) y [Open-Meteo](https://open-meteo.com).
+[mindicador.cl](https://mindicador.cl), [Bencina en Línea](https://www.bencinaenlinea.cl),
+[USGS](https://earthquake.usgs.gov) y [Open-Meteo](https://open-meteo.com).
 
 Las calculadoras guardan sus valores en la URL, así que cualquier cálculo se puede compartir con un enlace.
 
@@ -16,9 +16,14 @@ Requiere Node 20 o superior (con Node 18, compila con `NODE_OPTIONS=--experiment
 ```bash
 npm install
 npm run dev      # http://localhost:5173
-npm test         # tests de RUT, feriados y sueldo
-npm run build    # genera dist/ (incluye un HTML por herramienta, 404.html y sitemap.xml)
+npm run lint     # ESLint
+npm test         # tests de la lógica (src/lib)
+npm run build    # genera dist/ (un HTML por herramienta con su guía, 404.html y sitemap.xml)
+npm run smoke    # con `npx vite preview` corriendo: abre cada ruta en Chrome y falla si hay errores
+npm run og       # regenera las imágenes de vista previa en public/og/ (requiere Chrome)
 ```
+
+GitHub Actions ejecuta lint, tests, build y la prueba de humo antes de publicar.
 
 ## Agregar una herramienta
 
@@ -26,6 +31,13 @@ npm run build    # genera dist/ (incluye un HTML por herramienta, 404.html y sit
 2. Agrega sus metadatos (slug, título, descripción, categoría, ícono) en `src/tools/meta.js`.
 3. Regístralo en el objeto `COMPONENTS` de `src/App.jsx`.
 4. Para que se pueda compartir, usa `useUrlState` en vez de `useState` y agrega `share: true` en sus metadatos.
+5. Opcional: agrega su guía y preguntas frecuentes en `src/tools/guides.js`.
+6. Ejecuta `npm run og` para generar su imagen de vista previa.
+
+## Estadísticas de visitas
+
+Crea el sitio en Cloudflare (Analytics y registros → Web Analytics → Agregar sitio → `tgb.cl`), copia el token del
+fragmento de JavaScript y pégalo en `cfAnalyticsToken` en `src/tools/meta.js`.
 
 ## Mantención anual
 

@@ -1,7 +1,10 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { SITE, TOOLS } from '../tools/meta'
+import { GUIDES } from '../tools/guides'
 import { ShareButton, ThemeToggle } from './ui'
+import CommandPalette from './CommandPalette'
+import { useFavoritos, useRecientes } from '../lib/preferencias'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -11,6 +14,8 @@ export default function Layout() {
     const tool = TOOLS.find((t) => `/${t.slug}` === pathname.replace(/\/$/, ''))
     document.title = tool ? `${tool.title} | ${SITE.name}` : `${SITE.name} · ${SITE.tagline}`
   }, [pathname])
+
+  const isMac = typeof navigator !== 'undefined' && /Mac|iPhone|iPad/.test(navigator.platform)
 
   return (
     <div className="app">
@@ -24,11 +29,16 @@ export default function Layout() {
             <span className="brand-name">tgb<span>.cl</span></span>
           </Link>
           <nav className="header-nav">
-            <NavLink to="/indicadores">Indicadores</NavLink>
-            <NavLink to="/sueldo-liquido">Sueldo</NavLink>
-            <NavLink to="/feriados">Feriados</NavLink>
-            <NavLink to="/rut">RUT</NavLink>
+            <NavLink to="/indicadores/">Indicadores</NavLink>
+            <NavLink to="/sueldo-liquido/">Sueldo</NavLink>
+            <NavLink to="/feriados/">Feriados</NavLink>
+            <NavLink to="/bencinas/">Bencinas</NavLink>
           </nav>
+          <button type="button" className="search-trigger" onClick={() => window.dispatchEvent(new Event('abrir-busqueda'))} aria-label="Buscar herramienta">
+            <span aria-hidden="true">🔍</span>
+            <span className="search-trigger-text">Buscar</span>
+            <kbd>{isMac ? '⌘' : 'Ctrl'} K</kbd>
+          </button>
           <ThemeToggle />
         </div>
       </header>
@@ -44,16 +54,26 @@ export default function Layout() {
             fuente oficial.
           </p>
           <p>
-            Indicadores desde <a href="https://mindicador.cl" target="_blank" rel="noreferrer">mindicador.cl</a> (Banco
-            Central de Chile).
+            Datos de <a href="https://mindicador.cl" target="_blank" rel="noreferrer">mindicador.cl</a>,{' '}
+            <a href="https://www.bencinaenlinea.cl" target="_blank" rel="noreferrer">Bencina en Línea</a>,{' '}
+            <a href="https://earthquake.usgs.gov" target="_blank" rel="noreferrer">USGS</a> y{' '}
+            <a href="https://open-meteo.com" target="_blank" rel="noreferrer">Open-Meteo</a>.
           </p>
         </div>
       </footer>
+      <CommandPalette />
     </div>
   )
 }
 
 export function ToolPage({ tool, children }) {
+  const { isFav, toggle } = useFavoritos()
+  const { registrar } = useRecientes()
+  const fav = isFav(tool.slug)
+  const guide = GUIDES[tool.slug]
+
+  useEffect(() => registrar(tool.slug), [tool.slug, registrar])
+
   return (
     <article className="tool-page">
       <nav className="breadcrumb">
@@ -66,12 +86,40 @@ export function ToolPage({ tool, children }) {
           <p>{tool.description}</p>
         </div>
       </header>
-      {tool.share && (
-        <div className="tool-actions">
-          <ShareButton />
-        </div>
-      )}
+      <div className="tool-actions">
+        <button type="button" className={`btn-ghost fav-btn ${fav ? 'on' : ''}`} onClick={() => toggle(tool.slug)} aria-pressed={fav}>
+          {fav ? '★ En favoritos' : '☆ Agregar a favoritos'}
+        </button>
+        {tool.share && <ShareButton />}
+      </div>
       {children}
+      {guide && <Guide guide={guide} />}
     </article>
+  )
+}
+
+function Guide({ guide }) {
+  return (
+    <section className="guide">
+      <h2>{guide.titulo}</h2>
+      {guide.pasos && (
+        <ol className="guide-steps">
+          {guide.pasos.map((p) => (
+            <li key={p}>{p}</li>
+          ))}
+        </ol>
+      )}
+      {guide.faq?.length > 0 && (
+        <>
+          <h3>Preguntas frecuentes</h3>
+          {guide.faq.map((f) => (
+            <details key={f.q} className="faq">
+              <summary>{f.q}</summary>
+              <p>{f.a}</p>
+            </details>
+          ))}
+        </>
+      )}
+    </section>
   )
 }
