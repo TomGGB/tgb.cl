@@ -14,7 +14,7 @@ const corto = (t) => t.title.replace(/^Calculadora de /, '').replace(/^./, (c) =
 
 // La pizarra de una casa de cambio: los valores que todos miran cada día
 function Pizarra() {
-  const { data, get, loading, error } = useIndicadores()
+  const { data, get, loading, error, updatedAt, refreshing } = useIndicadores()
   const feriado = proximoFeriado()
   const hoy = new Date()
   hoy.setHours(0, 0, 0, 0)
@@ -60,7 +60,9 @@ function Pizarra() {
         </li>
       </ul>
       <footer className="pizarra-foot">
-        {error ? 'Sin conexión: se muestran valores de referencia' : 'Fuente: Banco Central de Chile'}
+        {error && !data
+          ? 'Sin conexión: se muestran valores de referencia'
+          : `Fuente: Banco Central de Chile${updatedAt ? ` · ${refreshing ? 'actualizando…' : `actualizado a las ${new Date(updatedAt).toLocaleTimeString('es-CL', { hour: '2-digit', minute: '2-digit' })}`}` : ''}`}
       </footer>
     </aside>
   )

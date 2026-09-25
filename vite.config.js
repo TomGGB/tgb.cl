@@ -11,6 +11,8 @@ export default defineConfig({
     react(),
     VitePWA({
       registerType: 'autoUpdate',
+      // el registro se hace en src/main.jsx para revisar actualizaciones periódicamente
+      injectRegister: false,
       includeAssets: ['favicon.svg', 'icons/apple-touch-icon.png'],
       manifest: {
         name: 'tgb.cl · Herramientas útiles para Chile',
@@ -35,12 +37,27 @@ export default defineConfig({
         ],
       },
       workbox: {
-        globPatterns: ['**/*.{js,css,html,svg,png,woff2}'],
-        globIgnores: ['og/**', '**/*vietnamese*'],
-        navigateFallback: '/index.html',
-        navigateFallbackDenylist: [/^\/sitemap\.xml$/, /^\/robots\.txt$/],
+        // Sin HTML en el precache: las páginas siempre se piden a la red (ver 'paginas' abajo),
+        // así una versión nueva se ve apenas se publica. JS/CSS llevan hash y sí se precachean.
+        globPatterns: ['**/*.{js,css,svg,png,woff2}'],
+        globIgnores: ['og/**', '**/*vietnamese*', 'widget.js'],
+        navigateFallback: null,
         cleanupOutdatedCaches: true,
+        skipWaiting: true,
+        clientsClaim: true,
         runtimeCaching: [
+          {
+            // Páginas: red primero (revalidando con el servidor); la copia guardada solo se usa sin conexión
+            urlPattern: ({ request }) => request.mode === 'navigate',
+            handler: 'NetworkFirst',
+            options: {
+              cacheName: 'paginas',
+              networkTimeoutSeconds: 5,
+              fetchOptions: { cache: 'no-cache' },
+              expiration: { maxEntries: 60, maxAgeSeconds: 30 * DAY },
+              cacheableResponse: { statuses: [200] },
+            },
+          },
           {
             // Datos en vivo: siempre intenta la red y usa la última respuesta si no hay conexión
             urlPattern: ({ url }) =>
@@ -48,7 +65,8 @@ export default defineConfig({
             handler: 'NetworkFirst',
             options: {
               cacheName: 'datos-en-vivo',
-              networkTimeoutSeconds: 6,
+              networkTimeoutSeconds: 8,
+              fetchOptions: { cache: 'no-store' },
               expiration: { maxEntries: 200, maxAgeSeconds: 7 * DAY },
               cacheableResponse: { statuses: [0, 200] },
             },
