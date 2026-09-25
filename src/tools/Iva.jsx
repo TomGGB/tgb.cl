@@ -20,8 +20,8 @@ export default function Iva() {
           value={modo}
           onChange={setModo}
           options={[
-            { value: 'neto', label: 'Agregar IVA (neto → total)' },
-            { value: 'total', label: 'Quitar IVA (total → neto)' },
+            { value: 'neto', label: 'Agregar IVA' },
+            { value: 'total', label: 'Quitar IVA' },
           ]}
         />
         <div className="form-grid">

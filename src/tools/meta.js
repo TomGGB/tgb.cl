@@ -12,12 +12,12 @@ export const SITE = {
 }
 
 export const CATEGORIES = [
-  { id: 'dinero', name: 'Dinero e indicadores' },
-  { id: 'trabajo', name: 'Trabajo e impuestos' },
-  { id: 'hogar', name: 'Hogar y transporte' },
-  { id: 'vivo', name: 'Chile en vivo' },
-  { id: 'calendario', name: 'Calendario y hora' },
-  { id: 'tramites', name: 'Trámites y datos' },
+  { id: 'dinero', name: 'Dinero e indicadores', icon: 'Coins' },
+  { id: 'trabajo', name: 'Trabajo e impuestos', icon: 'Briefcase' },
+  { id: 'hogar', name: 'Hogar y transporte', icon: 'Sofa' },
+  { id: 'vivo', name: 'Chile en vivo', icon: 'Radio' },
+  { id: 'calendario', name: 'Calendario y hora', icon: 'Calendar' },
+  { id: 'tramites', name: 'Trámites y datos', icon: 'FileText' },
 ]
 
 export const TOOLS = [
@@ -27,7 +27,7 @@ export const TOOLS = [
     short: 'UF, UTM, dólar, euro e IPC de hoy, con gráfico histórico.',
     description: 'Valor de la UF, UTM, dólar observado, euro e IPC hoy en Chile, con historial de los últimos 30 días.',
     category: 'dinero',
-    icon: '📈',
+    icon: 'TrendingUp',
     keywords: 'uf hoy utm dolar euro ipc valor',
   },
   {
@@ -37,7 +37,7 @@ export const TOOLS = [
     short: 'Convierte entre pesos, UF, UTM, dólares y euros.',
     description: 'Convierte pesos chilenos a UF, UTM, dólares y euros (y viceversa) con los valores del día.',
     category: 'dinero',
-    icon: '🔁',
+    icon: 'ArrowLeftRight',
     keywords: 'convertir uf a pesos utm dolar euro clp',
   },
   {
@@ -47,7 +47,7 @@ export const TOOLS = [
     short: 'Calcula el reajuste de tu arriendo según la variación de la UF.',
     description: 'Calcula cuánto sube tu arriendo entre dos fechas según la variación de la UF (reajuste por IPC).',
     category: 'dinero',
-    icon: '🏠',
+    icon: 'House',
     keywords: 'reajuste arriendo ipc uf variacion',
   },
   {
@@ -57,7 +57,7 @@ export const TOOLS = [
     short: 'Estima el dividendo mensual de un crédito en UF.',
     description: 'Simula el dividendo mensual de un crédito hipotecario en UF según monto, pie, plazo y tasa.',
     category: 'dinero',
-    icon: '🏦',
+    icon: 'Landmark',
     keywords: 'dividendo credito hipotecario simulador uf tasa pie',
   },
   {
@@ -67,7 +67,7 @@ export const TOOLS = [
     short: 'Cuota, CAE y costo total de un crédito de consumo.',
     description: 'Simula un crédito de consumo en Chile: cuota mensual, CAE (carga anual equivalente) y cuánto pagas en total, con seguros y gastos.',
     category: 'dinero',
-    icon: '💳',
+    icon: 'CreditCard',
     keywords: 'credito consumo cae carga anual equivalente cuota prestamo banco tasa simulador',
   },
   {
@@ -77,7 +77,7 @@ export const TOOLS = [
     short: 'Cuánto valen hoy los pesos de otra fecha, en UF y en dólares.',
     description: 'Calcula cuánto equivale hoy un monto en pesos de cualquier fecha desde 1977 según la UF, y compáralo con haberlo guardado en dólares.',
     category: 'dinero',
-    icon: '⏳',
+    icon: 'Hourglass',
     keywords: 'inflacion ipc valor del dinero historico uf dolar fecha pesos antiguos equivalente hoy',
   },
   {
@@ -87,7 +87,7 @@ export const TOOLS = [
     short: 'Qué régimen de APV te conviene según tu sueldo.',
     description: 'Compara el APV régimen A (bonificación del 15%) con el régimen B (rebaja de impuestos) según tu sueldo y descubre cuál te conviene.',
     category: 'dinero',
-    icon: '🐷',
+    icon: 'PiggyBank',
     keywords: 'apv ahorro previsional voluntario regimen a b bonificacion 15 impuesto',
   },
   {
@@ -97,7 +97,7 @@ export const TOOLS = [
     short: 'De bruto a líquido y de líquido a bruto, con AFP, salud e impuesto.',
     description: 'Calcula tu sueldo líquido 2026 en Chile: AFP, Fonasa o Isapre, seguro de cesantía e impuesto único. También de líquido a bruto.',
     category: 'trabajo',
-    icon: '💼',
+    icon: 'Wallet',
     keywords: 'sueldo liquido bruto afp fonasa isapre impuesto unico cesantia',
   },
   {
@@ -107,7 +107,7 @@ export const TOOLS = [
     short: 'Calcula la retención 2026 (15,25%) en bruto o líquido.',
     description: 'Calcula el monto bruto, líquido y la retención de una boleta de honorarios 2026 (15,25%).',
     category: 'trabajo',
-    icon: '🧾',
+    icon: 'ReceiptText',
     keywords: 'boleta honorarios retencion 15,25 bruto liquido sii',
   },
   {
@@ -117,7 +117,7 @@ export const TOOLS = [
     short: 'Agrega o quita el 19% de IVA a un monto.',
     description: 'Calcula el IVA (19%) en Chile: neto a bruto, bruto a neto y monto del impuesto.',
     category: 'trabajo',
-    icon: '➗',
+    icon: 'Percent',
     keywords: 'iva 19 neto bruto calcular',
   },
   {
@@ -127,7 +127,7 @@ export const TOOLS = [
     short: 'Indemnización por años de servicio, aviso previo y vacaciones.',
     description: 'Calcula tu finiquito en Chile: indemnización por años de servicio, mes de aviso y vacaciones proporcionales según la causal de despido.',
     category: 'trabajo',
-    icon: '📄',
+    icon: 'FileSignature',
     keywords: 'finiquito indemnizacion años de servicio despido aviso previo vacaciones proporcionales necesidades de la empresa renuncia',
   },
   {
@@ -137,7 +137,7 @@ export const TOOLS = [
     short: 'Valor de la hora extra con jornada de 42 horas y recargo del 50%.',
     description: 'Calcula el valor de la hora extra en Chile 2026 con la jornada de 42 horas (Ley 40 horas) y el recargo legal del 50%.',
     category: 'trabajo',
-    icon: '⏱️',
+    icon: 'Timer',
     keywords: 'horas extra extraordinarias valor hora recargo 50 jornada 42 horas ley 40 horas',
   },
   {
@@ -147,7 +147,7 @@ export const TOOLS = [
     short: 'Calcula el 25% mensual con el tope de 4,75 ingresos mínimos.',
     description: 'Calcula la gratificación legal mensual en Chile (artículo 50): 25% de la remuneración con tope de 4,75 ingresos mínimos al año.',
     category: 'trabajo',
-    icon: '🎁',
+    icon: 'Gift',
     keywords: 'gratificacion legal articulo 50 tope 4,75 ingreso minimo mensual',
   },
   {
@@ -157,7 +157,7 @@ export const TOOLS = [
     short: 'Dónde cargar más barato: 93, 95, 97, diésel y parafina por comuna.',
     description: 'Precios de bencina 93, 95, 97, diésel y parafina en todas las bencineras de Chile. Encuentra la más barata en tu comuna o cerca de ti.',
     category: 'hogar',
-    icon: '⛽',
+    icon: 'Fuel',
     keywords: 'precio bencina gasolina 93 95 97 diesel parafina kerosene bencinera barata comuna cerca',
   },
   {
@@ -167,7 +167,7 @@ export const TOOLS = [
     short: 'Combustible y peajes de un viaje, y cuánto pone cada uno.',
     description: 'Calcula cuánto cuesta un viaje en auto en Chile: combustible según rendimiento y precio actual, peajes y costo por persona.',
     category: 'hogar',
-    icon: '🚗',
+    icon: 'Car',
     keywords: 'costo viaje auto bencina rendimiento km litro peajes dividir',
   },
   {
@@ -177,7 +177,7 @@ export const TOOLS = [
     short: 'Cuánto gastan tus aparatos en la cuenta de la luz.',
     description: 'Calcula cuánto consume cada aparato eléctrico de tu casa en kWh y pesos al mes: estufa, refrigerador, hervidor, aire acondicionado y más.',
     category: 'hogar',
-    icon: '💡',
+    icon: 'Zap',
     keywords: 'consumo electrico luz kwh cuenta estufa electrica aparatos gasto enel boleta',
   },
   {
@@ -187,7 +187,7 @@ export const TOOLS = [
     short: 'Divide entre amigos con propina del 10% y redondeo.',
     description: 'Divide la cuenta del restaurante entre amigos, en partes iguales o según lo que consumió cada uno, con propina del 10%.',
     category: 'hogar',
-    icon: '🍽️',
+    icon: 'UtensilsCrossed',
     keywords: 'dividir cuenta propina 10 restaurante amigos pagar partes iguales',
   },
   {
@@ -196,7 +196,7 @@ export const TOOLS = [
     short: 'Últimos temblores con magnitud, ubicación y mapa.',
     description: 'Últimos sismos y temblores en Chile en tiempo real: magnitud, ubicación, profundidad y mapa interactivo.',
     category: 'vivo',
-    icon: '🌋',
+    icon: 'Activity',
     keywords: 'sismos temblor terremoto ultimo sismo chile magnitud mapa',
   },
   {
@@ -205,7 +205,7 @@ export const TOOLS = [
     short: 'Pronóstico de 7 días, índice UV y calidad del aire por comuna.',
     description: 'Pronóstico del tiempo para 7 días, índice de radiación UV y calidad del aire (MP2,5) en cualquier comuna de Chile.',
     category: 'vivo',
-    icon: '🌤️',
+    icon: 'CloudSun',
     keywords: 'clima tiempo pronostico radiacion uv indice calidad del aire mp2,5 smog comuna lluvia temperatura',
   },
   {
@@ -214,7 +214,7 @@ export const TOOLS = [
     short: 'Próximo feriado, calendario anual y fines de semana largos.',
     description: 'Calendario de feriados de Chile: próximo feriado, lista completa del año, irrenunciables y fines de semana largos.',
     category: 'calendario',
-    icon: '📅',
+    icon: 'CalendarDays',
     keywords: 'feriados chile proximo feriado fin de semana largo irrenunciable',
   },
   {
@@ -224,7 +224,7 @@ export const TOOLS = [
     short: 'Cuenta días hábiles entre fechas o suma plazos.',
     description: 'Cuenta los días hábiles entre dos fechas en Chile descontando feriados, o calcula la fecha de vencimiento de un plazo.',
     category: 'calendario',
-    icon: '🗓️',
+    icon: 'CalendarCheck',
     keywords: 'dias habiles plazo contar fechas feriados',
   },
   {
@@ -233,7 +233,7 @@ export const TOOLS = [
     short: 'Permiso de circulación, Operación Renta, contribuciones y más.',
     description: 'Calendario de fechas importantes en Chile: permiso de circulación, revisión técnica según patente, Operación Renta, contribuciones y feriados. Descárgalo a tu calendario.',
     category: 'calendario',
-    icon: '🔔',
+    icon: 'BellRing',
     keywords: 'fechas importantes calendario permiso de circulacion revision tecnica patente operacion renta contribuciones vencimientos',
   },
   {
@@ -242,7 +242,7 @@ export const TOOLS = [
     short: 'Qué días pedir para tener más días libres seguidos.',
     description: 'Descubre qué días de vacaciones pedir para aprovechar los feriados de Chile y lograr fines de semana largos de 4, 5 o más días.',
     category: 'calendario',
-    icon: '🏖️',
+    icon: 'TreePalm',
     keywords: 'fin de semana largo feriados vacaciones puente dias libres planificar interferiado',
   },
   {
@@ -251,7 +251,7 @@ export const TOOLS = [
     short: 'Cuándo se atrasa o adelanta el reloj, con cuenta regresiva.',
     description: 'Próximo cambio de hora en Chile con cuenta regresiva, hora oficial actual en el continente, Aysén, Magallanes y Rapa Nui.',
     category: 'calendario',
-    icon: '🕐',
+    icon: 'Clock',
     keywords: 'cambio de hora horario de invierno verano reloj atrasar adelantar magallanes aysen rapa nui',
   },
   {
@@ -260,7 +260,7 @@ export const TOOLS = [
     short: 'Valida, formatea y calcula el dígito verificador.',
     description: 'Valida un RUT chileno, calcula el dígito verificador y formatea con puntos y guion. Genera RUT de prueba.',
     category: 'tramites',
-    icon: '🪪',
+    icon: 'IdCard',
     keywords: 'rut validar digito verificador formatear generar',
   },
   {
@@ -269,7 +269,7 @@ export const TOOLS = [
     short: 'Las 346 comunas con código CUT, descargables en CSV y JSON.',
     description: 'Listado de las 16 regiones y 346 comunas de Chile con código único territorial (CUT), provincia y superficie. Descarga en CSV o JSON.',
     category: 'tramites',
-    icon: '🗺️',
+    icon: 'Map',
     keywords: 'regiones comunas chile listado codigo cut provincia json csv descargar',
   },
   {
@@ -278,7 +278,7 @@ export const TOOLS = [
     short: 'Enlaces oficiales: ClaveÚnica, SII, Registro Civil y más.',
     description: 'Accesos directos a los trámites y servicios más usados en Chile: ClaveÚnica, SII, Registro Civil, AFC, Fonasa y más.',
     category: 'tramites',
-    icon: '🏛️',
+    icon: 'Building2',
     keywords: 'tramites claveunica sii registro civil certificado afc fonasa',
   },
   {
@@ -287,7 +287,7 @@ export const TOOLS = [
     short: 'Ambulancia, bomberos, carabineros y otros números útiles.',
     description: 'Números de emergencia en Chile: SAMU 131, Bomberos 132, Carabineros 133, PDI 134 y otros teléfonos útiles.',
     category: 'tramites',
-    icon: '🚨',
+    icon: 'Siren',
     keywords: 'emergencia telefono samu bomberos carabineros pdi numero',
   },
 ]

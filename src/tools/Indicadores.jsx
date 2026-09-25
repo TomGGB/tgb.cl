@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { useIndicadores, fetchSerie } from '../lib/indicadores'
 import { formatNum } from '../lib/format'
 import { Note } from '../components/ui'
+import { Icon } from '../components/icons'
 
 const ITEMS = [
   { code: 'uf', label: 'UF', decimals: 2 },
@@ -97,7 +98,7 @@ function SerieChart({ code, label }) {
       <div className="chart-head">
         <h2>{label}: últimos {serie.length} registros</h2>
         <span className={`badge ${change >= 0 ? 'up' : 'down'}`}>
-          {change >= 0 ? '▲' : '▼'} {formatNum(Math.abs(change), 2)}%
+          <Icon name={change >= 0 ? 'ArrowUp' : 'ArrowDown'} size={13} strokeWidth={2.5} /> {formatNum(Math.abs(change), 2)}%
         </span>
       </div>
       <svg viewBox={`0 0 ${W} ${H}`} className="chart" role="img" aria-label={`Gráfico de ${label}`}>

@@ -4,6 +4,7 @@ import { formatNum } from '../lib/format'
 import { CopyButton } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { descargar } from '../lib/download'
+import { Icon } from '../components/icons'
 
 const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
@@ -55,10 +56,10 @@ export default function Comunas() {
         <input type="search" placeholder="Buscar comuna, provincia o código…" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Buscar comuna" />
         <div className="toolbar-actions">
           <button type="button" className="btn-ghost" onClick={() => descargar(`comunas-chile${sufijo}.csv`, toCSV(filas), 'text/csv;charset=utf-8')}>
-            ⬇ CSV
+            <Icon name="Download" size={15} /> CSV
           </button>
           <button type="button" className="btn-ghost" onClick={() => descargar(`regiones-comunas-chile${sufijo}.json`, toJSON(regsFiltradas), 'application/json')}>
-            ⬇ JSON
+            <Icon name="Download" size={15} /> JSON
           </button>
           <CopyButton text={toJSON(regsFiltradas)} label="Copiar JSON" />
         </div>

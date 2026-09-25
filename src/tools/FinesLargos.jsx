@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { planificarFinesLargos } from '../lib/findes'
 import { Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 const fmt = (d, opts = { weekday: 'short', day: 'numeric', month: 'short' }) => d.toLocaleDateString('es-CL', opts)
 
@@ -56,9 +57,9 @@ export default function FinesLargos() {
     <>
       <div className="card controls-row">
         <div className="year-switch compact">
-          <button type="button" className="btn-ghost" onClick={() => setYear(year - 1)} aria-label="Año anterior">‹</button>
+          <button type="button" className="btn-ghost" onClick={() => setYear(year - 1)} aria-label="Año anterior"><Icon name="ChevronLeft" size={16} /></button>
           <strong>{year}</strong>
-          <button type="button" className="btn-ghost" onClick={() => setYear(year + 1)} aria-label="Año siguiente">›</button>
+          <button type="button" className="btn-ghost" onClick={() => setYear(year + 1)} aria-label="Año siguiente"><Icon name="ChevronRight" size={16} /></button>
         </div>
         <label className="inline-group">
           Pedir hasta
@@ -107,7 +108,7 @@ export default function FinesLargos() {
                           pidiendo {o.vacaciones.map((v) => fmt(v)).join(' y ')}
                         </span>
                       )}
-                      <span className="muted small"> ({fmt(o.desde)} → {fmt(o.hasta)})</span>
+                      <span className="muted small"> (del {fmt(o.desde)} al {fmt(o.hasta)})</span>
                     </li>
                   ))}
                 </ul>

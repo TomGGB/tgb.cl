@@ -3,126 +3,188 @@ import { Link } from 'react-router-dom'
 import { CATEGORIES, TOOLS } from '../tools/meta'
 import { useIndicadores } from '../lib/indicadores'
 import { proximoFeriado } from '../lib/feriados'
-import { formatCLP, formatNum } from '../lib/format'
+import { formatNum } from '../lib/format'
 import { buscarHerramientas } from '../components/CommandPalette'
 import { useFavoritos, useRecientes } from '../lib/preferencias'
+import { Icon, ToolIcon } from '../components/icons'
 
+const POPULARES = ['sueldo-liquido', 'feriados', 'bencinas', 'finiquito', 'sismos']
+const bySlug = (s) => TOOLS.find((t) => t.slug === s)
+const corto = (t) => t.title.replace(/^Calculadora de /, '').replace(/^./, (c) => c.toUpperCase())
 
-function QuickStats() {
-  const { get, loading, error } = useIndicadores()
+// La pizarra de una casa de cambio: los valores que todos miran cada día
+function Pizarra() {
+  const { data, get, loading, error } = useIndicadores()
   const feriado = proximoFeriado()
-  const today = new Date()
-  today.setHours(0, 0, 0, 0)
-  const dias = Math.round((feriado.date - today) / 86400000)
+  const hoy = new Date()
+  hoy.setHours(0, 0, 0, 0)
+  const dias = Math.round((feriado.date - hoy) / 86400000)
+  const fecha = (code) =>
+    data?.[code]?.fecha ? new Date(data[code].fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' }) : null
 
-  const stats = [
-    { label: 'UF', value: formatNum(get('uf'), 2), to: '/indicadores' },
-    { label: 'Dólar', value: formatNum(get('dolar'), 2), to: '/indicadores' },
-    { label: 'UTM', value: formatCLP(get('utm')), to: '/indicadores' },
-    {
-      label: 'Próximo feriado',
-      value: dias === 0 ? '¡Hoy!' : `${dias} ${dias === 1 ? 'día' : 'días'}`,
-      sub: feriado.name,
-      to: '/feriados',
-    },
+  const filas = [
+    { label: 'UF', value: formatNum(get('uf'), 2), nota: fecha('uf'), to: '/indicadores/' },
+    { label: 'Dólar', value: formatNum(get('dolar'), 2), nota: 'observado', to: '/indicadores/' },
+    { label: 'Euro', value: formatNum(get('euro'), 2), nota: fecha('euro'), to: '/conversor/' },
+    { label: 'UTM', value: formatNum(get('utm'), 0), nota: new Date().toLocaleDateString('es-CL', { month: 'long' }), to: '/indicadores/' },
   ]
 
   return (
-    <section className="quick-stats" aria-busy={loading}>
-      {stats.map((s) => (
-        <Link key={s.label} to={s.to} className="stat">
-          <span className="stat-label">{s.label}</span>
-          <span className={`stat-value ${loading ? 'loading' : ''}`}>{s.value}</span>
-          {s.sub && <span className="stat-sub">{s.sub}</span>}
-        </Link>
-      ))}
-      {error && <p className="stat-error">No se pudieron cargar los indicadores en vivo; se muestran valores de referencia.</p>}
+    <aside className="pizarra" aria-label="Valores del día" aria-busy={loading}>
+      <header className="pizarra-head">
+        <strong>Hoy en Chile</strong>
+        <span>{new Date().toLocaleDateString('es-CL', { weekday: 'long', day: 'numeric', month: 'long' })}</span>
+      </header>
+      <ul className="pizarra-rows">
+        {filas.map((f) => (
+          <li key={f.label}>
+            <Link to={f.to}>
+              <span className="pz-label">{f.label}</span>
+              <span className={`pz-value ${loading ? 'loading' : ''}`}>
+                <span className="pz-currency">$</span>
+                {f.value}
+              </span>
+              <span className="pz-note">{f.nota}</span>
+            </Link>
+          </li>
+        ))}
+        <li className="pz-feriado">
+          <Link to="/feriados/">
+            <span className="pz-label">Próximo feriado</span>
+            <span className="pz-value">
+              {dias === 0 ? 'Hoy' : dias}
+              {dias > 0 && <small>{dias === 1 ? ' día' : ' días'}</small>}
+            </span>
+            <span className="pz-note">{feriado.name}</span>
+          </Link>
+        </li>
+      </ul>
+      <footer className="pizarra-foot">
+        {error ? 'Sin conexión: se muestran valores de referencia' : 'Fuente: Banco Central de Chile'}
+      </footer>
+    </aside>
+  )
+}
+
+function ToolRow({ t }) {
+  const { isFav, toggle } = useFavoritos()
+  const fav = isFav(t.slug)
+  return (
+    <li className="tool-row-wrap">
+      <Link to={`/${t.slug}/`} className="tool-row">
+        <ToolIcon tool={t} size={19} />
+        <span className="tool-row-text">
+          <strong>{t.title}</strong>
+          <span>{t.short}</span>
+        </span>
+      </Link>
+      <button
+        type="button"
+        className={`star ${fav ? 'on' : ''}`}
+        onClick={() => toggle(t.slug)}
+        aria-pressed={fav}
+        aria-label={fav ? `Quitar ${t.title} de favoritos` : `Agregar ${t.title} a favoritos`}
+        title={fav ? 'Quitar de favoritos' : 'Agregar a favoritos'}
+      >
+        <Icon name="Star" size={16} fill={fav ? 'currentColor' : 'none'} />
+      </button>
+    </li>
+  )
+}
+
+function ChipRow({ title, tools }) {
+  return (
+    <section className="chip-row">
+      <h2>{title}</h2>
+      <ul>
+        {tools.map((t) => (
+          <li key={t.slug}>
+            <Link to={`/${t.slug}/`} className="chip" data-cat={t.category}>
+              <Icon name={t.icon} size={15} />
+              {corto(t)}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </section>
   )
 }
 
 export default function Home() {
   const [q, setQ] = useState('')
-
   const filtered = useMemo(() => buscarHerramientas(q), [q])
   const { favs } = useFavoritos()
   const { recientes } = useRecientes()
-  const bySlug = (s) => TOOLS.find((t) => t.slug === s)
   const favTools = favs.map(bySlug).filter(Boolean)
-  const recTools = recientes.filter((s) => !favs.includes(s)).map(bySlug).filter(Boolean).slice(0, 3)
+  const recTools = recientes.filter((s) => !favs.includes(s)).map(bySlug).filter(Boolean).slice(0, 4)
 
   return (
     <>
       <section className="hero">
-        <h1>Herramientas útiles para Chile</h1>
-        <p>Indicadores, calculadoras y datos prácticos en un solo lugar. Gratis y sin registro.</p>
-        <div className="search">
-          <input
-            type="search"
-            placeholder="Buscar: sueldo, UF, bencina, finiquito…"
-            value={q}
-            onChange={(e) => setQ(e.target.value)}
-            aria-label="Buscar herramienta"
-          />
+        <div className="hero-text">
+          <h1>Calculadoras y datos útiles para Chile</h1>
+          <p>
+            Sueldo líquido, finiquito, feriados, precio de la bencina, sismos y {TOOLS.length - 5} herramientas más. Gratis, sin
+            registro y con datos oficiales.
+          </p>
+          <label className="hero-search">
+            <Icon name="Search" size={20} />
+            <input type="search" placeholder="¿Qué quieres calcular?" value={q} onChange={(e) => setQ(e.target.value)} aria-label="Buscar herramienta" />
+          </label>
+          <p className="hero-popular">
+            <span>Lo más usado:</span>
+            {POPULARES.map(bySlug).map((t) => (
+              <Link key={t.slug} to={`/${t.slug}/`}>{corto(t)}</Link>
+            ))}
+          </p>
         </div>
+        <Pizarra />
       </section>
 
-      {!q && <QuickStats />}
-
-      {!q && favTools.length > 0 && (
-        <section className="category">
-          <h2>★ Tus favoritos</h2>
-          <ToolGrid tools={favTools} />
-        </section>
-      )}
-      {!q && recTools.length > 0 && (
-        <section className="category">
-          <h2>Usadas recientemente</h2>
-          <ToolGrid tools={recTools} />
-        </section>
-      )}
-
       {q ? (
-        <section className="category">
-          <h2>{filtered.length ? `Resultados para “${q}”` : `Sin resultados para “${q}”`}</h2>
-          <ToolGrid tools={filtered} />
+        <section className="cat-panel results-panel">
+          <header className="cat-head">
+            <h2>
+              {filtered.length
+                ? `${filtered.length} ${filtered.length === 1 ? 'resultado' : 'resultados'} para “${q}”`
+                : `Nada coincide con “${q}”. Prueba con otra palabra, como “sueldo” o “UF”.`}
+            </h2>
+          </header>
+          <ul className="tool-list">
+            {filtered.map((t) => (
+              <ToolRow key={t.slug} t={t} />
+            ))}
+          </ul>
         </section>
       ) : (
-        CATEGORIES.map((c) => (
-          <section key={c.id} className="category">
-            <h2>{c.name}</h2>
-            <ToolGrid tools={TOOLS.filter((t) => t.category === c.id)} />
-          </section>
-        ))
+        <>
+          {(favTools.length > 0 || recTools.length > 0) && (
+            <div className="personal">
+              {favTools.length > 0 && <ChipRow title="Tus favoritos" tools={favTools} />}
+              {recTools.length > 0 && <ChipRow title="Usadas hace poco" tools={recTools} />}
+            </div>
+          )}
+          <div className="directory">
+            {CATEGORIES.map((c) => {
+              const tools = TOOLS.filter((t) => t.category === c.id)
+              return (
+                <section key={c.id} className="cat-panel" data-cat={c.id}>
+                  <header className="cat-head">
+                    <span className="cat-icon"><Icon name={c.icon} size={17} /></span>
+                    <h2>{c.name}</h2>
+                    <span className="cat-count">{tools.length}</span>
+                  </header>
+                  <ul className="tool-list">
+                    {tools.map((t) => (
+                      <ToolRow key={t.slug} t={t} />
+                    ))}
+                  </ul>
+                </section>
+              )
+            })}
+          </div>
+        </>
       )}
     </>
-  )
-}
-
-function ToolGrid({ tools }) {
-  const { isFav, toggle } = useFavoritos()
-  return (
-    <div className="tool-grid">
-      {tools.map((t) => (
-        <div key={t.slug} className="tool-card-wrap">
-          <Link to={`/${t.slug}/`} className="tool-card">
-            <span className="tool-card-icon" aria-hidden="true">{t.icon}</span>
-            <span className="tool-card-body">
-              <strong>{t.title}</strong>
-              <span>{t.short}</span>
-            </span>
-          </Link>
-          <button
-            type="button"
-            className={`star ${isFav(t.slug) ? 'on' : ''}`}
-            onClick={() => toggle(t.slug)}
-            aria-pressed={isFav(t.slug)}
-            aria-label={isFav(t.slug) ? `Quitar ${t.title} de favoritos` : `Agregar ${t.title} a favoritos`}
-          >
-            {isFav(t.slug) ? '★' : '☆'}
-          </button>
-        </div>
-      ))}
-    </div>
   )
 }

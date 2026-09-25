@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { validateRut, formatRut, calcDV, cleanRut, randomRut } from '../lib/rut'
 import { Field, CopyButton } from '../components/ui'
+import { Icon } from '../components/icons'
 
 export default function Rut() {
   const [rut, setRut] = useState('')
@@ -32,9 +33,9 @@ export default function Rut() {
         {c.length >= 2 && (
           <div className={`status ${valido ? 'ok' : 'bad'}`}>
             {valido ? (
-              <>✓ RUT válido: <strong>{formatRut(c)}</strong> <CopyButton text={formatRut(c)} /></>
+              <><Icon name="CircleCheck" size={18} /> RUT válido: <strong>{formatRut(c)}</strong> <CopyButton text={formatRut(c)} /></>
             ) : (
-              <>✗ RUT inválido{dvCorrecto && <>. El dígito verificador correcto sería <strong>{dvCorrecto}</strong>.</>}</>
+              <><Icon name="CircleX" size={18} /> RUT inválido{dvCorrecto && <>. El dígito verificador correcto sería <strong>{dvCorrecto}</strong>.</>}</>
             )}
           </div>
         )}

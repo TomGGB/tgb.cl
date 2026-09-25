@@ -39,7 +39,7 @@ export default function Gratificacion() {
           ]}
         />
         <p className="small">
-          <Link to={`/sueldo-liquido/?monto=${imponible}`}>Calcular el sueldo líquido con {formatCLP(imponible)} →</Link>
+          <Link to={`/sueldo-liquido/?monto=${imponible}`}>Calcular el sueldo líquido con {formatCLP(imponible)}</Link>
         </p>
       </div>
 

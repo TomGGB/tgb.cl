@@ -36,8 +36,8 @@ export default function SueldoLiquido() {
           value={modo}
           onChange={setModo}
           options={[
-            { value: 'bruto', label: 'Bruto → Líquido' },
-            { value: 'liquido', label: 'Líquido → Bruto' },
+            { value: 'bruto', label: 'De bruto a líquido' },
+            { value: 'liquido', label: 'De líquido a bruto' },
           ]}
         />
         <div className="form-grid">

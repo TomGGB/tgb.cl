@@ -3,42 +3,43 @@ import regiones from '../data/regiones.json'
 import { formatNum } from '../lib/format'
 import { Field, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 const COMUNAS = regiones.flatMap((r) => r.comunas.map((c) => ({ ...c, region: r.nombre, regionId: r.id })))
 const byCut = (cut) => COMUNAS.find((c) => c.cut === cut)
 
 const WMO = {
-  0: ['Despejado', '☀️', '🌙'],
-  1: ['Mayormente despejado', '🌤️', '🌙'],
-  2: ['Parcialmente nublado', '⛅', '☁️'],
-  3: ['Nublado', '☁️', '☁️'],
-  45: ['Niebla', '🌫️'],
-  48: ['Niebla con escarcha', '🌫️'],
-  51: ['Llovizna débil', '🌦️'],
-  53: ['Llovizna', '🌦️'],
-  55: ['Llovizna intensa', '🌧️'],
-  56: ['Llovizna helada', '🌧️'],
-  57: ['Llovizna helada intensa', '🌧️'],
-  61: ['Lluvia débil', '🌦️'],
-  63: ['Lluvia', '🌧️'],
-  65: ['Lluvia intensa', '🌧️'],
-  66: ['Lluvia helada', '🌧️'],
-  67: ['Lluvia helada intensa', '🌧️'],
-  71: ['Nieve débil', '🌨️'],
-  73: ['Nieve', '🌨️'],
-  75: ['Nieve intensa', '❄️'],
-  77: ['Granizo fino', '🌨️'],
-  80: ['Chubascos débiles', '🌦️'],
-  81: ['Chubascos', '🌧️'],
-  82: ['Chubascos fuertes', '⛈️'],
-  85: ['Chubascos de nieve', '🌨️'],
-  86: ['Chubascos de nieve fuertes', '❄️'],
-  95: ['Tormenta eléctrica', '⛈️'],
-  96: ['Tormenta con granizo', '⛈️'],
-  99: ['Tormenta con granizo fuerte', '⛈️'],
+  0: ['Despejado', 'Sun', 'Moon'],
+  1: ['Mayormente despejado', 'CloudSun', 'CloudMoon'],
+  2: ['Parcialmente nublado', 'CloudSun', 'CloudMoon'],
+  3: ['Nublado', 'Cloud'],
+  45: ['Niebla', 'CloudFog'],
+  48: ['Niebla con escarcha', 'CloudFog'],
+  51: ['Llovizna débil', 'CloudDrizzle'],
+  53: ['Llovizna', 'CloudDrizzle'],
+  55: ['Llovizna intensa', 'CloudDrizzle'],
+  56: ['Llovizna helada', 'CloudDrizzle'],
+  57: ['Llovizna helada intensa', 'CloudDrizzle'],
+  61: ['Lluvia débil', 'CloudRain'],
+  63: ['Lluvia', 'CloudRain'],
+  65: ['Lluvia intensa', 'CloudRain'],
+  66: ['Lluvia helada', 'CloudRain'],
+  67: ['Lluvia helada intensa', 'CloudRain'],
+  71: ['Nieve débil', 'CloudSnow'],
+  73: ['Nieve', 'CloudSnow'],
+  75: ['Nieve intensa', 'Snowflake'],
+  77: ['Granizo fino', 'CloudHail'],
+  80: ['Chubascos débiles', 'CloudRain'],
+  81: ['Chubascos', 'CloudRain'],
+  82: ['Chubascos fuertes', 'CloudRain'],
+  85: ['Chubascos de nieve', 'CloudSnow'],
+  86: ['Chubascos de nieve fuertes', 'Snowflake'],
+  95: ['Tormenta eléctrica', 'CloudLightning'],
+  96: ['Tormenta con granizo', 'CloudHail'],
+  99: ['Tormenta con granizo fuerte', 'CloudHail'],
 }
 const wmo = (code, isDay = 1) => {
-  const w = WMO[code] ?? ['—', '🌡️']
+  const w = WMO[code] ?? ['Sin datos', 'Thermometer']
   return { text: w[0], icon: !isDay && w[2] ? w[2] : w[1] }
 }
 
@@ -174,7 +175,7 @@ export default function Clima() {
             )}
           </Field>
         </div>
-        <button type="button" className="btn-ghost geo-btn" onClick={usarUbicacion}>📍 Usar mi ubicación</button>
+        <button type="button" className="btn-ghost geo-btn" onClick={usarUbicacion}><Icon name="LocateFixed" size={15} /> Usar mi ubicación</button>
         {geoMsg && <p className="muted small">{geoMsg}</p>}
       </div>
 
@@ -185,7 +186,7 @@ export default function Clima() {
         <>
           <div className="card weather-now">
             <div className="weather-main">
-              <span className="weather-icon" aria-hidden="true">{wmo(wx.current.weather_code, wx.current.is_day).icon}</span>
+              <span className="weather-icon" aria-hidden="true"><Icon name={wmo(wx.current.weather_code, wx.current.is_day).icon} size={56} strokeWidth={1.5} /></span>
               <div>
                 <span className="muted small">{comuna.nombre}, ahora</span>
                 <strong className="weather-temp">{formatNum(wx.current.temperature_2m, 0)}°</strong>
@@ -227,8 +228,8 @@ export default function Clima() {
                 return (
                   <li key={d}>
                     <span className="fc-day">{i === 0 ? 'Hoy' : `${DIAS[date.getDay()]} ${date.getDate()}`}</span>
-                    <span className="fc-icon" title={w.text} aria-label={w.text}>{w.icon}</span>
-                    <span className="fc-rain">{wx.daily.precipitation_probability_max[i] ?? 0}% 💧</span>
+                    <span className="fc-icon" title={w.text} role="img" aria-label={w.text}><Icon name={w.icon} size={22} strokeWidth={1.8} /></span>
+                    <span className="fc-rain"><Icon name="Droplets" size={14} /> {wx.daily.precipitation_probability_max[i] ?? 0}%</span>
                     <span className="fc-temp">
                       <strong>{formatNum(wx.daily.temperature_2m_max[i], 0)}°</strong>{' '}
                       <span className="muted">{formatNum(wx.daily.temperature_2m_min[i], 0)}°</span>

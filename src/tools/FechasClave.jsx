@@ -3,6 +3,7 @@ import { proximasFechas, toICS, CATEGORIAS, MES_REVISION } from '../lib/calendar
 import { descargar } from '../lib/download'
 import { Field, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 const MESES = ['enero', 'febrero', 'marzo', 'abril', 'mayo', 'junio', 'julio', 'agosto', 'septiembre', 'octubre', 'noviembre', 'diciembre']
 
@@ -66,7 +67,7 @@ export default function FechasClave() {
             className="btn"
             onClick={() => descargar('fechas-clave-chile.ics', toICS(visibles), 'text/calendar;charset=utf-8')}
           >
-            📅 Agregar a mi calendario (.ics)
+            <Icon name="CalendarPlus" size={17} /> Agregar a mi calendario (.ics)
           </button>
           <span className="muted small">Funciona con Google Calendar, Outlook y el calendario del iPhone.</span>
         </div>

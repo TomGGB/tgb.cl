@@ -4,6 +4,7 @@ import { fetchBencinas, precioDe, mediana, COMBUSTIBLES } from '../lib/bencinas'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 export default function CostoViaje() {
   const [km, setKm] = useUrlState('km', 120)
@@ -71,7 +72,7 @@ export default function CostoViaje() {
               ))}
             </select>
             <button type="button" className="btn-ghost" onClick={usarPromedio} disabled={cargando}>
-              {cargando ? 'Consultando…' : '⛽ Usar precio actual'}
+              <Icon name="Fuel" size={15} /> {cargando ? 'Consultando…' : 'Usar precio actual'}
             </button>
           </span>
         </div>

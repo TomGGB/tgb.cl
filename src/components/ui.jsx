@@ -1,5 +1,7 @@
 import { useId, useState, useEffect } from 'react'
 import { parseNum } from '../lib/format'
+import { useThemePref } from '../lib/theme'
+import { Icon } from './icons'
 
 export function Field({ label, hint, children }) {
   const id = useId()
@@ -80,7 +82,7 @@ export function ResultTable({ rows }) {
   )
 }
 
-export function CopyButton({ text, label = 'Copiar' }) {
+export function CopyButton({ text, label = 'Copiar', icon = 'Copy' }) {
   const [ok, setOk] = useState(false)
   return (
     <button
@@ -96,7 +98,8 @@ export function CopyButton({ text, label = 'Copiar' }) {
         }
       }}
     >
-      {ok ? '✓ Copiado' : label}
+      <Icon name={ok ? 'Check' : icon} size={15} />
+      {ok ? 'Copiado' : label}
     </button>
   )
 }
@@ -115,63 +118,39 @@ export function ShareButton() {
         return
       }
       await navigator.clipboard.writeText(url)
-      setMsg('✓ Enlace copiado')
+      setMsg('Enlace copiado')
     } catch (e) {
-      if (e?.name !== 'AbortError') setMsg('No se pudo copiar')
+      if (e?.name !== 'AbortError') setMsg('No se pudo copiar el enlace')
     }
     setTimeout(() => setMsg(null), 2000)
   }
   return (
     <button type="button" className="btn-ghost share-btn" onClick={share} title="Copia un enlace con los valores actuales">
-      {msg ?? '🔗 Compartir cálculo'}
+      <Icon name={msg === 'Enlace copiado' ? 'Check' : 'Link2'} size={16} />
+      {msg ?? 'Compartir cálculo'}
     </button>
   )
 }
 
 const THEMES = [
-  { id: 'auto', icon: '🌓', label: 'Tema automático' },
-  { id: 'light', icon: '☀️', label: 'Tema claro' },
-  { id: 'dark', icon: '🌙', label: 'Tema oscuro' },
+  { id: 'auto', icon: 'SunMoon', label: 'Tema automático' },
+  { id: 'light', icon: 'Sun', label: 'Tema claro' },
+  { id: 'dark', icon: 'Moon', label: 'Tema oscuro' },
 ]
 
-function readTheme() {
-  try {
-    return localStorage.getItem('theme') || 'auto'
-  } catch {
-    return 'auto'
-  }
-}
-
-export function applyTheme(theme) {
-  const root = document.documentElement
-  if (theme === 'auto') root.removeAttribute('data-theme')
-  else root.setAttribute('data-theme', theme)
-  const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
-  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#171b21' : '#0b3a82')
-}
-
 export function ThemeToggle() {
-  const [theme, setTheme] = useState(readTheme)
-  useEffect(() => {
-    applyTheme(theme)
-    try {
-      if (theme === 'auto') localStorage.removeItem('theme')
-      else localStorage.setItem('theme', theme)
-    } catch {
-      /* sin almacenamiento */
-    }
-  }, [theme])
-  const current = THEMES.find((t) => t.id === theme) ?? THEMES[0]
+  const [pref, setPref] = useThemePref()
+  const current = THEMES.find((t) => t.id === pref) ?? THEMES[0]
   const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length]
   return (
     <button
       type="button"
       className="theme-toggle"
-      onClick={() => setTheme(next.id)}
+      onClick={() => setPref(next.id)}
       aria-label={`${current.label}. Cambiar a ${next.label.toLowerCase()}`}
       title={`${current.label} (clic para ${next.label.toLowerCase()})`}
     >
-      <span aria-hidden="true">{current.icon}</span>
+      <Icon name={current.icon} size={18} />
     </button>
   )
 }

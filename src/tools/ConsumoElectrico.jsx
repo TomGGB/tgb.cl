@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 // Potencias típicas (W) y uso diario de referencia
 const PRESETS = [
@@ -97,7 +98,7 @@ export default function ConsumoElectrico() {
                   <td className="num"><input type="number" min="1" value={a.n} onChange={(e) => update(i, { n: Number(e.target.value) })} aria-label="Cantidad" /></td>
                   <td className="num">{formatNum(kwhMes(a), 1)}</td>
                   <td className="num"><strong>{formatCLP(kwhMes(a) * tarifa)}</strong></td>
-                  <td><button type="button" className="icon-btn" onClick={() => setAparatos((x) => x.filter((_, j) => j !== i))} aria-label={`Quitar ${a.nombre}`}>✕</button></td>
+                  <td><button type="button" className="icon-btn" onClick={() => setAparatos((x) => x.filter((_, j) => j !== i))} aria-label={`Quitar ${a.nombre}`}><Icon name="X" size={16} /></button></td>
                 </tr>
               ))}
             </tbody>
@@ -118,7 +119,7 @@ export default function ConsumoElectrico() {
                 setAparatos((a) => [...a, { ...p, n: 1 }])
               }}
             >
-              + Agregar
+              <Icon name="Plus" size={16} /> Agregar
             </button>
           </span>
           <button type="button" className="btn-ghost" onClick={() => setAparatos(INICIAL)}>Restablecer</button>

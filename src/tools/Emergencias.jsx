@@ -1,8 +1,10 @@
+import { Icon } from '../components/icons'
+
 const PRINCIPALES = [
-  { n: '131', name: 'Ambulancia (SAMU)', color: 'red' },
-  { n: '132', name: 'Bomberos', color: 'orange' },
-  { n: '133', name: 'Carabineros', color: 'green' },
-  { n: '134', name: 'PDI', color: 'blue' },
+  { n: '131', name: 'Ambulancia (SAMU)', color: 'red', icon: 'Ambulance' },
+  { n: '132', name: 'Bomberos', color: 'orange', icon: 'Flame' },
+  { n: '133', name: 'Carabineros', color: 'green', icon: 'Shield' },
+  { n: '134', name: 'PDI', color: 'blue', icon: 'ShieldAlert' },
 ]
 
 const OTROS = [
@@ -25,6 +27,7 @@ export default function Emergencias() {
       <div className="emergency-grid">
         {PRINCIPALES.map((e) => (
           <a key={e.n} href={tel(e.n)} className={`emergency ${e.color}`}>
+            <Icon name={e.icon} size={26} strokeWidth={1.8} />
             <strong>{e.n}</strong>
             <span>{e.name}</span>
           </a>
@@ -36,7 +39,7 @@ export default function Emergencias() {
           {OTROS.map((e) => (
             <li key={e.name}>
               <span>{e.name}</span>
-              <a href={tel(e.n)}>{e.n}</a>
+              <a href={tel(e.n)}><Icon name="Phone" size={14} /> {e.n}</a>
             </li>
           ))}
         </ul>

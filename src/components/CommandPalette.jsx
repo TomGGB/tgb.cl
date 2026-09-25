@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { TOOLS } from '../tools/meta'
 import { useFavoritos, useRecientes } from '../lib/preferencias'
+import { Icon } from './icons'
 
 const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
@@ -105,12 +106,12 @@ export default function CommandPalette() {
               onClick={() => go(t)}
               ref={i === active ? (el) => el?.scrollIntoView({ block: 'nearest' }) : undefined}
             >
-              <span className="palette-icon" aria-hidden="true">{t.icon}</span>
+              <span className="palette-icon" data-cat={t.category}><Icon name={t.icon} size={18} /></span>
               <span className="palette-text">
                 <strong>{t.title}</strong>
                 <span>{t.short}</span>
               </span>
-              {favs.includes(t.slug) && <span className="palette-star" aria-label="Favorito">★</span>}
+              {favs.includes(t.slug) && <span className="palette-star" aria-label="Favorito"><Icon name="Star" size={15} fill="currentColor" /></span>}
             </li>
           ))}
           {!results.length && <li className="palette-empty">Sin resultados para “{q}”</li>}

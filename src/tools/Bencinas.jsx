@@ -1,10 +1,10 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+import { useLeafletMap, L } from '../lib/useLeafletMap'
 import { fetchBencinas, precioDe, mediana, distanciaKm, COMBUSTIBLES } from '../lib/bencinas'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, Segmented, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 const byName = (a, b) => a.localeCompare(b, 'es')
@@ -12,8 +12,8 @@ const byName = (a, b) => a.localeCompare(b, 'es')
 // verde (barata) → rojo (cara) según la posición del precio en el rango
 function colorPrecio(p, min, max) {
   const t = max > min ? (p - min) / (max - min) : 0
-  const hue = 130 - t * 130
-  return `hsl(${hue} 70% 40%)`
+  const hue = 145 - t * 145
+  return `hsl(${hue} 62% 42%)`
 }
 
 export default function Bencinas() {
@@ -110,9 +110,9 @@ export default function Bencinas() {
         </div>
         <div className="inline-actions">
           {pos ? (
-            <button type="button" className="btn-ghost" onClick={() => { setPos(null); setOrden('precio') }}>✕ Dejar de usar mi ubicación</button>
+            <button type="button" className="btn-ghost" onClick={() => { setPos(null); setOrden('precio') }}><Icon name="X" size={15} /> Dejar de usar mi ubicación</button>
           ) : (
-            <button type="button" className="btn-ghost" onClick={cercaDeMi}>📍 Cerca de mí (15 km)</button>
+            <button type="button" className="btn-ghost" onClick={cercaDeMi}><Icon name="LocateFixed" size={15} /> Cerca de mí (15 km)</button>
           )}
           {pos && (
             <Segmented
@@ -194,28 +194,21 @@ export default function Bencinas() {
 
 function BencinaMap({ estaciones, min, max, pos, selected, onSelect }) {
   const el = useRef(null)
-  const map = useRef(null)
+  const { map, theme } = useLeafletMap(el, { center: [-33.45, -70.66], zoom: 10 })
   const layer = useRef(null)
   const markers = useRef({})
+  const encuadre = useRef('')
 
   useEffect(() => {
-    map.current = L.map(el.current, { scrollWheelZoom: false }).setView([-33.45, -70.66], 10)
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 18,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map.current)
+    layer.current?.remove()
     layer.current = L.layerGroup().addTo(map.current)
-    return () => map.current.remove()
-  }, [])
-
-  useEffect(() => {
-    layer.current.clearLayers()
     markers.current = {}
+    const borde = theme === 'dark' ? '#0e1624' : '#ffffff'
     const pts = []
     for (const e of estaciones) {
-      const m = L.circleMarker([e.lat, e.lon], { radius: 7, color: '#fff', weight: 1.5, fillColor: colorPrecio(e.precio, min, max), fillOpacity: 0.9 })
+      const m = L.circleMarker([e.lat, e.lon], { radius: 7, color: borde, weight: 2, fillColor: colorPrecio(e.precio, min, max), fillOpacity: 0.95 })
         .bindPopup(
-          `<strong>${esc(e.marca)}</strong> · ${formatCLP(e.precio)}<br>${esc(e.direccion)}, ${esc(e.comuna)}<br><a href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lon}" target="_blank" rel="noreferrer">Cómo llegar</a>`,
+          `<div class="map-popup"><strong>${esc(e.marca)}</strong><span class="map-popup-price">${formatCLP(e.precio)}</span><span>${esc(e.direccion)}, ${esc(e.comuna)}</span><a href="https://www.google.com/maps/dir/?api=1&destination=${e.lat},${e.lon}" target="_blank" rel="noreferrer">Cómo llegar</a></div>`,
         )
         .on('click', () => onSelect(e.id))
       m.addTo(layer.current)
@@ -223,11 +216,21 @@ function BencinaMap({ estaciones, min, max, pos, selected, onSelect }) {
       pts.push([e.lat, e.lon])
     }
     if (pos) {
-      L.circleMarker([pos.lat, pos.lon], { radius: 8, color: '#fff', weight: 2, fillColor: '#1a73e8', fillOpacity: 1 }).bindTooltip('Tú').addTo(layer.current)
+      L.marker([pos.lat, pos.lon], {
+        icon: L.divIcon({ className: 'me-marker', html: '<span></span>', iconSize: [18, 18] }),
+        keyboard: false,
+      })
+        .bindTooltip('Estás aquí')
+        .addTo(layer.current)
       pts.push([pos.lat, pos.lon])
     }
-    if (pts.length) map.current.fitBounds(pts, { padding: [24, 24], maxZoom: 14 })
-  }, [estaciones, min, max, pos, onSelect])
+    // reencuadra solo si cambió el conjunto de estaciones (no al cambiar de tema)
+    const key = `${pts.length}:${pts[0]?.join()}:${pos?.lat ?? ''}`
+    if (pts.length && key !== encuadre.current) {
+      map.current.fitBounds(pts, { padding: [28, 28], maxZoom: 14 })
+      encuadre.current = key
+    }
+  }, [estaciones, min, max, pos, onSelect, theme, map])
 
   useEffect(() => {
     const m = selected && markers.current[selected]
@@ -236,7 +239,18 @@ function BencinaMap({ estaciones, min, max, pos, selected, onSelect }) {
       m.openPopup()
       el.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
-  }, [selected])
+  }, [selected, map])
 
-  return <div ref={el} className="map" role="region" aria-label="Mapa de bencineras" />
+  return (
+    <div className="map-wrap">
+      <div ref={el} className="map" role="region" aria-label="Mapa de bencineras" />
+      {estaciones.length > 1 && (
+        <div className="map-legend" aria-hidden="true">
+          <span>{formatCLP(min)}</span>
+          <i />
+          <span>{formatCLP(max)}</span>
+        </div>
+      )}
+    </div>
+  )
 }

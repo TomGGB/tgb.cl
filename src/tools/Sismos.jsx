@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
-import L from 'leaflet'
-import 'leaflet/dist/leaflet.css'
+import { useLeafletMap, L } from '../lib/useLeafletMap'
 import { formatNum } from '../lib/format'
 import { Segmented, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
@@ -23,7 +22,7 @@ function traducirLugar(place = '') {
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 
-const magColor = (m) => (m >= 6 ? '#b3261e' : m >= 5 ? '#e65100' : m >= 4 ? '#f9a825' : '#2e7d32')
+const magColor = (m) => (m >= 6 ? '#c8102e' : m >= 5 ? '#e0620d' : m >= 4 ? '#e8a317' : '#3a9d6a')
 
 function tiempoRelativo(ms) {
   const min = Math.round((Date.now() - ms) / 60000)
@@ -168,39 +167,34 @@ export default function Sismos() {
 
 function SismoMap({ sismos, selected, onSelect }) {
   const el = useRef(null)
-  const map = useRef(null)
+  const { map, theme } = useLeafletMap(el, { bounds: [[-55, -76], [-17.5, -66]], maxZoom: 12 })
   const layer = useRef(null)
   const markers = useRef({})
 
   useEffect(() => {
-    map.current = L.map(el.current, { scrollWheelZoom: false, zoomSnap: 0.5 }).fitBounds([[-55, -76], [-17.5, -66]])
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      maxZoom: 12,
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-    }).addTo(map.current)
+    layer.current?.remove()
     layer.current = L.layerGroup().addTo(map.current)
-    return () => map.current.remove()
-  }, [])
-
-  useEffect(() => {
-    layer.current.clearLayers()
     markers.current = {}
-    for (const s of sismos) {
+    const borde = theme === 'dark' ? '#0e1624' : '#ffffff'
+    // los más grandes se dibujan al final para quedar encima
+    for (const s of [...sismos].sort((a, b) => a.mag - b.mag)) {
+      const reciente = Date.now() - s.time < 3 * 3600 * 1000
       const m = L.circleMarker([s.lat, s.lon], {
         radius: Math.max(4, (s.mag - 1.5) * 3.2),
-        color: '#fff',
-        weight: 1,
+        color: borde,
+        weight: 1.5,
         fillColor: magColor(s.mag),
-        fillOpacity: 0.75,
+        fillOpacity: 0.85,
+        className: reciente ? 'quake-recent' : '',
       })
         .bindPopup(
-          `<strong>M ${formatNum(s.mag, 1)}</strong><br>${esc(s.lugar)}<br>${new Date(s.time).toLocaleString('es-CL', { timeZone: 'America/Santiago' })}<br>${formatNum(s.prof, 0)} km de profundidad<br><a href="${esc(s.url)}" target="_blank" rel="noreferrer">Más detalles (USGS)</a>`,
+          `<div class="map-popup"><strong>Magnitud ${formatNum(s.mag, 1)}</strong><span>${esc(s.lugar)}</span><span>${new Date(s.time).toLocaleString('es-CL', { timeZone: 'America/Santiago', dateStyle: 'medium', timeStyle: 'short' })}</span><span>${formatNum(s.prof, 0)} km de profundidad</span><a href="${esc(s.url)}" target="_blank" rel="noreferrer">Ver detalle en USGS</a></div>`,
         )
         .on('click', () => onSelect(s.id))
       m.addTo(layer.current)
       markers.current[s.id] = m
     }
-  }, [sismos, onSelect])
+  }, [sismos, onSelect, theme, map])
 
   useEffect(() => {
     const m = selected && markers.current[selected]
@@ -209,7 +203,7 @@ function SismoMap({ sismos, selected, onSelect }) {
       m.openPopup()
       el.current.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
     }
-  }, [selected])
+  }, [selected, map])
 
   return <div ref={el} className="map" role="region" aria-label="Mapa de sismos" />
 }

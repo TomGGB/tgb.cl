@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { formatCLP } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, CopyButton } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { Icon } from '../components/icons'
 
 const redondear = (n, a) => (a ? Math.ceil(n / a) * a : Math.round(n))
 
@@ -100,10 +101,10 @@ export default function DividirCuenta() {
               <div key={i} className="person-row">
                 <input value={g.nombre} placeholder="Nombre" aria-label="Nombre" onChange={(e) => setGente((x) => x.map((p, j) => (j === i ? { ...p, nombre: e.target.value } : p)))} />
                 <NumberInput value={g.consumo} prefix="$" aria-label={`Consumo de ${g.nombre}`} onChange={(v) => setGente((x) => x.map((p, j) => (j === i ? { ...p, consumo: v } : p)))} />
-                <button type="button" className="icon-btn" aria-label={`Quitar a ${g.nombre}`} onClick={() => setGente((x) => x.filter((_, j) => j !== i))}>✕</button>
+                <button type="button" className="icon-btn" aria-label={`Quitar a ${g.nombre}`} onClick={() => setGente((x) => x.filter((_, j) => j !== i))}><Icon name="X" size={16} /></button>
               </div>
             ))}
-            <button type="button" className="btn-ghost" onClick={() => setGente((x) => [...x, { nombre: '', consumo: 0 }])}>+ Agregar persona</button>
+            <button type="button" className="btn-ghost" onClick={() => setGente((x) => [...x, { nombre: '', consumo: 0 }])}><Icon name="Plus" size={15} /> Agregar persona</button>
           </div>
         )}
       </div>
@@ -111,7 +112,7 @@ export default function DividirCuenta() {
       <div className="card result">
         <ResultTable rows={filas} />
         <div className="inline-actions">
-          <CopyButton text={texto} label="📋 Copiar para WhatsApp" />
+          <CopyButton text={texto} label="Copiar para WhatsApp" />
         </div>
       </div>
     </>

@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { Icon } from '../components/icons'
 
 const GRUPOS = [
   {
@@ -77,7 +78,7 @@ export default function Tramites() {
           <div className="link-grid">
             {g.links.map((l) => (
               <a key={l.name} href={l.url} target="_blank" rel="noreferrer" className="link-card">
-                <strong>{l.name} <span aria-hidden="true">↗</span></strong>
+                <strong>{l.name} <Icon name="ExternalLink" size={14} /></strong>
                 <span>{l.desc}</span>
               </a>
             ))}

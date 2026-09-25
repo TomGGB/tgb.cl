@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { getFeriados, proximoFeriado, esFinDeSemanaLargo } from '../lib/feriados'
 import { Note } from '../components/ui'
+import { Icon } from '../components/icons'
 
 const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
 
@@ -26,9 +27,9 @@ export default function Feriados() {
       </div>
 
       <div className="year-switch">
-        <button type="button" className="btn-ghost" onClick={() => setYear(year - 1)} aria-label="Año anterior">‹ {year - 1}</button>
+        <button type="button" className="btn-ghost" onClick={() => setYear(year - 1)} aria-label="Año anterior"><Icon name="ChevronLeft" size={16} /> {year - 1}</button>
         <h2>Feriados {year}</h2>
-        <button type="button" className="btn-ghost" onClick={() => setYear(year + 1)} aria-label="Año siguiente">{year + 1} ›</button>
+        <button type="button" className="btn-ghost" onClick={() => setYear(year + 1)} aria-label="Año siguiente">{year + 1} <Icon name="ChevronRight" size={16} /></button>
       </div>
       <p className="muted small center">
         {feriados.length} feriados · {largos} fines de semana largos (feriado en lunes o viernes)
