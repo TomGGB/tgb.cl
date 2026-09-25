@@ -116,7 +116,7 @@ function page(tool) {
     `<meta name="twitter:image" content="${image}" />`,
     jsonLd(tool, url),
     SITE.cfAnalyticsToken
-      ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${SITE.cfAnalyticsToken}"}'></script>`
+      ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${SITE.cfAnalyticsToken}","spa":true}'></script>`
       : '',
   ]
     .filter(Boolean)

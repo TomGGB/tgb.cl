@@ -6,7 +6,7 @@ export const SITE = {
   tagline: 'Herramientas útiles para Chile',
   url: 'https://tgb.cl',
   // Token de Cloudflare Web Analytics (Analytics y registros → Web Analytics → tgb.cl). Vacío = desactivado.
-  cfAnalyticsToken: '',
+  cfAnalyticsToken: 'cfe938f5775e4e7fb9062b41403dca5a',
   description:
     'Indicadores económicos, sueldo líquido, finiquito, feriados, sismos, clima, validador de RUT y más herramientas gratuitas para Chile.',
 }
