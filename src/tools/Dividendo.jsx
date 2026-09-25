@@ -1,15 +1,15 @@
-import { useState } from 'react'
 import { useIndicadores } from '../lib/indicadores'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 export default function Dividendo() {
   const { get } = useIndicadores()
   const uf = get('uf')
-  const [valorUF, setValorUF] = useState(3500)
-  const [piePct, setPiePct] = useState(20)
-  const [anios, setAnios] = useState(25)
-  const [tasa, setTasa] = useState(4.5)
+  const [valorUF, setValorUF] = useUrlState('valor', 3500)
+  const [piePct, setPiePct] = useUrlState('pie', 20)
+  const [anios, setAnios] = useUrlState('anios', 25)
+  const [tasa, setTasa] = useUrlState('tasa', 4.5)
 
   const credito = valorUF * (1 - piePct / 100)
   const n = anios * 12

@@ -8,6 +8,8 @@ export const PARAMS = {
   cesantiaIndefinido: 0.006, // aporte del trabajador con contrato indefinido
   retencionHonorarios: 0.1525,
   iva: 0.19,
+  imm: 553_553, // ingreso mínimo mensual desde el 1 de mayo de 2026 (Ley 21.751)
+  jornada: 42, // jornada ordinaria máxima desde el 26 de abril de 2026 (Ley 21.561)
 }
 
 export const AFPS = [
@@ -86,4 +88,21 @@ export function calcularBrutoDesdeLiquido(liquidoDeseado, opts) {
     else hi = mid
   }
   return calcularLiquido({ ...opts, imponible: Math.round(hi) })
+}
+
+// Valor de la hora extra según la fórmula de la Dirección del Trabajo:
+// sueldo mensual / 30 * 28 / (4 * jornada semanal) * (1 + recargo)
+export function valorHoraExtra({ sueldoBase, jornada = PARAMS.jornada, recargo = 0.5 }) {
+  // Si el sueldo base es menor al mínimo (proporcional a la jornada), se calcula sobre el mínimo
+  const minimo = PARAMS.imm * Math.min(1, jornada / PARAMS.jornada)
+  const base = Math.max(sueldoBase, minimo)
+  const valorHora = (base / 30) * 28 / (4 * jornada)
+  return { base, usaMinimo: base > sueldoBase, valorHora, valorExtra: valorHora * (1 + recargo) }
+}
+
+// Gratificación legal del artículo 50: 25% de lo devengado con tope anual de 4,75 ingresos mínimos
+export function gratificacionArt50(remuneracionMensual, imm = PARAMS.imm) {
+  const tope = (4.75 * imm) / 12
+  const bruta = remuneracionMensual * 0.25
+  return { gratificacion: Math.round(Math.min(bruta, tope)), tope: Math.round(tope), topada: bruta > tope }
 }

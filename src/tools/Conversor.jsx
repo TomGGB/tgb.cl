@@ -1,7 +1,7 @@
-import { useState } from 'react'
 import { useIndicadores } from '../lib/indicadores'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 const UNITS = [
   { code: 'clp', label: 'Pesos (CLP)', decimals: 0 },
@@ -13,8 +13,8 @@ const UNITS = [
 
 export default function Conversor() {
   const { get, data } = useIndicadores()
-  const [amount, setAmount] = useState(1)
-  const [from, setFrom] = useState('uf')
+  const [amount, setAmount] = useUrlState('monto', 1)
+  const [from, setFrom] = useUrlState('de', 'uf')
 
   const rate = (code) => (code === 'clp' ? 1 : get(code))
   const enCLP = amount * rate(from)

@@ -1,15 +1,15 @@
-import { useState } from 'react'
 import { diasHabiles, sumarDiasHabiles, getFeriados } from '../lib/feriados'
 import { toISODate, fromISODate, formatDateLong } from '../lib/format'
 import { Field, NumberInput, Segmented } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 export default function DiasHabiles() {
   const today = toISODate(new Date())
-  const [modo, setModo] = useState('contar')
-  const [desde, setDesde] = useState(today)
-  const [hasta, setHasta] = useState(toISODate(new Date(Date.now() + 30 * 86400000)))
-  const [n, setN] = useState(10)
-  const [sabado, setSabado] = useState(false)
+  const [modo, setModo] = useUrlState('modo', 'contar')
+  const [desde, setDesde] = useUrlState('desde', today)
+  const [hasta, setHasta] = useUrlState('hasta', toISODate(new Date(Date.now() + 30 * 86400000)))
+  const [n, setN] = useUrlState('n', 10)
+  const [sabado, setSabado] = useUrlState('sabado', false)
 
   const opts = { incluirSabado: sabado }
   const d1 = desde ? fromISODate(desde) : null

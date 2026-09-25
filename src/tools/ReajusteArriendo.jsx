@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react'
 import { fetchValorEnFecha } from '../lib/indicadores'
 import { formatCLP, formatNum, toISODate, fromISODate } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 const haceUnAnio = () => {
   const d = new Date()
@@ -10,9 +11,9 @@ const haceUnAnio = () => {
 }
 
 export default function ReajusteArriendo() {
-  const [monto, setMonto] = useState(500000)
-  const [desde, setDesde] = useState(haceUnAnio())
-  const [hasta, setHasta] = useState(toISODate(new Date()))
+  const [monto, setMonto] = useUrlState('monto', 500000)
+  const [desde, setDesde] = useUrlState('desde', haceUnAnio())
+  const [hasta, setHasta] = useUrlState('hasta', toISODate(new Date()))
   const [uf, setUf] = useState({ desde: null, hasta: null, loading: false, error: null })
 
   useEffect(() => {

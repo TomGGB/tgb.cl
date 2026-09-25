@@ -1,6 +1,7 @@
 import { useEffect } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { SITE, TOOLS } from '../tools/meta'
+import { ShareButton, ThemeToggle } from './ui'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -28,6 +29,7 @@ export default function Layout() {
             <NavLink to="/feriados">Feriados</NavLink>
             <NavLink to="/rut">RUT</NavLink>
           </nav>
+          <ThemeToggle />
         </div>
       </header>
 
@@ -59,11 +61,16 @@ export function ToolPage({ tool, children }) {
       </nav>
       <header className="tool-header">
         <span className="tool-icon" aria-hidden="true">{tool.icon}</span>
-        <div>
+        <div className="tool-header-text">
           <h1>{tool.title}</h1>
           <p>{tool.description}</p>
         </div>
       </header>
+      {tool.share && (
+        <div className="tool-actions">
+          <ShareButton />
+        </div>
+      )}
       {children}
     </article>
   )

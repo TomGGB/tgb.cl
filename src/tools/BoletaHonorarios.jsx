@@ -1,11 +1,11 @@
-import { useState } from 'react'
 import { PARAMS } from '../lib/sueldo'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 export default function BoletaHonorarios() {
-  const [modo, setModo] = useState('bruto')
-  const [monto, setMonto] = useState(1_000_000)
+  const [modo, setModo] = useUrlState('modo', 'bruto')
+  const [monto, setMonto] = useUrlState('monto', 1_000_000)
   const t = PARAMS.retencionHonorarios
 
   const bruto = modo === 'bruto' ? monto : Math.round(monto / (1 - t))

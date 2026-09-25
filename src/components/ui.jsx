@@ -104,3 +104,74 @@ export function CopyButton({ text, label = 'Copiar' }) {
 export function Note({ children }) {
   return <p className="note">{children}</p>
 }
+
+export function ShareButton() {
+  const [msg, setMsg] = useState(null)
+  const share = async () => {
+    const url = window.location.href
+    try {
+      if (navigator.share && window.matchMedia('(pointer: coarse)').matches) {
+        await navigator.share({ title: document.title, url })
+        return
+      }
+      await navigator.clipboard.writeText(url)
+      setMsg('✓ Enlace copiado')
+    } catch (e) {
+      if (e?.name !== 'AbortError') setMsg('No se pudo copiar')
+    }
+    setTimeout(() => setMsg(null), 2000)
+  }
+  return (
+    <button type="button" className="btn-ghost share-btn" onClick={share} title="Copia un enlace con los valores actuales">
+      {msg ?? '🔗 Compartir cálculo'}
+    </button>
+  )
+}
+
+const THEMES = [
+  { id: 'auto', icon: '🌓', label: 'Tema automático' },
+  { id: 'light', icon: '☀️', label: 'Tema claro' },
+  { id: 'dark', icon: '🌙', label: 'Tema oscuro' },
+]
+
+function readTheme() {
+  try {
+    return localStorage.getItem('theme') || 'auto'
+  } catch {
+    return 'auto'
+  }
+}
+
+export function applyTheme(theme) {
+  const root = document.documentElement
+  if (theme === 'auto') root.removeAttribute('data-theme')
+  else root.setAttribute('data-theme', theme)
+  const dark = theme === 'dark' || (theme === 'auto' && window.matchMedia('(prefers-color-scheme: dark)').matches)
+  document.querySelector('meta[name="theme-color"]')?.setAttribute('content', dark ? '#171b21' : '#0b3a82')
+}
+
+export function ThemeToggle() {
+  const [theme, setTheme] = useState(readTheme)
+  useEffect(() => {
+    applyTheme(theme)
+    try {
+      if (theme === 'auto') localStorage.removeItem('theme')
+      else localStorage.setItem('theme', theme)
+    } catch {
+      /* sin almacenamiento */
+    }
+  }, [theme])
+  const current = THEMES.find((t) => t.id === theme) ?? THEMES[0]
+  const next = THEMES[(THEMES.indexOf(current) + 1) % THEMES.length]
+  return (
+    <button
+      type="button"
+      className="theme-toggle"
+      onClick={() => setTheme(next.id)}
+      aria-label={`${current.label}. Cambiar a ${next.label.toLowerCase()}`}
+      title={`${current.label} (clic para ${next.label.toLowerCase()})`}
+    >
+      <span aria-hidden="true">{current.icon}</span>
+    </button>
+  )
+}

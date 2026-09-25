@@ -17,6 +17,13 @@ const COMPONENTS = {
   rut: lazy(() => import('./tools/Rut')),
   tramites: lazy(() => import('./tools/Tramites')),
   emergencias: lazy(() => import('./tools/Emergencias')),
+  finiquito: lazy(() => import('./tools/Finiquito')),
+  'horas-extra': lazy(() => import('./tools/HorasExtra')),
+  gratificacion: lazy(() => import('./tools/Gratificacion')),
+  sismos: lazy(() => import('./tools/Sismos')),
+  clima: lazy(() => import('./tools/Clima')),
+  'cambio-de-hora': lazy(() => import('./tools/CambioHora')),
+  comunas: lazy(() => import('./tools/Comunas')),
 }
 
 function NotFound() {

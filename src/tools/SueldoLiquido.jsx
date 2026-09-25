@@ -1,21 +1,21 @@
-import { useState } from 'react'
 import { useIndicadores } from '../lib/indicadores'
 import { AFPS, PARAMS, calcularLiquido, calcularBrutoDesdeLiquido } from '../lib/sueldo'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 export default function SueldoLiquido() {
   const { get } = useIndicadores()
   const uf = get('uf')
   const utm = get('utm')
 
-  const [modo, setModo] = useState('bruto')
-  const [monto, setMonto] = useState(1_000_000)
-  const [noImponible, setNoImponible] = useState(0)
-  const [afp, setAfp] = useState('Modelo')
-  const [salud, setSalud] = useState('fonasa')
-  const [planUF, setPlanUF] = useState(3)
-  const [contrato, setContrato] = useState('indefinido')
+  const [modo, setModo] = useUrlState('modo', 'bruto')
+  const [monto, setMonto] = useUrlState('monto', 1_000_000)
+  const [noImponible, setNoImponible] = useUrlState('noimp', 0)
+  const [afp, setAfp] = useUrlState('afp', 'Modelo')
+  const [salud, setSalud] = useUrlState('salud', 'fonasa')
+  const [planUF, setPlanUF] = useUrlState('plan', 3)
+  const [contrato, setContrato] = useUrlState('contrato', 'indefinido')
 
   const opts = {
     noImponible,

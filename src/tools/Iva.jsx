@@ -1,11 +1,11 @@
-import { useState } from 'react'
 import { PARAMS } from '../lib/sueldo'
 import { formatCLP } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable } from '../components/ui'
+import { useUrlState } from '../lib/useUrlState'
 
 export default function Iva() {
-  const [modo, setModo] = useState('neto')
-  const [monto, setMonto] = useState(100_000)
+  const [modo, setModo] = useUrlState('modo', 'neto')
+  const [monto, setMonto] = useUrlState('monto', 100_000)
   const t = PARAMS.iva
 
   const neto = modo === 'neto' ? monto : Math.round(monto / (1 + t))

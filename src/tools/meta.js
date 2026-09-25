@@ -6,13 +6,14 @@ export const SITE = {
   tagline: 'Herramientas útiles para Chile',
   url: 'https://tgb.cl',
   description:
-    'Indicadores económicos, calculadora de sueldo líquido, validador de RUT, feriados, boletas de honorarios y más herramientas gratuitas para Chile.',
+    'Indicadores económicos, sueldo líquido, finiquito, feriados, sismos, clima, validador de RUT y más herramientas gratuitas para Chile.',
 }
 
 export const CATEGORIES = [
   { id: 'dinero', name: 'Dinero e indicadores' },
   { id: 'trabajo', name: 'Trabajo e impuestos' },
-  { id: 'calendario', name: 'Calendario' },
+  { id: 'vivo', name: 'Chile en vivo' },
+  { id: 'calendario', name: 'Calendario y hora' },
   { id: 'tramites', name: 'Trámites y datos' },
 ]
 
@@ -28,6 +29,7 @@ export const TOOLS = [
   },
   {
     slug: 'conversor',
+    share: true,
     title: 'Conversor UF, UTM y monedas',
     short: 'Convierte entre pesos, UF, UTM, dólares y euros.',
     description: 'Convierte pesos chilenos a UF, UTM, dólares y euros (y viceversa) con los valores del día.',
@@ -37,6 +39,7 @@ export const TOOLS = [
   },
   {
     slug: 'reajuste-arriendo',
+    share: true,
     title: 'Reajuste de arriendo',
     short: 'Calcula el reajuste de tu arriendo según la variación de la UF.',
     description: 'Calcula cuánto sube tu arriendo entre dos fechas según la variación de la UF (reajuste por IPC).',
@@ -46,6 +49,7 @@ export const TOOLS = [
   },
   {
     slug: 'dividendo',
+    share: true,
     title: 'Simulador de crédito hipotecario',
     short: 'Estima el dividendo mensual de un crédito en UF.',
     description: 'Simula el dividendo mensual de un crédito hipotecario en UF según monto, pie, plazo y tasa.',
@@ -55,6 +59,7 @@ export const TOOLS = [
   },
   {
     slug: 'sueldo-liquido',
+    share: true,
     title: 'Calculadora de sueldo líquido',
     short: 'De bruto a líquido y de líquido a bruto, con AFP, salud e impuesto.',
     description: 'Calcula tu sueldo líquido 2026 en Chile: AFP, Fonasa o Isapre, seguro de cesantía e impuesto único. También de líquido a bruto.',
@@ -64,6 +69,7 @@ export const TOOLS = [
   },
   {
     slug: 'boleta-honorarios',
+    share: true,
     title: 'Boleta de honorarios',
     short: 'Calcula la retención 2026 (15,25%) en bruto o líquido.',
     description: 'Calcula el monto bruto, líquido y la retención de una boleta de honorarios 2026 (15,25%).',
@@ -73,12 +79,61 @@ export const TOOLS = [
   },
   {
     slug: 'iva',
+    share: true,
     title: 'Calculadora de IVA',
     short: 'Agrega o quita el 19% de IVA a un monto.',
     description: 'Calcula el IVA (19%) en Chile: neto a bruto, bruto a neto y monto del impuesto.',
     category: 'trabajo',
     icon: '➗',
     keywords: 'iva 19 neto bruto calcular',
+  },
+  {
+    slug: 'finiquito',
+    share: true,
+    title: 'Calculadora de finiquito',
+    short: 'Indemnización por años de servicio, aviso previo y vacaciones.',
+    description: 'Calcula tu finiquito en Chile: indemnización por años de servicio, mes de aviso y vacaciones proporcionales según la causal de despido.',
+    category: 'trabajo',
+    icon: '📄',
+    keywords: 'finiquito indemnizacion años de servicio despido aviso previo vacaciones proporcionales necesidades de la empresa renuncia',
+  },
+  {
+    slug: 'horas-extra',
+    share: true,
+    title: 'Calculadora de horas extra',
+    short: 'Valor de la hora extra con jornada de 42 horas y recargo del 50%.',
+    description: 'Calcula el valor de la hora extra en Chile 2026 con la jornada de 42 horas (Ley 40 horas) y el recargo legal del 50%.',
+    category: 'trabajo',
+    icon: '⏱️',
+    keywords: 'horas extra extraordinarias valor hora recargo 50 jornada 42 horas ley 40 horas',
+  },
+  {
+    slug: 'gratificacion',
+    share: true,
+    title: 'Gratificación legal',
+    short: 'Calcula el 25% mensual con el tope de 4,75 ingresos mínimos.',
+    description: 'Calcula la gratificación legal mensual en Chile (artículo 50): 25% de la remuneración con tope de 4,75 ingresos mínimos al año.',
+    category: 'trabajo',
+    icon: '🎁',
+    keywords: 'gratificacion legal articulo 50 tope 4,75 ingreso minimo mensual',
+  },
+  {
+    slug: 'sismos',
+    title: 'Sismos en Chile',
+    short: 'Últimos temblores con magnitud, ubicación y mapa.',
+    description: 'Últimos sismos y temblores en Chile en tiempo real: magnitud, ubicación, profundidad y mapa interactivo.',
+    category: 'vivo',
+    icon: '🌋',
+    keywords: 'sismos temblor terremoto ultimo sismo chile magnitud mapa',
+  },
+  {
+    slug: 'clima',
+    title: 'Clima y radiación UV',
+    short: 'Pronóstico de 7 días, índice UV y calidad del aire por comuna.',
+    description: 'Pronóstico del tiempo para 7 días, índice de radiación UV y calidad del aire (MP2,5) en cualquier comuna de Chile.',
+    category: 'vivo',
+    icon: '🌤️',
+    keywords: 'clima tiempo pronostico radiacion uv indice calidad del aire mp2,5 smog comuna lluvia temperatura',
   },
   {
     slug: 'feriados',
@@ -91,12 +146,22 @@ export const TOOLS = [
   },
   {
     slug: 'dias-habiles',
+    share: true,
     title: 'Calculadora de días hábiles',
     short: 'Cuenta días hábiles entre fechas o suma plazos.',
     description: 'Cuenta los días hábiles entre dos fechas en Chile descontando feriados, o calcula la fecha de vencimiento de un plazo.',
     category: 'calendario',
     icon: '🗓️',
     keywords: 'dias habiles plazo contar fechas feriados',
+  },
+  {
+    slug: 'cambio-de-hora',
+    title: 'Cambio de hora en Chile',
+    short: 'Cuándo se atrasa o adelanta el reloj, con cuenta regresiva.',
+    description: 'Próximo cambio de hora en Chile con cuenta regresiva, hora oficial actual en el continente, Aysén, Magallanes y Rapa Nui.',
+    category: 'calendario',
+    icon: '🕐',
+    keywords: 'cambio de hora horario de invierno verano reloj atrasar adelantar magallanes aysen rapa nui',
   },
   {
     slug: 'rut',
@@ -106,6 +171,15 @@ export const TOOLS = [
     category: 'tramites',
     icon: '🪪',
     keywords: 'rut validar digito verificador formatear generar',
+  },
+  {
+    slug: 'comunas',
+    title: 'Regiones y comunas de Chile',
+    short: 'Las 346 comunas con código CUT, descargables en CSV y JSON.',
+    description: 'Listado de las 16 regiones y 346 comunas de Chile con código único territorial (CUT), provincia y superficie. Descarga en CSV o JSON.',
+    category: 'tramites',
+    icon: '🗺️',
+    keywords: 'regiones comunas chile listado codigo cut provincia json csv descargar',
   },
   {
     slug: 'tramites',
