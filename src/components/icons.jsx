@@ -8,6 +8,7 @@ import {
   Search, Siren, Snowflake, Sofa, Star, Sun, SunMoon, Sunrise, Sunset, Thermometer, Timer, TreePalm,
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
   Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
+  ChevronDown, LayoutGrid, RotateCcw, Tag, Users, Scale, Sprout, BadgePercent, BookOpen,
 } from 'lucide-react'
 
 export const ICONS = {
@@ -19,6 +20,7 @@ export const ICONS = {
   Search, Siren, Snowflake, Sofa, Star, Sun, SunMoon, Sunrise, Sunset, Thermometer, Timer, TreePalm,
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
   Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
+  ChevronDown, LayoutGrid, RotateCcw, Tag, Users, Scale, Sprout, BadgePercent, BookOpen,
 }
 
 export function Icon({ name, size = 18, strokeWidth = 2, ...rest }) {

@@ -6,6 +6,7 @@ import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { Icon } from '../components/icons'
 import { useShareText } from '../lib/share'
+import { useResult } from '../components/ux'
 
 export default function CostoViaje() {
   const [km, setKm] = useUrlState('km', 120)
@@ -42,6 +43,8 @@ export default function CostoViaje() {
   }
 
   useShareText(`Viaje de ${formatNum(distancia, 0)} km: ${formatCLP(total)}${p > 1 ? `, ${formatCLP(total / p)} por persona` : ''}`)
+
+  useResult('Costo del viaje', formatCLP(total))
 
   return (
     <>

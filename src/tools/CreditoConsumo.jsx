@@ -3,6 +3,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets, Term } from '../components/ux'
 
 export default function CreditoConsumo() {
   const [monto, setMonto] = useUrlState('monto', 3_000_000)
@@ -15,11 +16,18 @@ export default function CreditoConsumo() {
 
   useShareText(`Crédito de ${formatCLP(monto)} en ${cuotas} cuotas: ${formatCLP(r.pagoTotalMes)} al mes, CAE ${formatNum(r.cae * 100, 2)}%`)
 
+  useResult('Pago mensual', formatCLP(r.pagoTotalMes))
+
   return (
     <>
       <div className="card form-grid">
         <Field label="Monto que necesitas">
-          {(id) => <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />}
+          {(id) => (
+            <>
+              <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />
+              <Presets value={monto} onChange={setMonto} options={[{ label: '$1.000.000', value: 1_000_000 }, { label: '$3.000.000', value: 3_000_000 }, { label: '$10.000.000', value: 10_000_000 }]} />
+            </>
+          )}
         </Field>
         <Field label="Número de cuotas">
           {(id) => (
@@ -52,7 +60,7 @@ export default function CreditoConsumo() {
             { label: 'Cuota del crédito', value: formatCLP(r.cuota) },
             seguro > 0 && { label: 'Seguros', value: formatCLP(seguro) },
             { label: 'Tasa anual (mensual × 12)', value: `${formatNum(r.tasaAnual * 100, 2)}%`, muted: true },
-            { label: 'Carga Anual Equivalente (CAE)', value: `${formatNum(r.cae * 100, 2)}%` },
+            { label: <>Carga Anual Equivalente (<Term k="cae">CAE</Term>)</>, value: `${formatNum(r.cae * 100, 2)}%` },
             { label: `Total pagado en ${cuotas} cuotas`, value: formatCLP(r.total) },
             { label: 'Costo del crédito (lo que pagas de más)', value: formatCLP(r.costo), strong: true },
           ]}

@@ -4,6 +4,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets, Term } from '../components/ux'
 
 export default function SueldoLiquido() {
   const { get } = useIndicadores()
@@ -31,6 +32,8 @@ export default function SueldoLiquido() {
 
   useShareText(modo === 'bruto' ? `Con un sueldo bruto de ${formatCLP(r.imponible)} recibo ${formatCLP(r.liquido)} líquido` : `Para recibir ${formatCLP(r.liquido)} líquido necesito un sueldo bruto de ${formatCLP(r.imponible)}`)
 
+  useResult(modo === 'bruto' ? 'Sueldo líquido' : 'Sueldo bruto necesario', formatCLP(modo === 'bruto' ? r.liquido : r.imponible))
+
   return (
     <>
       <div className="card">
@@ -45,12 +48,29 @@ export default function SueldoLiquido() {
         />
         <div className="form-grid">
           <Field
-            label={modo === 'bruto' ? 'Sueldo bruto imponible' : 'Sueldo líquido deseado'}
+            label={modo === 'bruto' ? <>Sueldo bruto <Term>imponible</Term></> : <>Sueldo <Term k="liquido">líquido</Term> deseado</>}
             hint={modo === 'bruto' ? 'Sueldo base + gratificación + bonos imponibles' : 'Incluye los haberes no imponibles'}
           >
-            {(id) => <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />}
+            {(id) => (
+              <>
+                <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />
+                {modo === 'bruto' && (
+                  <Presets
+                    value={monto}
+                    onChange={setMonto}
+                    options={[
+                      { label: 'Sueldo mínimo', value: PARAMS.imm },
+                      { label: '$800.000', value: 800_000 },
+                      { label: '$1.000.000', value: 1_000_000 },
+                      { label: '$1.500.000', value: 1_500_000 },
+                      { label: '$2.500.000', value: 2_500_000 },
+                    ]}
+                  />
+                )}
+              </>
+            )}
           </Field>
-          <Field label="Haberes no imponibles" hint="Colación, movilización, viáticos">
+          <Field label={<>Haberes <Term k="no imponible">no imponibles</Term></>} hint="Colación, movilización, viáticos">
             {(id) => <NumberInput id={id} value={noImponible} onChange={setNoImponible} prefix="$" />}
           </Field>
           <Field label="AFP">
@@ -99,8 +119,8 @@ export default function SueldoLiquido() {
             { label: `AFP ${afp} (${formatNum((PARAMS.cotizacionAFP + opts.comisionAFP) * 100, 2)}%)`, value: `− ${formatCLP(r.afp)}` },
             { label: salud === 'fonasa' ? 'Fonasa (7%)' : 'Isapre', value: `− ${formatCLP(r.salud)}` },
             { label: 'Seguro de cesantía', value: `− ${formatCLP(r.cesantia)}` },
-            { label: 'Base tributable', value: formatCLP(r.tributable), muted: true },
-            { label: 'Impuesto único', value: `− ${formatCLP(r.impuesto)}` },
+            { label: <Term>Base tributable</Term>, value: formatCLP(r.tributable), muted: true },
+            { label: <Term>Impuesto único</Term>, value: `− ${formatCLP(r.impuesto)}` },
             noImponible > 0 && { label: 'Haberes no imponibles', value: `+ ${formatCLP(noImponible)}` },
             { label: 'Sueldo líquido', value: formatCLP(r.liquido), strong: true },
           ]}

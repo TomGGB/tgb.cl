@@ -72,8 +72,8 @@ export function Segmented({ options, value, onChange, label }) {
 export function ResultTable({ rows }) {
   return (
     <dl className="result-table">
-      {rows.filter(Boolean).map((r) => (
-        <div key={r.label} className={r.strong ? 'strong' : r.muted ? 'muted' : ''}>
+      {rows.filter(Boolean).map((r, i) => (
+        <div key={typeof r.label === 'string' ? r.label : i} className={r.strong ? 'strong' : r.muted ? 'muted' : ''}>
           <dt>{r.label}</dt>
           <dd>{r.value}</dd>
         </div>

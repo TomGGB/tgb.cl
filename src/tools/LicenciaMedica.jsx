@@ -5,6 +5,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note, Segmented } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets, Term } from '../components/ux'
 
 export default function LicenciaMedica() {
   const { get } = useIndicadores()
@@ -30,6 +31,8 @@ export default function LicenciaMedica() {
   const trabajando = (liquidoMes / 30) * d
 
   useShareText(`Por una licencia médica de ${d} días recibo ${formatCLP(r.total)} de subsidio`)
+
+  useResult('Subsidio total', formatCLP(r.total))
 
   return (
     <>
@@ -62,7 +65,12 @@ export default function LicenciaMedica() {
             </>
           )}
           <Field label="Días de licencia">
-            {(id) => <NumberInput id={id} value={dias} onChange={setDias} suffix="días" />}
+            {(id) => (
+              <>
+                <NumberInput id={id} value={dias} onChange={setDias} suffix="días" />
+                <Presets value={dias} onChange={setDias} options={[3, 7, 10, 15, 30].map((v) => ({ label: `${v} días`, value: v }))} />
+              </>
+            )}
           </Field>
           <Field label="AFP">
             {(id) => (
@@ -95,7 +103,7 @@ export default function LicenciaMedica() {
             { label: 'Remuneración neta promedio (3 meses)', value: formatCLP(r.promedioNeto) },
             { label: 'Subsidio diario (neto ÷ 30)', value: formatCLP(r.diario) },
             { label: 'Días de licencia', value: d },
-            r.carencia > 0 && { label: 'Días no pagados (carencia)', value: `− ${r.carencia}` },
+            r.carencia > 0 && { label: <>Días no pagados (<Term>carencia</Term>)</>, value: `− ${r.carencia}` },
             { label: 'Días pagados', value: r.diasPagados },
             { label: 'Subsidio total', value: formatCLP(r.total), strong: true },
           ]}

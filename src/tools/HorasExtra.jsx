@@ -3,6 +3,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets } from '../components/ux'
 
 export default function HorasExtra() {
   const [sueldo, setSueldo] = useUrlState('sueldo', 800_000)
@@ -16,11 +17,18 @@ export default function HorasExtra() {
 
   useShareText(`${formatNum(horas, 1)} horas extra = ${formatCLP(total)} (${formatCLP(r.valorExtra)} por hora)`)
 
+  useResult('Pago por horas extra', formatCLP(total))
+
   return (
     <>
       <div className="card form-grid">
         <Field label="Sueldo base mensual" hint="Sin gratificación ni bonos">
-          {(id) => <NumberInput id={id} value={sueldo} onChange={setSueldo} prefix="$" />}
+          {(id) => (
+            <>
+              <NumberInput id={id} value={sueldo} onChange={setSueldo} prefix="$" />
+              <Presets value={sueldo} onChange={setSueldo} options={[{ label: 'Sueldo mínimo', value: PARAMS.imm }, { label: '$700.000', value: 700_000 }, { label: '$1.000.000', value: 1_000_000 }]} />
+            </>
+          )}
         </Field>
         <Field label="Jornada semanal pactada" hint={`Máximo legal: ${PARAMS.jornada} horas`}>
           {(id) => <NumberInput id={id} value={jornada} onChange={setJornada} suffix="horas" />}

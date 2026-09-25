@@ -6,14 +6,33 @@ import { Icon } from './icons'
 
 const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
 
+// Palabras de uso cotidiano que no aparecen en los títulos
+const SINONIMOS = {
+  temblor: ['sismo'], terremoto: ['sismo'], sismos: ['sismo'],
+  plata: ['sueldo', 'dinero', 'ahorro'], lucas: ['sueldo', 'pesos'], pega: ['sueldo', 'trabajo'], sueldo: ['liquido'],
+  salario: ['sueldo'], minimo: ['ingreso minimo', 'datos legales'], despido: ['finiquito'], renuncia: ['finiquito'],
+  remedio: ['farmacia'], remedios: ['farmacia'], farmacias: ['farmacia'], medicamento: ['farmacia'],
+  luz: ['electrico'], electricidad: ['electrico'], cuenta: ['dividir', 'electrico'],
+  auto: ['bencina', 'viaje', 'patente'], nafta: ['bencina'], gasolina: ['bencina'], combustible: ['bencina'],
+  playa: ['olas'], surf: ['olas'], mar: ['olas'], lluvia: ['clima'], tiempo: ['clima'], calor: ['clima', 'uv'],
+  dolares: ['dolar'], euros: ['euro'], inflacion: ['ipc', 'uf'], impuesto: ['iva', 'impuesto'], impuestos: ['iva', 'impuesto'],
+  vacaciones: ['feriado', 'vacaciones'], feriado: ['feriado'], puente: ['fin de semana largo'], interferiado: ['fin de semana largo'],
+  aliexpress: ['compras extranjero'], temu: ['compras extranjero'], shein: ['compras extranjero'], amazon: ['compras extranjero'],
+  cyber: ['descuento'], cyberday: ['descuento'], oferta: ['descuento'], ofertas: ['descuento'], rebaja: ['descuento'],
+  hijos: ['pension alimentos'], alimentos: ['pension alimentos'], hipotecario: ['dividendo'], casa: ['dividendo', 'arriendo'],
+  prestamo: ['credito'], deuda: ['credito'], banco: ['credito', 'ahorro'], deposito: ['ahorro'], invertir: ['ahorro'],
+  licencia: ['licencia medica'], enfermo: ['licencia medica'], hora: ['cambio de hora'], reloj: ['cambio de hora'],
+}
+
 export function buscarHerramientas(q) {
   const nq = normalize(q.trim())
-  if (!nq) return TOOLS
+  if (!nq) return TOOLS.filter((t) => !t.landing)
   const words = nq.split(/\s+/)
   return TOOLS.map((t) => {
     const title = normalize(t.title)
     const hay = normalize(`${t.title} ${t.short} ${t.keywords}`)
-    if (!words.every((w) => hay.includes(w))) return null
+    const coincide = (w) => hay.includes(w) || (SINONIMOS[w] ?? []).some((x) => hay.includes(x))
+    if (!words.every(coincide)) return null
     const score = (title.startsWith(nq) ? 3 : 0) + (title.includes(nq) ? 2 : 0) + (normalize(t.keywords).includes(nq) ? 1 : 0)
     return { t, score }
   })
@@ -60,7 +79,7 @@ export default function CommandPalette() {
     if (q.trim()) return buscarHerramientas(q)
     // sin texto: favoritos y recientes primero
     const first = [...new Set([...favs, ...recientes])].map((s) => TOOLS.find((t) => t.slug === s)).filter(Boolean)
-    return [...first, ...TOOLS.filter((t) => !first.includes(t))]
+    return [...first, ...TOOLS.filter((t) => !first.includes(t) && !t.landing)]
   }, [q, favs, recientes])
 
   useEffect(() => setActive(0), [q])

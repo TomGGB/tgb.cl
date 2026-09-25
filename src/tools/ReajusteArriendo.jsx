@@ -3,6 +3,7 @@ import { fetchValorEnFecha } from '../lib/indicadores'
 import { formatCLP, formatNum, toISODate, fromISODate } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useResult } from '../components/ux'
 
 const haceUnAnio = () => {
   const d = new Date()
@@ -33,6 +34,8 @@ export default function ReajusteArriendo() {
   }, [desde, hasta])
 
   const variacion = uf.desde && uf.hasta ? uf.hasta / uf.desde - 1 : null
+
+  useResult('Nuevo arriendo', variacion !== null ? formatCLP(monto * (1 + variacion)) : null)
 
   return (
     <>

@@ -74,6 +74,10 @@ const COMPONENTS = {
   vacaciones: lazy(cargar(() => import('./tools/Vacaciones'))),
   'farmacias-de-turno': lazy(cargar(() => import('./tools/Farmacias'))),
   olas: lazy(cargar(() => import('./tools/Olas'))),
+  ahorro: lazy(cargar(() => import('./tools/Ahorro'))),
+  descuentos: lazy(cargar(() => import('./tools/Descuentos'))),
+  'datos-legales': lazy(cargar(() => import('./tools/DatosLegales'))),
+  'pension-alimentos': lazy(cargar(() => import('./tools/PensionAlimentos'))),
 }
 
 function NotFound() {

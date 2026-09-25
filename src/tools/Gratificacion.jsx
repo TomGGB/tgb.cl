@@ -4,6 +4,7 @@ import { formatCLP } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets, Term } from '../components/ux'
 
 export default function Gratificacion() {
   const [sueldo, setSueldo] = useUrlState('sueldo', 800_000)
@@ -15,13 +16,20 @@ export default function Gratificacion() {
 
   useShareText(`Mi gratificación legal es ${formatCLP(g.gratificacion)} al mes`)
 
+  useResult('Gratificación mensual', formatCLP(g.gratificacion))
+
   return (
     <>
       <div className="card form-grid">
         <Field label="Sueldo base mensual">
-          {(id) => <NumberInput id={id} value={sueldo} onChange={setSueldo} prefix="$" />}
+          {(id) => (
+            <>
+              <NumberInput id={id} value={sueldo} onChange={setSueldo} prefix="$" />
+              <Presets value={sueldo} onChange={setSueldo} options={[{ label: 'Sueldo mínimo', value: PARAMS.imm }, { label: '$800.000', value: 800_000 }, { label: '$1.200.000', value: 1_200_000 }]} />
+            </>
+          )}
         </Field>
-        <Field label="Otros haberes imponibles" hint="Bonos, comisiones, horas extra del mes">
+        <Field label={<>Otros haberes <Term k="imponible">imponibles</Term></>} hint="Bonos, comisiones, horas extra del mes">
           {(id) => <NumberInput id={id} value={otros} onChange={setOtros} prefix="$" />}
         </Field>
       </div>

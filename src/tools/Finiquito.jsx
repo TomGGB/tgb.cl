@@ -4,6 +4,7 @@ import { formatCLP, formatNum, toISODate, fromISODate } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult } from '../components/ux'
 
 const plural = (n, s, p) => `${n} ${n === 1 ? s : p}`
 
@@ -35,6 +36,8 @@ export default function Finiquito() {
     : null
 
   useShareText(r ? `Mi finiquito estimado es ${formatCLP(r.total)}` : null)
+
+  useResult('Finiquito estimado', r ? formatCLP(r.total) : null)
 
   return (
     <>

@@ -4,6 +4,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Term } from '../components/ux'
 
 const CASOS = {
   plataforma: {
@@ -31,6 +32,8 @@ export default function ComprasExtranjero() {
   const caso = CASOS[r.caso]
 
   useShareText(`Compra de US$ ${formatNum(r.cif, 2)} en el extranjero: pagas ${formatCLP(r.totalCLP)} con impuestos`)
+
+  useResult('Total a pagar', formatCLP(r.totalCLP))
 
   return (
     <>
@@ -67,7 +70,7 @@ export default function ComprasExtranjero() {
         </div>
         <ResultTable
           rows={[
-            { label: 'Producto + envío', value: `US$ ${formatNum(r.cif, 2)}` },
+            { label: <>Producto + envío (<Term k="cif">valor CIF</Term>)</>, value: `US$ ${formatNum(r.cif, 2)}` },
             r.arancelUSD > 0 && { label: 'Arancel aduanero (6%)', value: `US$ ${formatNum(r.arancelUSD, 2)}` },
             { label: 'IVA (19%)', value: `US$ ${formatNum(r.ivaUSD, 2)}` },
             { label: 'Total en dólares', value: `US$ ${formatNum(r.totalUSD, 2)}` },

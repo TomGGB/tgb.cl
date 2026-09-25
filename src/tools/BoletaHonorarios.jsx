@@ -3,6 +3,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Presets } from '../components/ux'
 
 export default function BoletaHonorarios() {
   const [modo, setModo] = useUrlState('modo', 'bruto')
@@ -14,6 +15,8 @@ export default function BoletaHonorarios() {
   const liquido = bruto - retencion
 
   useShareText(`Boleta de honorarios por ${formatCLP(bruto)}: recibo ${formatCLP(liquido)} líquido (retención ${formatCLP(retencion)})`)
+
+  useResult(modo === 'bruto' ? 'Recibes (líquido)' : 'Emitir por (bruto)', formatCLP(modo === 'bruto' ? liquido : bruto))
 
   return (
     <>
@@ -29,7 +32,12 @@ export default function BoletaHonorarios() {
         />
         <div className="form-grid">
           <Field label={modo === 'bruto' ? 'Monto bruto de la boleta' : 'Monto líquido que quieres recibir'}>
-            {(id) => <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />}
+            {(id) => (
+              <>
+                <NumberInput id={id} value={monto} onChange={setMonto} prefix="$" />
+                <Presets value={monto} onChange={setMonto} options={[{ label: '$100.000', value: 100_000 }, { label: '$500.000', value: 500_000 }, { label: '$1.000.000', value: 1_000_000 }]} />
+              </>
+            )}
           </Field>
         </div>
       </div>

@@ -6,6 +6,7 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult } from '../components/ux'
 
 export default function Apv() {
   const { get } = useIndicadores()
@@ -18,6 +19,8 @@ export default function Apv() {
   const r = compararApv({ aporteMensual: aporte, baseTributable: tributable, utm, uf })
 
   useShareText(`Con mi sueldo me conviene el APV régimen ${r.recomendado}: ${formatCLP(Math.max(r.bonoA, r.beneficioB))} de beneficio al año`)
+
+  useResult('Te conviene', `Régimen ${r.recomendado}`)
 
   return (
     <>

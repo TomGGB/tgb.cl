@@ -1,0 +1,20 @@
+// Definiciones breves de términos que aparecen en las herramientas (componente <Term>).
+export const GLOSARIO = {
+  imponible: 'Parte del sueldo sobre la que se calculan las cotizaciones de AFP, salud y seguro de cesantía: sueldo base, gratificación, horas extra, comisiones y bonos habituales.',
+  'no imponible': 'Pagos que no llevan cotizaciones ni impuesto porque compensan gastos del trabajo: colación, movilización, viáticos y desgaste de herramientas.',
+  liquido: 'Lo que realmente recibes en tu cuenta: el sueldo bruto menos AFP, salud, seguro de cesantía e impuesto, más los haberes no imponibles.',
+  'base tributable': 'Sueldo imponible menos las cotizaciones obligatorias. Sobre este monto se calcula el impuesto único.',
+  'impuesto único': 'Impuesto mensual a los sueldos. Solo lo pagan quienes tienen una base tributable superior a 13,5 UTM.',
+  cae: 'Carga Anual Equivalente: el costo total de un crédito en un solo porcentaje anual, con intereses, seguros y gastos. Sirve para comparar créditos: mientras más baja, mejor.',
+  carencia: 'En licencias de hasta 10 días, los 3 primeros días no se pagan. Desde los 11 días se paga la licencia completa.',
+  uf: 'Unidad de Fomento: unidad que se reajusta cada día según la inflación. Se usa en arriendos, créditos hipotecarios, seguros y planes de salud.',
+  utm: 'Unidad Tributaria Mensual: monto que se actualiza cada mes con el IPC y se usa para calcular impuestos, multas y topes legales.',
+  'tope imponible': 'Monto máximo de sueldo sobre el que se pagan cotizaciones. En 2026 es de 90 UF para AFP y salud, y de 135,2 UF para el seguro de cesantía.',
+  gratificacion: 'Pago legal que comparte las utilidades de la empresa. La forma más común es el 25% del sueldo mensual con un tope anual de 4,75 ingresos mínimos.',
+  cif: 'Valor de la compra más el envío y el seguro. Es la base sobre la que se calculan el arancel y el IVA de una importación.',
+  progresivas: 'Días de vacaciones adicionales: con 10 años cotizados, se suma un día por cada 3 años nuevos con el mismo empleador.',
+  'feriado proporcional': 'Vacaciones ganadas y no tomadas desde el último aniversario del contrato: 1,25 días hábiles por mes trabajado.',
+  'dolar observado': 'Tipo de cambio de referencia que publica el Banco Central cada día hábil, calculado con las operaciones del día anterior.',
+  'interes compuesto': 'Los intereses se suman al ahorro y generan nuevos intereses, por eso el ahorro crece cada vez más rápido.',
+  'tasa real': 'Rentabilidad por sobre la inflación. Los ahorros en UF informan una tasa real, porque la UF ya sube con el IPC.',
+}

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
+import { Link, NavLink, Outlet, useLocation, useNavigate } from 'react-router-dom'
 import { SITE, TOOLS, CATEGORIES } from '../tools/meta'
 import { GUIDES } from '../tools/guides'
 import { ShareButton, ThemeToggle } from './ui'
@@ -7,6 +7,9 @@ import CommandPalette from './CommandPalette'
 import { useFavoritos, useRecientes } from '../lib/preferencias'
 import { Icon, ToolIcon } from './icons'
 import { ShareTextContext, whatsappUrl } from '../lib/share'
+import { ResultContext, ResultBar } from './ux'
+import BottomNav from './BottomNav'
+import { relacionadas } from '../tools/relacionadas'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -82,6 +85,7 @@ export default function Layout() {
         </div>
       </footer>
       <CommandPalette />
+      <BottomNav />
     </div>
   )
 }
@@ -94,6 +98,16 @@ export function ToolPage({ tool, children }) {
   const cat = CATEGORIES.find((c) => c.id === tool.category)
 
   const [shareText, setShareText] = useState(null)
+  const [summary, setSummary] = useState(null)
+  const [resetKey, setResetKey] = useState(0)
+  const { pathname, search } = useLocation()
+  const navigate = useNavigate()
+  const sugeridas = relacionadas(tool, TOOLS)
+  const restablecer = () => {
+    navigate(pathname, { replace: true })
+    setResetKey((k) => k + 1)
+    window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => registrar(tool.slug), [tool.slug, registrar])
 
@@ -132,8 +146,37 @@ export function ToolPage({ tool, children }) {
           </a>
         )}
         {tool.share && <ShareButton />}
+        {search && (
+          <button type="button" className="btn-ghost" onClick={restablecer} title="Vuelve a los valores iniciales">
+            <Icon name="RotateCcw" size={15} />
+            Restablecer
+          </button>
+        )}
       </div>
-      <ShareTextContext.Provider value={setShareText}>{children}</ShareTextContext.Provider>
+      <ShareTextContext.Provider value={setShareText}>
+        <ResultContext.Provider value={setSummary}>
+          <div key={resetKey}>{children}</div>
+        </ResultContext.Provider>
+      </ShareTextContext.Provider>
+      <ResultBar summary={summary} />
+      {sugeridas.length > 0 && (
+        <section className="related">
+          <h2>También te puede servir</h2>
+          <ul>
+            {sugeridas.map((t) => (
+              <li key={t.slug}>
+                <Link to={`/${t.slug}/`} className="related-card">
+                  <ToolIcon tool={t} size={19} />
+                  <span>
+                    <strong>{t.title}</strong>
+                    <span>{t.short}</span>
+                  </span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
       {guide && <Guide guide={guide} />}
     </article>
   )

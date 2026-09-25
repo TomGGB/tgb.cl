@@ -5,6 +5,7 @@ import { toISODate, fromISODate, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
+import { useResult, Term } from '../components/ux'
 
 export default function Vacaciones() {
   const [inicio, setInicio] = useUrlState('inicio', '2018-03-01')
@@ -20,6 +21,8 @@ export default function Vacaciones() {
   const disponibles = Math.max(0, acumulados - tomados)
 
   useShareText(`Me corresponden ${f.total} días hábiles de vacaciones al año${f.progresivos ? ` (${f.progresivos} progresivos)` : ''}`)
+
+  useResult('Vacaciones al año', valido ? `${f.total} días hábiles` : null)
 
   return (
     <>
@@ -47,7 +50,7 @@ export default function Vacaciones() {
           <ResultTable
             rows={[
               { label: 'Feriado legal', value: ant.anios >= 1 ? '15 días' : 'Desde tu primer año' },
-              { label: 'Días progresivos', value: `${f.progresivos} ${f.progresivos === 1 ? 'día' : 'días'}` },
+              { label: <Term k="progresivas">Días progresivos</Term>, value: `${f.progresivos} ${f.progresivos === 1 ? 'día' : 'días'}` },
               { label: 'Próximo día progresivo', value: `en ${f.faltanAnios} ${f.faltanAnios === 1 ? 'año' : 'años'}`, muted: true },
               { label: 'Acumulados desde tu último aniversario', value: `${formatNum(acumulados, 1)} días` },
               tomados > 0 && { label: 'Ya tomados', value: `− ${formatNum(tomados, 1)} días` },

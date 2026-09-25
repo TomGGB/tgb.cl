@@ -2,6 +2,37 @@
 // Se muestran bajo cada herramienta y se incluyen en el HTML estático para buscadores (FAQPage).
 
 export const GUIDES = {
+  ahorro: {
+    titulo: 'Cómo crece un ahorro',
+    faq: [
+      { q: '¿Qué es el interés compuesto?', a: 'Es cuando los intereses que ganas se suman a tu ahorro y, a su vez, generan nuevos intereses. Por eso un ahorro constante crece cada vez más rápido con los años.' },
+      { q: '¿Conviene ahorrar en pesos o en UF?', a: 'El ahorro en UF se reajusta con la inflación, así que protege tu poder de compra. En pesos, una parte de la rentabilidad solo compensa el alza de precios.' },
+      { q: '¿Cómo se lee la tasa de un depósito a plazo?', a: 'Los bancos informan la tasa por cada 30 días (por ejemplo, 0,40%). Con $1.000.000 a 30 días al 0,40% ganas $4.000.' },
+    ],
+  },
+  descuentos: {
+    titulo: 'Cómo saber si una oferta conviene',
+    faq: [
+      { q: '¿Por qué 30% + 10% no es 40%?', a: 'El segundo descuento se aplica sobre el precio ya rebajado. Un producto de $100 con 30% queda en $70, y el 10% adicional se calcula sobre $70: el precio final es $63, un 37% de descuento.' },
+      { q: '¿Qué conviene más: 3x2 o 50% en la segunda unidad?', a: 'Depende de cuántas unidades compres. Llevando 3 y pagando 2 tienes 33% de descuento; el 50% en la segunda unidad equivale a 25% cuando compras de a dos.' },
+      { q: '¿Cómo detecto un descuento falso?', a: 'Compara con el precio que tenía el producto unas semanas antes del evento. Si subió justo antes, el descuento real es menor al anunciado. Puedes reclamar en el SERNAC.' },
+    ],
+  },
+  'pension-alimentos': {
+    titulo: 'Sobre la pensión de alimentos',
+    faq: [
+      { q: '¿Cuál es la pensión de alimentos mínima?', a: 'Por un hijo, el 40% del ingreso mínimo mensual. Si son dos o más hijos, el 30% por cada uno. La suma no puede superar el 50% de los ingresos de quien paga.' },
+      { q: '¿Puede ser mayor al mínimo?', a: 'Sí. El tribunal de familia fija el monto según las necesidades de los hijos y la capacidad económica de ambos padres, y puede ser mayor al mínimo legal.' },
+      { q: '¿Dónde puedo pedir ayuda?', a: 'Las Corporaciones de Asistencia Judicial dan orientación y representación gratuita. También puedes acudir a un centro de mediación familiar.' },
+    ],
+  },
+  'datos-legales': {
+    titulo: 'Sobre los valores legales',
+    faq: [
+      { q: '¿Cuál es el sueldo mínimo en Chile en 2026?', a: 'Desde el 1 de mayo de 2026, el ingreso mínimo mensual para trabajadores de 18 a 65 años es de $553.553. Para menores de 18 y mayores de 65 es de $412.938.' },
+      { q: '¿Cada cuánto cambian estos valores?', a: 'El ingreso mínimo se reajusta por ley, normalmente una o dos veces al año. Los topes imponibles cambian cada año en febrero, y la UF y la UTM se actualizan a diario y mensualmente.' },
+    ],
+  },
   'farmacias-de-turno': {
     titulo: 'Sobre las farmacias de turno',
     faq: [
