@@ -10,15 +10,62 @@ const base = readFileSync(new URL('index.html', dist), 'utf8')
 
 const esc = (s) => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;')
 
+// Valores del día para las páginas "UF hoy", "Dólar hoy", etc. Si la API falla, se usan textos genéricos.
+const NOMBRE = { uf: 'UF', dolar: 'dólar', euro: 'euro', utm: 'UTM' }
+const DEC = { uf: 2, dolar: 2, euro: 2, utm: 0 }
+const num = (n, d) => n.toLocaleString('es-CL', { minimumFractionDigits: d, maximumFractionDigits: d })
+const fechaLarga = (iso, utm) =>
+  new Date(iso).toLocaleDateString('es-CL', utm ? { timeZone: 'UTC', month: 'long', year: 'numeric' } : { timeZone: 'UTC', weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
+
+async function seriesDelDia() {
+  const out = {}
+  for (const code of Object.keys(NOMBRE)) {
+    try {
+      const r = await fetch(`https://mindicador.cl/api/${code}`, { signal: AbortSignal.timeout(20000) })
+      const j = await r.json()
+      if (j.serie?.length) out[code] = j.serie.slice(0, 10)
+    } catch {
+      /* sin datos: la página queda con textos genéricos */
+    }
+  }
+  return out
+}
+const SERIES = await seriesDelDia()
+
+function valorDelDia(tool) {
+  const serie = tool?.code && SERIES[tool.code]
+  if (!serie) return null
+  const [hoy, ayer] = serie
+  const utm = tool.code === 'utm'
+  const valor = `$${num(hoy.valor, DEC[tool.code])}`
+  const fecha = fechaLarga(hoy.fecha, utm)
+  const de = tool.code === 'uf' || tool.code === 'utm' ? 'de la' : 'del'
+  const variacion = ayer ? ((hoy.valor / ayer.valor - 1) * 100) : null
+  return {
+    title: `${tool.title} ${utm ? fecha : fecha.split(',')[1]?.trim() ?? fecha}: ${valor} | ${SITE.name}`,
+    description: `El valor ${de} ${NOMBRE[tool.code]} ${utm ? `en ${fecha}` : `hoy, ${fecha},`} es ${valor}${variacion !== null ? ` (${variacion >= 0 ? '+' : ''}${num(variacion, 2)}% respecto del ${utm ? 'mes' : 'valor'} anterior)` : ''}. Historial de los últimos ${utm ? 'meses' : 'días'} y conversor a pesos.`,
+    html:
+      `<p><strong>${esc(tool.title)}: ${valor}</strong> (${esc(fecha)}).</p>` +
+      `<table><thead><tr><th>Fecha</th><th>Valor</th></tr></thead><tbody>${serie
+        .map((p) => `<tr><td>${esc(fechaLarga(p.fecha, utm))}</td><td>$${num(p.valor, DEC[tool.code])}</td></tr>`)
+        .join('')}</tbody></table>`,
+  }
+}
+
 // Contenido estático dentro de #root: React lo reemplaza al cargar, pero los buscadores lo leen.
 function staticContent(tool) {
   if (!tool) {
-    return `<main class="container main"><h1>${esc(SITE.tagline)}</h1><p>${esc(SITE.description)}</p><ul>${TOOLS.map(
+    const hoyTxt = ['uf', 'dolar', 'euro', 'utm']
+      .filter((c) => SERIES[c])
+      .map((c) => `<li><a href="/${c}-hoy/">${NOMBRE[c].replace(/^./, (x) => x.toUpperCase())} hoy</a>: $${num(SERIES[c][0].valor, DEC[c])}</li>`)
+      .join('')
+    return `<main class="container main"><h1>${esc(SITE.tagline)}</h1><p>${esc(SITE.description)}</p>${hoyTxt ? `<ul>${hoyTxt}</ul>` : ''}<ul>${TOOLS.map(
       (t) => `<li><a href="/${t.slug}/">${esc(t.title)}</a>: ${esc(t.short)}</li>`,
     ).join('')}</ul></main>`
   }
   const g = GUIDES[tool.slug]
-  let html = `<main class="container main"><h1>${esc(tool.title)}</h1><p>${esc(tool.description)}</p>`
+  const hoy = valorDelDia(tool)
+  let html = `<main class="container main"><h1>${esc(tool.title)}</h1><p>${esc(hoy ? hoy.description : tool.description)}</p>${hoy ? hoy.html : ''}`
   if (g) {
     html += `<h2>${esc(g.titulo)}</h2>`
     if (g.pasos) html += `<ol>${g.pasos.map((p) => `<li>${esc(p)}</li>`).join('')}</ol>`
@@ -53,8 +100,9 @@ function jsonLd(tool, url) {
 }
 
 function page(tool) {
-  const title = tool ? `${tool.title} | ${SITE.name}` : `${SITE.name} · ${SITE.tagline}`
-  const description = tool ? tool.description : SITE.description
+  const hoy = valorDelDia(tool)
+  const title = hoy ? hoy.title : tool ? `${tool.title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`
+  const description = hoy ? hoy.description : tool ? tool.description : SITE.description
   const url = tool ? `${SITE.url}/${tool.slug}/` : `${SITE.url}/`
   const image = `${SITE.url}/og/${tool ? tool.slug : 'home'}.jpg`
   const extraHead = [
@@ -108,4 +156,4 @@ writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
 )
 
-console.log(`prerender: ${TOOLS.length} páginas + portada + 404.html + sitemap.xml${SITE.cfAnalyticsToken ? ' + analytics' : ''}`)
+console.log(`prerender: valores del día ${Object.keys(SERIES).join(', ') || 'no disponibles'}; ${TOOLS.length} páginas + portada + 404.html + sitemap.xml${SITE.cfAnalyticsToken ? ' + analytics' : ''}`)

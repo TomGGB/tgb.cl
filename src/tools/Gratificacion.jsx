@@ -3,6 +3,7 @@ import { PARAMS, gratificacionArt50 } from '../lib/sueldo'
 import { formatCLP } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function Gratificacion() {
   const [sueldo, setSueldo] = useUrlState('sueldo', 800_000)
@@ -11,6 +12,8 @@ export default function Gratificacion() {
   const remuneracion = sueldo + otros
   const g = gratificacionArt50(remuneracion)
   const imponible = remuneracion + g.gratificacion
+
+  useShareText(`Mi gratificación legal es ${formatCLP(g.gratificacion)} al mes`)
 
   return (
     <>

@@ -1,0 +1,104 @@
+[
+ {
+  "nombre": "Arica (La Lisera)",
+  "region": "Arica y Parinacota",
+  "lat": -18.49,
+  "lon": -70.34
+ },
+ {
+  "nombre": "Iquique (Cavancha)",
+  "region": "Tarapacá",
+  "lat": -20.24,
+  "lon": -70.16
+ },
+ {
+  "nombre": "Antofagasta",
+  "region": "Antofagasta",
+  "lat": -23.65,
+  "lon": -70.42
+ },
+ {
+  "nombre": "Bahía Inglesa",
+  "region": "Atacama",
+  "lat": -27.11,
+  "lon": -70.87
+ },
+ {
+  "nombre": "La Serena",
+  "region": "Coquimbo",
+  "lat": -29.9,
+  "lon": -71.29
+ },
+ {
+  "nombre": "Los Vilos",
+  "region": "Coquimbo",
+  "lat": -31.91,
+  "lon": -71.53
+ },
+ {
+  "nombre": "Maitencillo",
+  "region": "Valparaíso",
+  "lat": -32.65,
+  "lon": -71.45
+ },
+ {
+  "nombre": "Reñaca",
+  "region": "Valparaíso",
+  "lat": -32.97,
+  "lon": -71.56
+ },
+ {
+  "nombre": "Algarrobo",
+  "region": "Valparaíso",
+  "lat": -33.36,
+  "lon": -71.7
+ },
+ {
+  "nombre": "Rapa Nui (Anakena)",
+  "region": "Valparaíso",
+  "lat": -27.07,
+  "lon": -109.32
+ },
+ {
+  "nombre": "Pichilemu (Punta de Lobos)",
+  "region": "O'Higgins",
+  "lat": -34.43,
+  "lon": -72.06
+ },
+ {
+  "nombre": "Constitución",
+  "region": "Maule",
+  "lat": -35.33,
+  "lon": -72.45
+ },
+ {
+  "nombre": "Cobquecura",
+  "region": "Ñuble",
+  "lat": -36.13,
+  "lon": -72.83
+ },
+ {
+  "nombre": "Dichato",
+  "region": "Biobío",
+  "lat": -36.54,
+  "lon": -72.95
+ },
+ {
+  "nombre": "Lebu",
+  "region": "Biobío",
+  "lat": -37.61,
+  "lon": -73.68
+ },
+ {
+  "nombre": "Niebla (Valdivia)",
+  "region": "Los Ríos",
+  "lat": -39.87,
+  "lon": -73.43
+ },
+ {
+  "nombre": "Cucao (Chiloé)",
+  "region": "Los Lagos",
+  "lat": -42.63,
+  "lon": -74.13
+ }
+]

@@ -2,6 +2,70 @@
 // Se muestran bajo cada herramienta y se incluyen en el HTML estático para buscadores (FAQPage).
 
 export const GUIDES = {
+  'farmacias-de-turno': {
+    titulo: 'Sobre las farmacias de turno',
+    faq: [
+      { q: '¿Qué es una farmacia de turno?', a: 'Es la farmacia que, por un sistema de turnos coordinado con la autoridad sanitaria, atiende fuera del horario habitual (de noche, fines de semana y festivos) para que siempre haya una disponible en la zona.' },
+      { q: '¿Cada cuánto cambian los turnos?', a: 'Los turnos cambian cada día. Esta página muestra los turnos informados por el Ministerio de Salud para hoy; antes de ir, llama para confirmar.' },
+      { q: '¿Qué hago si es una emergencia?', a: 'Si la situación es grave, llama al 131 (SAMU) o acude al servicio de urgencia más cercano.' },
+    ],
+  },
+  'compras-extranjero': {
+    titulo: 'Impuestos a las compras en el extranjero',
+    pasos: [
+      'Suma el precio del producto y el costo del envío en dólares.',
+      'Si el total es de hasta USD 500 y la tienda está inscrita en el SII, pagas 19% de IVA al comprar, sin arancel.',
+      'Si la tienda no cobra el IVA, lo pagas junto con el arancel cuando el envío llega a Chile.',
+      'Si el total supera USD 500, pagas arancel de 6% sobre el valor con envío y 19% de IVA sobre ese total.',
+    ],
+    faq: [
+      { q: '¿Desde cuándo se paga IVA en compras bajo USD 500?', a: 'Desde el 25 de octubre de 2025, por la Ley 21.713.' },
+      { q: '¿Qué tiendas cobran el IVA al comprar?', a: 'Las plataformas extranjeras inscritas en el SII, como AliExpress, Temu, Shein y Amazon, cobran el IVA en el carrito. El SII publica la lista de plataformas inscritas.' },
+    ],
+  },
+  'licencia-medica': {
+    titulo: 'Cómo se calcula el pago de una licencia médica',
+    pasos: [
+      'Se suman las remuneraciones imponibles de los 3 meses anteriores al inicio de la licencia y se descuentan las cotizaciones (AFP, salud y seguro de cesantía).',
+      'Ese total se divide por 90 para obtener el subsidio diario.',
+      'Si la licencia es de hasta 10 días, no se pagan los 3 primeros días. Si es de 11 días o más, se pagan todos.',
+      'El subsidio diario se multiplica por los días pagados.',
+    ],
+    faq: [
+      { q: '¿Quién paga la licencia médica?', a: 'Si estás en Fonasa, la paga la COMPIN o tu caja de compensación. Si estás en una Isapre, la paga la Isapre. El empleador sigue pagando tus cotizaciones durante la licencia.' },
+      { q: '¿El subsidio paga impuesto?', a: 'No. El subsidio por incapacidad laboral no paga impuesto, pero sí se siguen enterando las cotizaciones previsionales y de salud.' },
+    ],
+  },
+  vacaciones: {
+    titulo: 'Cuántas vacaciones te corresponden',
+    faq: [
+      { q: '¿Cuántos días de vacaciones tengo al año?', a: 'Después de un año de trabajo corresponden 15 días hábiles de feriado anual con goce de remuneración. Para las vacaciones, el sábado siempre se considera día inhábil.' },
+      { q: '¿Qué son las vacaciones progresivas?', a: 'Con 10 años cotizados, con uno o más empleadores, se suma un día de vacaciones por cada 3 años nuevos trabajados con el empleador actual. Solo se pueden hacer valer hasta 10 años de trabajo con empleadores anteriores.' },
+      { q: '¿Puedo acumular vacaciones?', a: 'Sí, pero solo hasta dos períodos consecutivos. Los días no tomados se pagan en el finiquito al terminar la relación laboral.' },
+    ],
+  },
+  olas: {
+    titulo: 'Cómo leer un pronóstico de olas',
+    faq: [
+      { q: '¿Qué significa la altura de ola?', a: 'Es la altura significativa: el promedio del tercio de olas más altas. Algunas olas individuales pueden ser bastante más grandes.' },
+      { q: '¿Qué es el período?', a: 'Son los segundos entre una ola y la siguiente. Un período largo (12 segundos o más) indica olas con más fuerza, típicas de un mar de fondo.' },
+      { q: '¿Dónde se informan las marejadas?', a: 'El Servicio Hidrográfico y Oceanográfico de la Armada (SHOA) emite los avisos oficiales de marejadas para la costa de Chile.' },
+    ],
+  },
+  'uf-hoy': {
+    titulo: 'Qué es la UF y cómo cambia',
+    faq: [
+      { q: '¿Por qué cambia la UF todos los días?', a: 'El Banco Central la reajusta a diario para que, entre el 10 de un mes y el 9 del siguiente, acumule la inflación (IPC) del mes anterior.' },
+      { q: '¿Para qué se usa la UF?', a: 'Para fijar montos que deben mantener su valor en el tiempo: arriendos, dividendos, seguros, planes de Isapre, multas y contratos.' },
+    ],
+  },
+  'dolar-hoy': {
+    titulo: 'Qué es el dólar observado',
+    faq: [
+      { q: '¿Qué es el dólar observado?', a: 'Es el tipo de cambio que publica el Banco Central cada día hábil, calculado con las operaciones del día hábil anterior. Es la referencia oficial para contratos y declaraciones.' },
+      { q: '¿Por qué el banco me cobra otro valor?', a: 'Bancos y casas de cambio fijan sus propios precios de compra y venta, que incluyen su margen. El dólar observado sirve como referencia.' },
+    ],
+  },
   'sueldo-liquido': {
     titulo: 'Cómo se calcula el sueldo líquido',
     pasos: [

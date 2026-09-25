@@ -3,6 +3,7 @@ import { CAUSALES, calcularFiniquito } from '../lib/finiquito'
 import { formatCLP, formatNum, toISODate, fromISODate } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 const plural = (n, s, p) => `${n} ${n === 1 ? s : p}`
 
@@ -32,6 +33,8 @@ export default function Finiquito() {
         uf,
       })
     : null
+
+  useShareText(r ? `Mi finiquito estimado es ${formatCLP(r.total)}` : null)
 
   return (
     <>

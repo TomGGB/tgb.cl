@@ -3,6 +3,7 @@ import { AFPS, PARAMS, calcularLiquido, calcularBrutoDesdeLiquido } from '../lib
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function SueldoLiquido() {
   const { get } = useIndicadores()
@@ -27,6 +28,8 @@ export default function SueldoLiquido() {
     utm,
   }
   const r = modo === 'bruto' ? calcularLiquido({ ...opts, imponible: monto }) : calcularBrutoDesdeLiquido(monto, opts)
+
+  useShareText(modo === 'bruto' ? `Con un sueldo bruto de ${formatCLP(r.imponible)} recibo ${formatCLP(r.liquido)} líquido` : `Para recibir ${formatCLP(r.liquido)} líquido necesito un sueldo bruto de ${formatCLP(r.imponible)}`)
 
   return (
     <>

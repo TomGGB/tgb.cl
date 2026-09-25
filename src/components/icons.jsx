@@ -7,7 +7,7 @@ import {
   Landmark, Link2, LocateFixed, Map, MapPin, Moon, Navigation, Percent, PiggyBank, Plus, Radio, ReceiptText,
   Search, Siren, Snowflake, Sofa, Star, Sun, SunMoon, Sunrise, Sunset, Thermometer, Timer, TreePalm,
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
-  Anchor, Plane, Trees, HeartPulse, Phone,
+  Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
 } from 'lucide-react'
 
 export const ICONS = {
@@ -18,7 +18,7 @@ export const ICONS = {
   Landmark, Link2, LocateFixed, Map, MapPin, Moon, Navigation, Percent, PiggyBank, Plus, Radio, ReceiptText,
   Search, Siren, Snowflake, Sofa, Star, Sun, SunMoon, Sunrise, Sunset, Thermometer, Timer, TreePalm,
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
-  Anchor, Plane, Trees, HeartPulse, Phone,
+  Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
 }
 
 export function Icon({ name, size = 18, strokeWidth = 2, ...rest }) {

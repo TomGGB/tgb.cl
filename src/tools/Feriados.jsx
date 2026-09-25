@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { getFeriados, proximoFeriado, esFinDeSemanaLargo } from '../lib/feriados'
 import { Note } from '../components/ui'
 import { Icon } from '../components/icons'
+import { useShareText } from '../lib/share'
 
 const DIAS = ['domingo', 'lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado']
 
@@ -14,6 +15,8 @@ export default function Feriados() {
   today.setHours(0, 0, 0, 0)
   const dias = Math.round((proximo.date - today) / 86400000)
   const largos = feriados.filter(esFinDeSemanaLargo).length
+
+  useShareText(`El próximo feriado es ${proximo.name}: faltan ${dias} ${dias === 1 ? 'día' : 'días'}`)
 
   return (
     <>

@@ -2,6 +2,7 @@ import { creditoConsumo } from '../lib/finanzas'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function CreditoConsumo() {
   const [monto, setMonto] = useUrlState('monto', 3_000_000)
@@ -11,6 +12,8 @@ export default function CreditoConsumo() {
   const [gastos, setGastos] = useUrlState('gastos', 0)
 
   const r = creditoConsumo({ monto, cuotas, tasaMensual: tasa / 100, seguroMensual: seguro, gastosIniciales: gastos })
+
+  useShareText(`Crédito de ${formatCLP(monto)} en ${cuotas} cuotas: ${formatCLP(r.pagoTotalMes)} al mes, CAE ${formatNum(r.cae * 100, 2)}%`)
 
   return (
     <>

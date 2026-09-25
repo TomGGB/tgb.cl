@@ -2,6 +2,7 @@ import { PARAMS } from '../lib/sueldo'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function BoletaHonorarios() {
   const [modo, setModo] = useUrlState('modo', 'bruto')
@@ -11,6 +12,8 @@ export default function BoletaHonorarios() {
   const bruto = modo === 'bruto' ? monto : Math.round(monto / (1 - t))
   const retencion = Math.round(bruto * t)
   const liquido = bruto - retencion
+
+  useShareText(`Boleta de honorarios por ${formatCLP(bruto)}: recibo ${formatCLP(liquido)} líquido (retención ${formatCLP(retencion)})`)
 
   return (
     <>

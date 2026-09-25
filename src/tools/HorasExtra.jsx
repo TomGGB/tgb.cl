@@ -2,6 +2,7 @@ import { PARAMS, valorHoraExtra } from '../lib/sueldo'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function HorasExtra() {
   const [sueldo, setSueldo] = useUrlState('sueldo', 800_000)
@@ -12,6 +13,8 @@ export default function HorasExtra() {
   const j = Math.max(1, Math.min(PARAMS.jornada, jornada || PARAMS.jornada))
   const r = valorHoraExtra({ sueldoBase: sueldo, jornada: j, recargo: recargo / 100 })
   const total = r.valorExtra * horas
+
+  useShareText(`${formatNum(horas, 1)} horas extra = ${formatCLP(total)} (${formatCLP(r.valorExtra)} por hora)`)
 
   return (
     <>

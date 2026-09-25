@@ -1,7 +1,8 @@
 # tgb.cl: herramientas útiles para Chile
 
-Hub de 28 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, APV, crédito de consumo,
-precios de bencinas, sismos, clima, feriados, fines de semana largos, fechas clave, RUT, comunas y más.
+Hub de 34 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, licencia médica, vacaciones,
+compras en el extranjero, farmacias de turno, precios de bencinas, sismos, clima, olas, feriados, RUT, comunas y más,
+además de páginas diarias con el valor de la UF, el dólar, el euro y la UTM.
 
 Hecho con Vite + React, instalable como app (PWA) y hospedado gratis en GitHub Pages. Datos en vivo de
 [mindicador.cl](https://mindicador.cl), [Bencina en Línea](https://www.bencinaenlinea.cl),
@@ -34,6 +35,18 @@ GitHub Actions ejecuta lint, tests, build y la prueba de humo antes de publicar.
 5. Opcional: agrega su guía y preguntas frecuentes en `src/tools/guides.js`.
 6. Ejecuta `npm run og` para generar su imagen de vista previa.
 
+## Páginas de valores del día
+
+`/uf-hoy/`, `/dolar-hoy/`, `/euro-hoy/` y `/utm-hoy/` se generan en el build con el valor del día en el título, la
+descripción y el HTML (`scripts/prerender.mjs`). GitHub Actions reconstruye el sitio automáticamente dos veces al día
+(ver `schedule` en `.github/workflows/deploy.yml`). GitHub pausa los workflows programados de repositorios sin
+actividad durante 60 días: si pasa, reactívalo en la pestaña Actions.
+
+## Widget para otros sitios
+
+`public/widget.js` muestra la UF, el dólar y otros valores en cualquier sitio web, con enlaces a tgb.cl. El código para
+copiar está en `/widget/`.
+
 ## Estadísticas de visitas
 
 Crea el sitio en Cloudflare (Analytics y registros → Web Analytics → Agregar sitio → `tgb.cl`), copia el token del
@@ -63,3 +76,10 @@ fragmento de JavaScript y pégalo en `cfAnalyticsToken` en `src/tools/meta.js`.
    | CNAME | www    | `<tu-usuario>.github.io` |
 
 La propagación DNS puede tardar desde minutos hasta 24 horas.
+
+## Google Search Console
+
+1. Entra a https://search.google.com/search-console y agrega una propiedad de tipo **Dominio** con `tgb.cl`.
+2. Google entrega un registro TXT (`google-site-verification=...`): créalo en Cloudflare (DNS → Add record → TXT,
+   nombre `@`) y pulsa **Verificar**.
+3. En **Sitemaps**, envía `https://tgb.cl/sitemap.xml`.

@@ -54,7 +54,7 @@ export default function Indicadores() {
   )
 }
 
-function SerieChart({ code, label }) {
+export function SerieChart({ code, label }) {
   const [serie, setSerie] = useState(null)
   const [error, setError] = useState(null)
 

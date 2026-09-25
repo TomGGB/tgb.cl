@@ -2,6 +2,7 @@ import { useIndicadores } from '../lib/indicadores'
 import { formatCLP, formatNum } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function Dividendo() {
   const { get } = useIndicadores()
@@ -16,6 +17,8 @@ export default function Dividendo() {
   const r = tasa / 100 / 12
   const cuotaUF = r === 0 ? credito / n : (credito * r) / (1 - Math.pow(1 + r, -n))
   const totalUF = cuotaUF * n
+
+  useShareText(credito > 0 ? `Dividendo estimado: ${formatCLP(cuotaUF * uf)} al mes (${formatNum(cuotaUF, 2)} UF) por ${anios} años` : null)
 
   return (
     <>

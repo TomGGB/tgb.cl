@@ -4,6 +4,11 @@ on:
   push:
     branches: [main]
   workflow_dispatch:
+  # Reconstruye el sitio para actualizar las páginas "UF hoy", "Dólar hoy", etc.
+  # 04:15 UTC ≈ 01:15 en Chile (UF del día) y 13:30 UTC ≈ 10:30 (dólar observado publicado)
+  schedule:
+    - cron: '15 4 * * *'
+    - cron: '30 13 * * *'
 
 permissions:
   contents: read

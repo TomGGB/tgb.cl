@@ -33,6 +33,16 @@ const COMPONENTS = {
   'dividir-cuenta': lazy(() => import('./tools/DividirCuenta')),
   'fechas-clave': lazy(() => import('./tools/FechasClave')),
   'fines-de-semana-largos': lazy(() => import('./tools/FinesLargos')),
+  'uf-hoy': lazy(() => import('./tools/ValorHoy')),
+  'dolar-hoy': lazy(() => import('./tools/ValorHoy')),
+  'euro-hoy': lazy(() => import('./tools/ValorHoy')),
+  'utm-hoy': lazy(() => import('./tools/ValorHoy')),
+  'compras-extranjero': lazy(() => import('./tools/ComprasExtranjero')),
+  widget: lazy(() => import('./tools/Widget')),
+  'licencia-medica': lazy(() => import('./tools/LicenciaMedica')),
+  vacaciones: lazy(() => import('./tools/Vacaciones')),
+  'farmacias-de-turno': lazy(() => import('./tools/Farmacias')),
+  olas: lazy(() => import('./tools/Olas')),
 }
 
 function NotFound() {
@@ -61,7 +71,7 @@ export default function App() {
                 element={
                   <ToolPage tool={t}>
                     <Suspense fallback={<div className="card loading-block">Cargando…</div>}>
-                      <C />
+                      <C tool={t} />
                     </Suspense>
                   </ToolPage>
                 }

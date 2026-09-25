@@ -8,7 +8,7 @@ import { buscarHerramientas } from '../components/CommandPalette'
 import { useFavoritos, useRecientes } from '../lib/preferencias'
 import { Icon, ToolIcon } from '../components/icons'
 
-const POPULARES = ['sueldo-liquido', 'feriados', 'bencinas', 'finiquito', 'sismos']
+const POPULARES = ['sueldo-liquido', 'farmacias-de-turno', 'feriados', 'bencinas', 'finiquito']
 const bySlug = (s) => TOOLS.find((t) => t.slug === s)
 const corto = (t) => t.title.replace(/^Calculadora de /, '').replace(/^./, (c) => c.toUpperCase())
 
@@ -23,10 +23,10 @@ function Pizarra() {
     data?.[code]?.fecha ? new Date(data[code].fecha).toLocaleDateString('es-CL', { day: 'numeric', month: 'short' }) : null
 
   const filas = [
-    { label: 'UF', value: formatNum(get('uf'), 2), nota: fecha('uf'), to: '/indicadores/' },
-    { label: 'Dólar', value: formatNum(get('dolar'), 2), nota: 'observado', to: '/indicadores/' },
-    { label: 'Euro', value: formatNum(get('euro'), 2), nota: fecha('euro'), to: '/conversor/' },
-    { label: 'UTM', value: formatNum(get('utm'), 0), nota: new Date().toLocaleDateString('es-CL', { month: 'long' }), to: '/indicadores/' },
+    { label: 'UF', value: formatNum(get('uf'), 2), nota: fecha('uf'), to: '/uf-hoy/' },
+    { label: 'Dólar', value: formatNum(get('dolar'), 2), nota: 'observado', to: '/dolar-hoy/' },
+    { label: 'Euro', value: formatNum(get('euro'), 2), nota: fecha('euro'), to: '/euro-hoy/' },
+    { label: 'UTM', value: formatNum(get('utm'), 0), nota: new Date().toLocaleDateString('es-CL', { month: 'long' }), to: '/utm-hoy/' },
   ]
 
   return (
@@ -166,7 +166,7 @@ export default function Home() {
           )}
           <div className="directory">
             {CATEGORIES.map((c) => {
-              const tools = TOOLS.filter((t) => t.category === c.id)
+              const tools = TOOLS.filter((t) => t.category === c.id && !t.landing)
               return (
                 <section key={c.id} className="cat-panel" data-cat={c.id}>
                   <header className="cat-head">

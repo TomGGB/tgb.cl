@@ -3,6 +3,7 @@ import { useIndicadores, fetchValorEnFecha } from '../lib/indicadores'
 import { formatCLP, formatNum, fromISODate } from '../lib/format'
 import { Field, NumberInput, ResultTable, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 // mindicador no publica valores en fines de semana para el dólar: retrocede hasta 7 días
 async function valorCercano(code, date) {
@@ -45,6 +46,8 @@ export default function ComparadorHistorico() {
   const enUSD = hist.dolar ? monto / hist.dolar.valor : null
   const anios = fecha ? (Date.now() - fromISODate(fecha)) / (365.25 * 86400000) : 0
   const anual = factor && anios > 0.5 ? Math.pow(factor, 1 / anios) - 1 : null
+
+  useShareText(equivalente ? `${formatCLP(monto)} de ${fromISODate(fecha).getFullYear()} equivalen hoy a ${formatCLP(equivalente)}` : null)
 
   return (
     <>

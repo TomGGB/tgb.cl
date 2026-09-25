@@ -3,6 +3,7 @@ import { formatCLP } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable, CopyButton } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { Icon } from '../components/icons'
+import { useShareText } from '../lib/share'
 
 const redondear = (n, a) => (a ? Math.ceil(n / a) * a : Math.round(n))
 
@@ -50,6 +51,8 @@ export default function DividirCuenta() {
     modo === 'igual'
       ? `Cuenta: ${formatCLP(resumen.total)} con propina. Cada uno paga ${formatCLP(resumen.porPersona)}.`
       : gente.map((g) => `${g.nombre}: ${formatCLP(redondear(g.consumo * factor, redondeo))}`).join('\n')
+
+  useShareText(texto)
 
   return (
     <>

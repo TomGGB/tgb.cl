@@ -2,6 +2,7 @@ import { PARAMS } from '../lib/sueldo'
 import { formatCLP } from '../lib/format'
 import { Field, NumberInput, Segmented, ResultTable } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
+import { useShareText } from '../lib/share'
 
 export default function Iva() {
   const [modo, setModo] = useUrlState('modo', 'neto')
@@ -11,6 +12,8 @@ export default function Iva() {
   const neto = modo === 'neto' ? monto : Math.round(monto / (1 + t))
   const total = modo === 'neto' ? Math.round(monto * (1 + t)) : monto
   const iva = total - neto
+
+  useShareText(`Neto ${formatCLP(neto)} + IVA ${formatCLP(iva)} = ${formatCLP(total)}`)
 
   return (
     <>

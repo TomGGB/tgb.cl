@@ -1,4 +1,4 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Link, NavLink, Outlet, useLocation } from 'react-router-dom'
 import { SITE, TOOLS, CATEGORIES } from '../tools/meta'
 import { GUIDES } from '../tools/guides'
@@ -6,6 +6,7 @@ import { ShareButton, ThemeToggle } from './ui'
 import CommandPalette from './CommandPalette'
 import { useFavoritos, useRecientes } from '../lib/preferencias'
 import { Icon, ToolIcon } from './icons'
+import { ShareTextContext, whatsappUrl } from '../lib/share'
 
 export default function Layout() {
   const { pathname } = useLocation()
@@ -13,6 +14,7 @@ export default function Layout() {
   useEffect(() => {
     window.scrollTo(0, 0)
     const tool = TOOLS.find((t) => `/${t.slug}` === pathname.replace(/\/$/, ''))
+    if (tool?.landing) return // las páginas de valores del día ponen su propio título con el valor
     document.title = tool ? `${tool.title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`
   }, [pathname])
 
@@ -91,6 +93,8 @@ export function ToolPage({ tool, children }) {
   const guide = GUIDES[tool.slug]
   const cat = CATEGORIES.find((c) => c.id === tool.category)
 
+  const [shareText, setShareText] = useState(null)
+
   useEffect(() => registrar(tool.slug), [tool.slug, registrar])
 
   return (
@@ -112,9 +116,24 @@ export function ToolPage({ tool, children }) {
           <Icon name="Star" size={16} fill={fav ? 'currentColor' : 'none'} />
           {fav ? 'En favoritos' : 'Agregar a favoritos'}
         </button>
+        {(tool.share || shareText) && (
+          <a
+            className="btn-ghost whatsapp-btn"
+            href={whatsappUrl(shareText ?? tool.title, typeof window !== 'undefined' ? window.location.href : '')}
+            target="_blank"
+            rel="noreferrer"
+            onClick={(e) => {
+              // la URL puede haber cambiado (valores del cálculo): se arma al hacer clic
+              e.currentTarget.href = whatsappUrl(shareText ?? tool.title, window.location.href)
+            }}
+          >
+            <WhatsAppIcon />
+            WhatsApp
+          </a>
+        )}
         {tool.share && <ShareButton />}
       </div>
-      {children}
+      <ShareTextContext.Provider value={setShareText}>{children}</ShareTextContext.Provider>
       {guide && <Guide guide={guide} />}
     </article>
   )
@@ -143,5 +162,14 @@ function Guide({ guide }) {
         </>
       )}
     </section>
+  )
+}
+
+// Logo de WhatsApp (Lucide no incluye marcas)
+function WhatsAppIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+      <path d="M17.5 14.4c-.3-.1-1.7-.8-2-.9-.3-.1-.5-.1-.7.1-.2.3-.8.9-.9 1.1-.2.2-.3.2-.6.1-.3-.1-1.2-.5-2.3-1.4-.9-.8-1.4-1.7-1.6-2-.2-.3 0-.5.1-.6l.4-.5c.2-.2.2-.3.3-.5.1-.2 0-.4 0-.5l-.9-2.2c-.2-.6-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.2 5.1 4.5.7.3 1.3.5 1.7.6.7.2 1.4.2 1.9.1.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.3.2-1.4-.1-.1-.3-.2-.6-.3zM12 21.8c-1.8 0-3.5-.5-5-1.4l-.4-.2-3.7 1 1-3.6-.2-.4C2.7 15.6 2.2 13.8 2.2 12 2.2 6.6 6.6 2.2 12 2.2c2.6 0 5.1 1 6.9 2.9 1.8 1.8 2.9 4.3 2.9 6.9 0 5.4-4.4 9.8-9.8 9.8zm8.4-18.2C18.1 1.4 15.1.2 12 .2 5.5.2.2 5.5.2 12c0 2.1.5 4.1 1.6 5.9L.1 24l6.3-1.6c1.7.9 3.7 1.4 5.6 1.4 6.5 0 11.8-5.3 11.8-11.8 0-3.2-1.2-6.1-3.4-8.4z" />
+    </svg>
   )
 }
