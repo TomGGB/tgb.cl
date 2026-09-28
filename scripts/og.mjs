@@ -10,7 +10,7 @@ import * as lucide from 'lucide-react'
 import { TOOLS, CATEGORIES } from '../src/tools/meta.js'
 
 // Colores de categoría (mismos valores que --cat-* en styles.css, tema claro)
-const CAT_COLOR = { dinero: '#2f7d57', trabajo: '#1f4e8c', hogar: '#b25e12', vivo: '#c8102e', calendario: '#6b4fa0', tramites: '#0e7c86' }
+const CAT_COLOR = { dinero: '#2f7d57', trabajo: '#1f4e8c', hogar: '#b25e12', vivo: '#c8102e', calendario: '#6b4fa0', tramites: '#0e7c86', educacion: '#b0306a' }
 const svg = (name, color) => renderToStaticMarkup(createElement(lucide[name], { size: 76, color, strokeWidth: 1.8 }))
 
 const out = new URL('../public/og/', import.meta.url)

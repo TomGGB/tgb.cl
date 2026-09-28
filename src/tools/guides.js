@@ -2,6 +2,75 @@
 // Se muestran bajo cada herramienta y se incluyen en el HTML estático para buscadores (FAQPage).
 
 export const GUIDES = {
+  notas: {
+    titulo: 'Cómo funciona la escala de notas',
+    pasos: [
+      'Con 60% de exigencia, obtener el 60% del puntaje máximo equivale a un 4,0.',
+      'Bajo ese puntaje, la nota va de 1,0 a 4,0 en proporción al puntaje obtenido.',
+      'Sobre ese puntaje, la nota va de 4,0 a 7,0 en proporción a lo que falta para el puntaje máximo.',
+    ],
+    faq: [
+      { q: '¿Cómo calculo qué nota necesito en el examen?', a: 'Suma cada nota multiplicada por su porcentaje, réstale ese total a la nota que quieres multiplicada por 100 y divide el resultado por el porcentaje del examen.' },
+      { q: '¿El 3,95 sube a 4,0?', a: 'En la mayoría de los reglamentos se redondea al décimo más cercano, por lo que 3,95 sube a 4,0. Revisa el reglamento de evaluación de tu colegio o universidad.' },
+    ],
+  },
+  'pre-postnatal': {
+    titulo: 'Cómo se calculan el pre y postnatal',
+    faq: [
+      { q: '¿Cuándo empieza el prenatal?', a: 'Seis semanas (42 días) antes de la fecha probable de parto, con una licencia médica que emite el profesional que controla el embarazo.' },
+      { q: '¿Cuánto dura el postnatal parental?', a: 'Doce semanas a jornada completa, o dieciocho semanas si se vuelve a trabajar media jornada. Empieza el día siguiente al término del postnatal.' },
+      { q: '¿El padre puede tomar parte del permiso?', a: 'Sí. La madre puede traspasar al padre hasta 6 semanas del postnatal parental a jornada completa (o 12 a media jornada), que corresponden a las últimas semanas del período.' },
+    ],
+  },
+  'costo-empleador': {
+    titulo: 'Qué paga el empleador además del sueldo',
+    faq: [
+      { q: '¿Cuánto aporta el empleador por la reforma de pensiones?', a: 'Desde las remuneraciones de agosto de 2026, el aporte es de 3,5% del sueldo imponible, que incluye el Seguro de Invalidez y Sobrevivencia. Irá subiendo gradualmente hasta 8,5%.' },
+      { q: '¿Qué se paga por una trabajadora de casa particular?', a: 'Además del aporte de la reforma y el seguro de accidentes, el empleador paga 3% de seguro de cesantía y 1,11% de indemnización a todo evento, que la trabajadora recibe al terminar la relación laboral.' },
+    ],
+  },
+  'comparador-afp': {
+    titulo: 'Sobre las comisiones de las AFP',
+    faq: [
+      { q: '¿Qué es la comisión de la AFP?', a: 'Es un porcentaje de tu sueldo imponible que la AFP cobra por administrar tus fondos. Se paga aparte del 10% que va a tu cuenta de ahorro para la pensión.' },
+      { q: '¿Cómo me cambio de AFP?', a: 'El cambio es gratuito y se hace en línea en el sitio de la AFP a la que te quieres cambiar, con tu RUT y tu clave o ClaveÚnica. Tus fondos se traspasan completos.' },
+    ],
+  },
+  'multas-transito': {
+    titulo: 'Sobre las multas de tránsito',
+    faq: [
+      { q: '¿Cuánto es una multa gravísima?', a: 'Entre 1,5 y 3 UTM. Las graves van de 1 a 1,5 UTM, las menos graves de 0,5 a 1 UTM y las leves de 0,2 a 0,5 UTM. El monto exacto lo fija el Juzgado de Policía Local.' },
+      { q: '¿Hay descuento si pago rápido?', a: 'Sí, un 25% si pagas dentro del plazo que indica la citación, salvo en infracciones gravísimas o cuando hubo daños o lesiones.' },
+    ],
+  },
+  'renta-honorarios': {
+    titulo: 'Cómo funciona la Operación Renta para honorarios',
+    pasos: [
+      'Durante el año, se retiene un porcentaje de cada boleta de honorarios (15,25% en 2026).',
+      'En abril, el SII usa esas retenciones para pagar tus cotizaciones de pensión, salud, invalidez, accidentes y Ley SANNA.',
+      'También calcula tu impuesto global complementario, descontando un 30% de gastos presuntos con tope de 15 UTA.',
+      'Si las retenciones superan las cotizaciones y el impuesto, recibes la diferencia como devolución; si no alcanzan, debes pagar el saldo.',
+    ],
+    faq: [
+      { q: '¿Quiénes están obligados a cotizar?', a: 'Quienes emitieron boletas por un monto anual igual o superior a cinco ingresos mínimos mensuales, salvo algunas excepciones (por ejemplo, pensionados o personas de cierta edad al 2018).' },
+      { q: '¿Qué conviene: cobertura total o parcial?', a: 'La parcial deja más devolución, pero tus licencias médicas y tu pensión se calculan sobre una renta menor. La total te protege por el total de tu renta. La opción parcial desaparece en 2028.' },
+    ],
+  },
+  'calendario-escolar': {
+    titulo: 'Sobre el calendario escolar',
+    faq: [
+      { q: '¿Cuándo son las vacaciones de invierno 2026?', a: 'Desde Atacama hasta Los Ríos, del 22 de junio al 3 de julio. En el norte y el extremo sur las fechas son distintas: revisa tu región en esta página.' },
+      { q: '¿Aplica a colegios particulares pagados?', a: 'El calendario regional es obligatorio para los establecimientos con financiamiento del Estado. Los particulares pagados pueden fijar fechas propias.' },
+    ],
+  },
+  'carta-renuncia': {
+    titulo: 'Cómo renunciar correctamente',
+    faq: [
+      { q: '¿Con cuánta anticipación debo avisar?', a: 'El Código del Trabajo pide dar aviso al empleador con al menos 30 días de anticipación.' },
+      { q: '¿La renuncia tiene que estar firmada ante notario?', a: 'Debe firmarse y ratificarse ante un ministro de fe: inspector del trabajo, notario, oficial del Registro Civil o secretario municipal. También se puede renunciar en línea con ClaveÚnica en el portal de la Dirección del Trabajo.' },
+      { q: '¿Qué me pagan si renuncio?', a: 'Los días trabajados del último mes y las vacaciones pendientes o proporcionales. La indemnización por años de servicio no corresponde al renunciar.' },
+    ],
+  },
   ahorro: {
     titulo: 'Cómo crece un ahorro',
     faq: [

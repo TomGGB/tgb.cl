@@ -10,7 +10,7 @@ const normalize = (s) => s.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, ''
 const SINONIMOS = {
   temblor: ['sismo'], terremoto: ['sismo'], sismos: ['sismo'],
   plata: ['sueldo', 'dinero', 'ahorro'], lucas: ['sueldo', 'pesos'], pega: ['sueldo', 'trabajo'], sueldo: ['liquido'],
-  salario: ['sueldo'], minimo: ['ingreso minimo', 'datos legales'], despido: ['finiquito'], renuncia: ['finiquito'],
+  salario: ['sueldo'], minimo: ['ingreso minimo', 'datos legales'], despido: ['finiquito'], renuncia: ['finiquito', 'carta de renuncia'],
   remedio: ['farmacia'], remedios: ['farmacia'], farmacias: ['farmacia'], medicamento: ['farmacia'],
   luz: ['electrico'], electricidad: ['electrico'], cuenta: ['dividir', 'electrico'],
   auto: ['bencina', 'viaje', 'patente'], nafta: ['bencina'], gasolina: ['bencina'], combustible: ['bencina'],
@@ -22,6 +22,11 @@ const SINONIMOS = {
   hijos: ['pension alimentos'], alimentos: ['pension alimentos'], hipotecario: ['dividendo'], casa: ['dividendo', 'arriendo'],
   prestamo: ['credito'], deuda: ['credito'], banco: ['credito', 'ahorro'], deposito: ['ahorro'], invertir: ['ahorro'],
   licencia: ['licencia medica'], enfermo: ['licencia medica'], hora: ['cambio de hora'], reloj: ['cambio de hora'],
+  nota: ['notas'], prueba: ['notas'], examen: ['notas'], colegio: ['notas', 'calendario escolar'], universidad: ['paes', 'notas'],
+  psu: ['paes'], embarazo: ['prenatal'], guagua: ['prenatal'], bebe: ['prenatal'], maternal: ['prenatal'],
+  parte: ['multa'], multas: ['multa'], nana: ['casa particular'], empleada: ['casa particular'], contratar: ['costo empresa'],
+  renunciar: ['carta de renuncia'], roommate: ['dividir arriendo'], depto: ['arriendo'], falta: ['cuenta regresiva'],
+  devolucion: ['operacion renta'], boletas: ['honorarios'],
 }
 
 export function buscarHerramientas(q) {

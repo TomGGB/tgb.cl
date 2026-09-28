@@ -78,6 +78,17 @@ const COMPONENTS = {
   descuentos: lazy(cargar(() => import('./tools/Descuentos'))),
   'datos-legales': lazy(cargar(() => import('./tools/DatosLegales'))),
   'pension-alimentos': lazy(cargar(() => import('./tools/PensionAlimentos'))),
+  'renta-honorarios': lazy(cargar(() => import('./tools/RentaHonorarios'))),
+  'costo-empleador': lazy(cargar(() => import('./tools/CostoEmpleador'))),
+  'comparador-afp': lazy(cargar(() => import('./tools/ComparadorAfp'))),
+  'pre-postnatal': lazy(cargar(() => import('./tools/PrePostnatal'))),
+  'carta-renuncia': lazy(cargar(() => import('./tools/CartaRenuncia'))),
+  notas: lazy(cargar(() => import('./tools/Notas'))),
+  paes: lazy(cargar(() => import('./tools/Paes'))),
+  'calendario-escolar': lazy(cargar(() => import('./tools/CalendarioEscolar'))),
+  'multas-transito': lazy(cargar(() => import('./tools/Multas'))),
+  'dividir-arriendo': lazy(cargar(() => import('./tools/DividirArriendo'))),
+  'cuenta-regresiva': lazy(cargar(() => import('./tools/CuentaRegresiva'))),
 }
 
 function NotFound() {

@@ -9,6 +9,7 @@ import {
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
   Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
   ChevronDown, LayoutGrid, RotateCcw, Tag, Users, Scale, Sprout, BadgePercent, BookOpen,
+  GraduationCap, Baby, BriefcaseBusiness, ChartColumn, TrafficCone, FileSpreadsheet, School, BookOpenCheck, BedDouble, MailOpen, AlarmClock, PartyPopper, Printer, Trash2, CalendarClock, Target,
 } from 'lucide-react'
 
 export const ICONS = {
@@ -21,6 +22,7 @@ export const ICONS = {
   TrendingUp, TriangleAlert, UtensilsCrossed, Wallet, Wind, X, Zap, Ambulance, Flame, Shield, ShieldAlert,
   Anchor, Plane, Trees, HeartPulse, Phone, Waves, Pill,
   ChevronDown, LayoutGrid, RotateCcw, Tag, Users, Scale, Sprout, BadgePercent, BookOpen,
+  GraduationCap, Baby, BriefcaseBusiness, ChartColumn, TrafficCone, FileSpreadsheet, School, BookOpenCheck, BedDouble, MailOpen, AlarmClock, PartyPopper, Printer, Trash2, CalendarClock, Target,
 }
 
 export function Icon({ name, size = 18, strokeWidth = 2, ...rest }) {

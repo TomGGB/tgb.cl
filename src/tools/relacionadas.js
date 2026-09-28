@@ -2,8 +2,8 @@
 // Las que no aparecen aquí sugieren otras de su misma categoría.
 export const RELACIONADAS = {
   'sueldo-liquido': ['gratificacion', 'horas-extra', 'apv', 'finiquito'],
-  finiquito: ['vacaciones', 'sueldo-liquido', 'dias-habiles', 'tramites'],
-  'boleta-honorarios': ['iva', 'sueldo-liquido', 'fechas-clave'],
+  finiquito: ['vacaciones', 'carta-renuncia', 'sueldo-liquido', 'dias-habiles'],
+  'boleta-honorarios': ['renta-honorarios', 'iva', 'sueldo-liquido'],
   'horas-extra': ['sueldo-liquido', 'gratificacion', 'datos-legales'],
   gratificacion: ['sueldo-liquido', 'horas-extra', 'datos-legales'],
   'licencia-medica': ['sueldo-liquido', 'vacaciones', 'farmacias-de-turno'],
@@ -28,6 +28,17 @@ export const RELACIONADAS = {
   sismos: ['emergencias', 'olas'],
   olas: ['clima', 'sismos', 'costo-viaje'],
   clima: ['olas', 'sismos'],
+  notas: ['paes', 'calendario-escolar', 'cuenta-regresiva'],
+  paes: ['notas', 'calendario-escolar'],
+  'calendario-escolar': ['feriados', 'fines-de-semana-largos', 'notas'],
+  'pre-postnatal': ['licencia-medica', 'vacaciones', 'sueldo-liquido'],
+  'costo-empleador': ['sueldo-liquido', 'datos-legales', 'finiquito'],
+  'comparador-afp': ['sueldo-liquido', 'apv', 'datos-legales'],
+  'renta-honorarios': ['boleta-honorarios', 'fechas-clave', 'apv'],
+  'multas-transito': ['bencinas', 'fechas-clave', 'utm-hoy'],
+  'dividir-arriendo': ['reajuste-arriendo', 'dividir-cuenta', 'consumo-electrico'],
+  'carta-renuncia': ['finiquito', 'vacaciones', 'dias-habiles'],
+  'cuenta-regresiva': ['feriados', 'fines-de-semana-largos', 'calendario-escolar'],
 }
 
 export function relacionadas(tool, TOOLS, n = 3) {

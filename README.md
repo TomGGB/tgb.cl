@@ -1,7 +1,7 @@
 # tgb.cl: herramientas útiles para Chile
 
-Hub de 34 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, licencia médica, vacaciones,
-compras en el extranjero, farmacias de turno, precios de bencinas, sismos, clima, olas, feriados, RUT, comunas y más,
+Hub de 49 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, Operación Renta de honorarios,
+costo de contratar, pre y postnatal, notas y PAES, farmacias de turno, bencinas, sismos, clima, feriados, RUT y más,
 además de páginas diarias con el valor de la UF, el dólar, el euro y la UTM.
 
 Hecho con Vite + React, instalable como app (PWA) y hospedado gratis en GitHub Pages. Datos en vivo de
@@ -57,6 +57,9 @@ fragmento de JavaScript y pégalo en `cfAnalyticsToken` en `src/tools/meta.js`.
 - `src/lib/sueldo.js`: topes imponibles, comisiones AFP, retención de honorarios, ingreso mínimo (`imm`, se reajusta
   en enero y mayo) y jornada máxima (`jornada`, baja a 40 horas en abril de 2028).
 - `src/lib/feriados.js`: fecha del solsticio (`SOLSTICIO`) y feriados por elecciones (`EXTRAS`).
+- `src/lib/empleo.js`: aportes del empleador (`APORTES`, la reforma de pensiones sube cada año) y parámetros de la
+  Operación Renta (`RENTA`: agregar el año tributario nuevo con los valores de la Guía Práctica del SII).
+- `src/tools/CalendarioEscolar.jsx`: fechas del calendario escolar del Mineduc de cada año.
 
 ## Publicar en GitHub Pages con tgb.cl
 
