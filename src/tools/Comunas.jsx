@@ -70,7 +70,7 @@ export default function Comunas() {
         {regionId ? ` en la Región de ${regiones.find((r) => r.id === regionId).nombre}` : ` · ${regiones.length} regiones`}
       </p>
 
-      <div className="table-wrap">
+      <div className="table-wrap" tabIndex={0} role="region" aria-label="Tabla de comunas">
         <table className="data-table">
           <thead>
             <tr>

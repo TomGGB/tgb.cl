@@ -4,6 +4,7 @@
 import { readFileSync, writeFileSync, mkdirSync } from 'node:fs'
 import { SITE, TOOLS } from '../src/tools/meta.js'
 import { GUIDES } from '../src/tools/guides.js'
+import { slugify } from '../src/lib/slug.js'
 
 const dist = new URL('../dist/', import.meta.url)
 const base = readFileSync(new URL('index.html', dist), 'utf8')
@@ -31,6 +32,26 @@ async function seriesDelDia() {
   return out
 }
 const SERIES = await seriesDelDia()
+
+// ---------- Páginas por comuna (textos iguales a POR_COMUNA en src/lib/comunas.js) ----------
+const REGIONES = JSON.parse(readFileSync(new URL('../src/data/regiones.json', import.meta.url), 'utf8'))
+const COMUNAS = REGIONES.flatMap((r) => r.comunas.map((c) => ({ nombre: c.nombre, slug: slugify(c.nombre), region: r.nombre, regionId: r.id })))
+const POR_COMUNA = {
+  'farmacias-de-turno': {
+    titulo: (c) => `Farmacias de turno en ${c.nombre}`,
+    descripcion: (c) => `Farmacias de turno hoy en ${c.nombre}, región ${c.region}: dirección, horario, teléfono y mapa, con datos oficiales del MINSAL.`,
+    cuerpo: (c) =>
+      `Revisa qué farmacia está de turno hoy en ${c.nombre} con su dirección, horario de atención y teléfono. Los turnos cambian cada día y se actualizan con los datos del Ministerio de Salud.`,
+    enlaces: (r) => `Farmacias de turno en otras comunas de ${r}`,
+  },
+  bencinas: {
+    titulo: (c) => `Precio de bencinas en ${c.nombre}`,
+    descripcion: (c) => `Bencina más barata hoy en ${c.nombre}: precios de 93, 95, 97, diésel y parafina en cada bencinera de la comuna, con mapa.`,
+    cuerpo: (c) =>
+      `Compara el precio de la bencina 93, 95 y 97, el diésel y la parafina en las estaciones de servicio de ${c.nombre}, ordenadas de la más barata a la más cara, con datos de la Comisión Nacional de Energía.`,
+    enlaces: (r) => `Precio de bencinas en otras comunas de ${r}`,
+  },
+}
 
 function valorDelDia(tool) {
   const serie = tool?.code && SERIES[tool.code]
@@ -99,11 +120,11 @@ function jsonLd(tool, url) {
   return items.map((i) => `<script type="application/ld+json">${JSON.stringify(i).replace(/</g, '\\u003c')}</script>`).join('\n    ')
 }
 
-function page(tool) {
+function page(tool, extra = null) {
   const hoy = valorDelDia(tool)
-  const title = hoy ? hoy.title : tool ? `${tool.title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`
-  const description = hoy ? hoy.description : tool ? tool.description : SITE.description
-  const url = tool ? `${SITE.url}/${tool.slug}/` : `${SITE.url}/`
+  const title = extra ? `${extra.titulo} | ${SITE.name}` : hoy ? hoy.title : tool ? `${tool.title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`
+  const description = extra ? extra.descripcion : hoy ? hoy.description : tool ? tool.description : SITE.description
+  const url = extra ? `${SITE.url}/${tool.slug}/${extra.slug}/` : tool ? `${SITE.url}/${tool.slug}/` : `${SITE.url}/`
   const image = `${SITE.url}/og/${tool ? tool.slug : 'home'}.jpg`
   const extraHead = [
     `<meta property="og:image" content="${image}" />`,
@@ -114,7 +135,7 @@ function page(tool) {
     `<meta name="twitter:title" content="${esc(title)}" />`,
     `<meta name="twitter:description" content="${esc(description)}" />`,
     `<meta name="twitter:image" content="${image}" />`,
-    jsonLd(tool, url),
+    extra ? '' : jsonLd(tool, url),
     SITE.cfAnalyticsToken
       ? `<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token":"${SITE.cfAnalyticsToken}","spa":true}'></script>`
       : '',
@@ -130,7 +151,7 @@ function page(tool) {
     .replace(/(<meta property="og:url" content=")[^"]*/, `$1${url}`)
     .replace(/(<link rel="canonical" href=")[^"]*/, `$1${url}`)
     .replace('</head>', `    ${extraHead}\n  </head>`)
-    .replace('<div id="root"></div>', `<div id="root">${staticContent(tool)}</div>`)
+    .replace('<div id="root"></div>', `<div id="root">${extra ? extra.html : staticContent(tool)}</div>`)
 }
 
 writeFileSync(new URL('index.html', dist), page(null))
@@ -141,6 +162,24 @@ for (const t of TOOLS) {
   writeFileSync(new URL('index.html', dir), page(t))
 }
 
+let paginasComuna = 0
+const urlsComuna = []
+for (const [slug, textos] of Object.entries(POR_COMUNA)) {
+  const tool = TOOLS.find((t) => t.slug === slug)
+  for (const c of COMUNAS) {
+    const vecinas = COMUNAS.filter((x) => x.regionId === c.regionId && x.slug !== c.slug)
+    const html =
+      `<main class="container main"><h1>${esc(textos.titulo(c))}</h1><p>${esc(textos.cuerpo(c))}</p>` +
+      `<p><a href="/${slug}/">${esc(tool.title)} en todo Chile</a></p>` +
+      `<h2>${esc(textos.enlaces(c.region))}</h2><ul>${vecinas.map((v) => `<li><a href="/${slug}/${v.slug}/">${esc(v.nombre)}</a></li>`).join('')}</ul></main>`
+    const dir = new URL(`${slug}/${c.slug}/`, dist)
+    mkdirSync(dir, { recursive: true })
+    writeFileSync(new URL('index.html', dir), page(tool, { slug: c.slug, titulo: textos.titulo(c), descripcion: textos.descripcion(c), html }))
+    urlsComuna.push(`${slug}/${c.slug}/`)
+    paginasComuna++
+  }
+}
+
 // Rutas desconocidas: GitHub Pages sirve 404.html y React Router muestra "no encontrada"
 writeFileSync(
   new URL('404.html', dist),
@@ -148,7 +187,7 @@ writeFileSync(
 )
 
 const today = new Date().toISOString().slice(0, 10)
-const urls = ['', ...TOOLS.map((t) => `${t.slug}/`)]
+const urls = ['', ...TOOLS.map((t) => `${t.slug}/`), ...urlsComuna]
   .map((p) => `  <url><loc>${SITE.url}/${p}</loc><lastmod>${today}</lastmod></url>`)
   .join('\n')
 writeFileSync(
@@ -156,4 +195,4 @@ writeFileSync(
   `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls}\n</urlset>\n`,
 )
 
-console.log(`prerender: valores del día ${Object.keys(SERIES).join(', ') || 'no disponibles'}; ${TOOLS.length} páginas + portada + 404.html + sitemap.xml${SITE.cfAnalyticsToken ? ' + analytics' : ''}`)
+console.log(`prerender: ${paginasComuna} páginas por comuna; valores del día ${Object.keys(SERIES).join(', ') || 'no disponibles'}; ${TOOLS.length} páginas + portada + 404.html + sitemap.xml${SITE.cfAnalyticsToken ? ' + analytics' : ''}`)

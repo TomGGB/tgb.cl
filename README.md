@@ -1,6 +1,6 @@
 # tgb.cl: herramientas útiles para Chile
 
-Hub de 49 herramientas gratuitas para Chile: indicadores, sueldo líquido, finiquito, Operación Renta de honorarios,
+Hub de 55 herramientas gratuitas para Chile, más 692 páginas por comuna (farmacias y bencinas): indicadores, sueldo líquido, finiquito, Operación Renta de honorarios,
 costo de contratar, pre y postnatal, notas y PAES, farmacias de turno, bencinas, sismos, clima, feriados, RUT y más,
 además de páginas diarias con el valor de la UF, el dólar, el euro y la UTM.
 
@@ -20,7 +20,8 @@ npm run dev      # http://localhost:5173
 npm run lint     # ESLint
 npm test         # tests de la lógica (src/lib)
 npm run build    # genera dist/ (un HTML por herramienta con su guía, 404.html y sitemap.xml)
-npm run smoke    # con `npx vite preview` corriendo: abre cada ruta en Chrome y falla si hay errores
+npm run smoke    # con `npx vite preview` corriendo: abre cada ruta y prueba interacciones con Puppeteer
+npm run a11y     # auditoría de accesibilidad (axe-core) en tema claro y oscuro
 npm run og       # regenera las imágenes de vista previa en public/og/ (requiere Chrome)
 ```
 
@@ -60,6 +61,7 @@ fragmento de JavaScript y pégalo en `cfAnalyticsToken` en `src/tools/meta.js`.
 - `src/lib/empleo.js`: aportes del empleador (`APORTES`, la reforma de pensiones sube cada año) y parámetros de la
   Operación Renta (`RENTA`: agregar el año tributario nuevo con los valores de la Guía Práctica del SII).
 - `src/tools/CalendarioEscolar.jsx`: fechas del calendario escolar del Mineduc de cada año.
+- `src/lib/tramites.js`: montos de contribuciones (`CONTRIBUCIONES`, el SII los reajusta cada semestre).
 
 ## Publicar en GitHub Pages con tgb.cl
 

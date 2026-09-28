@@ -1,8 +1,9 @@
 import { lazy, Suspense } from 'react'
-import { BrowserRouter, Routes, Route, Link } from 'react-router-dom'
+import { BrowserRouter, Routes, Route, Link, useParams } from 'react-router-dom'
 import Layout, { ToolPage } from './components/Layout'
 import Home from './pages/Home'
 import { TOOLS } from './tools/meta'
+import { comunaPorSlug, POR_COMUNA } from './lib/comunas'
 
 // Tras publicar una versión nueva, los archivos de la anterior dejan de existir. Si una pestaña vieja
 // intenta cargar uno, se recarga la página una vez para obtener la versión actual.
@@ -89,6 +90,28 @@ const COMPONENTS = {
   'multas-transito': lazy(cargar(() => import('./tools/Multas'))),
   'dividir-arriendo': lazy(cargar(() => import('./tools/DividirArriendo'))),
   'cuenta-regresiva': lazy(cargar(() => import('./tools/CuentaRegresiva'))),
+  'datos-transferencia': lazy(cargar(() => import('./tools/DatosTransferencia'))),
+  'sueldo-por-hora': lazy(cargar(() => import('./tools/SueldoHora'))),
+  'semanas-embarazo': lazy(cargar(() => import('./tools/SemanasEmbarazo'))),
+  'permiso-circulacion': lazy(cargar(() => import('./tools/PermisoCirculacion'))),
+  contribuciones: lazy(cargar(() => import('./tools/Contribuciones'))),
+  'contrato-arriendo': lazy(cargar(() => import('./tools/ContratoArriendo'))),
+}
+
+// Página de una herramienta para una comuna específica (farmacias y bencinas)
+function ToolComuna({ tool }) {
+  const { comuna: slug } = useParams()
+  const comuna = comunaPorSlug(slug)
+  if (!comuna) return <NotFound />
+  const C = COMPONENTS[tool.slug]
+  const textos = POR_COMUNA[tool.slug]
+  return (
+    <ToolPage tool={tool} titulo={textos.titulo(comuna)} descripcion={textos.descripcion(comuna)}>
+      <Suspense fallback={<div className="card loading-block">Cargando…</div>}>
+        <C key={comuna.slug} tool={tool} comuna={comuna} />
+      </Suspense>
+    </ToolPage>
+  )
 }
 
 function NotFound() {
@@ -124,6 +147,9 @@ export default function App() {
               />
             )
           })}
+          {TOOLS.filter((t) => POR_COMUNA[t.slug]).map((t) => (
+            <Route key={`${t.slug}-comuna`} path={`${t.slug}/:comuna`} element={<ToolComuna tool={t} />} />
+          ))}
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>

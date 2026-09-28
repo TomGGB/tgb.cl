@@ -2,6 +2,53 @@
 // Se muestran bajo cada herramienta y se incluyen en el HTML estático para buscadores (FAQPage).
 
 export const GUIDES = {
+  'permiso-circulacion': {
+    titulo: 'Cómo se calcula el permiso de circulación',
+    pasos: [
+      'Busca la tasación fiscal de tu vehículo en el sitio del SII, según marca, modelo y año.',
+      'Convierte la tasación a UTM usando el valor de la UTM de enero del año.',
+      'Aplica la escala acumulativa: 1% hasta 60 UTM, 2% de 60 a 120, 3% de 120 a 250, 4% de 250 a 400 y 4,5% sobre 400 UTM.',
+      'El permiso no puede ser menor a media UTM.',
+    ],
+    faq: [
+      { q: '¿Hasta cuándo se paga el permiso de circulación?', a: 'Los autos particulares pagan entre febrero y el 31 de marzo, al contado o en dos cuotas. La segunda cuota vence el 31 de agosto.' },
+    ],
+  },
+  contribuciones: {
+    titulo: 'Cómo se calculan las contribuciones',
+    faq: [
+      { q: '¿Quiénes pagan contribuciones?', a: 'Los dueños de propiedades cuyo avalúo fiscal supera el monto exento. Para viviendas, en el segundo semestre de 2026 el monto exento es de $61.711.570.' },
+      { q: '¿Cuándo se pagan?', a: 'En cuatro cuotas al año, que vencen normalmente en abril, junio, septiembre y noviembre, en la Tesorería General de la República.' },
+      { q: '¿Hay rebajas para adultos mayores?', a: 'Sí. Los adultos mayores con ingresos bajo ciertos límites pueden tener una rebaja de 50% o 100% de las contribuciones de su vivienda. Se revisa automáticamente cada año.' },
+    ],
+  },
+  'semanas-embarazo': {
+    titulo: 'Cómo se calculan las semanas de embarazo',
+    faq: [
+      { q: '¿Desde cuándo se cuentan las semanas?', a: 'Desde el primer día de la última menstruación, aunque la concepción ocurre unas dos semanas después. Por eso un embarazo completo dura unas 40 semanas.' },
+      { q: '¿Qué tan exacta es la fecha probable de parto?', a: 'Es una estimación. La mayoría de los partos ocurre entre las semanas 37 y 42, y la ecografía del primer trimestre puede ajustar la fecha.' },
+    ],
+  },
+  'sueldo-por-hora': {
+    titulo: 'Sobre el valor de la hora',
+    faq: [
+      { q: '¿Cuál es el sueldo mínimo para una jornada parcial?', a: 'El ingreso mínimo proporcional a las horas pactadas. Por ejemplo, con 21 horas semanales corresponde la mitad del ingreso mínimo de una jornada completa de 42 horas.' },
+    ],
+  },
+  'datos-transferencia': {
+    titulo: 'Qué datos se necesitan para transferir',
+    faq: [
+      { q: '¿Qué datos pide un banco para transferir?', a: 'Nombre del titular, RUT, banco, tipo de cuenta y número de cuenta. El correo es opcional y sirve para enviar el comprobante.' },
+      { q: '¿Es seguro compartir mis datos de transferencia?', a: 'Sí: con esos datos solo te pueden depositar. Nunca compartas claves, códigos de tu tarjeta de coordenadas ni códigos que te lleguen por SMS.' },
+    ],
+  },
+  'contrato-arriendo': {
+    titulo: 'Qué debe tener un contrato de arriendo',
+    faq: [
+      { q: '¿Es obligatorio firmarlo ante notario?', a: 'No es obligatorio, pero se recomienda: con las firmas autorizadas ante notario es más fácil probar el contrato si hay que cobrar rentas impagas o recuperar la propiedad.' },
+      { q: '¿Cuánto se pide de garantía?', a: 'Lo habitual es un mes de arriendo, que se devuelve al término del contrato descontando los daños o deudas que existan.' },
+    ],
+  },
   notas: {
     titulo: 'Cómo funciona la escala de notas',
     pasos: [

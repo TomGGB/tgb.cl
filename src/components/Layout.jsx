@@ -18,6 +18,7 @@ export default function Layout() {
     window.scrollTo(0, 0)
     const tool = TOOLS.find((t) => `/${t.slug}` === pathname.replace(/\/$/, ''))
     if (tool?.landing) return // las páginas de valores del día ponen su propio título con el valor
+    if (pathname.split('/').filter(Boolean).length > 1) return // las páginas por comuna ponen su propio título
     document.title = tool ? `${tool.title} | ${SITE.name}` : `${SITE.name}: ${SITE.tagline}`
   }, [pathname])
 
@@ -90,7 +91,7 @@ export default function Layout() {
   )
 }
 
-export function ToolPage({ tool, children }) {
+export function ToolPage({ tool, children, titulo, descripcion }) {
   const { isFav, toggle } = useFavoritos()
   const { registrar } = useRecientes()
   const fav = isFav(tool.slug)
@@ -110,19 +111,22 @@ export function ToolPage({ tool, children }) {
   }
 
   useEffect(() => registrar(tool.slug), [tool.slug, registrar])
+  useEffect(() => {
+    if (titulo) document.title = `${titulo} | ${SITE.name}`
+  }, [titulo])
 
   return (
     <article className="tool-page" data-cat={tool.category}>
       <nav className="breadcrumb" aria-label="Ruta">
         <Link to="/">Inicio</Link>
         <Icon name="ChevronRight" size={14} />
-        <span>{cat?.name}</span>
+        {titulo ? <Link to={`/${tool.slug}/`}>{tool.title}</Link> : <span>{cat?.name}</span>}
       </nav>
       <header className="tool-header">
         <ToolIcon tool={tool} size={28} className="lg" />
         <div className="tool-header-text">
-          <h1>{tool.title}</h1>
-          <p>{tool.description}</p>
+          <h1>{titulo ?? tool.title}</h1>
+          <p>{descripcion ?? tool.description}</p>
         </div>
       </header>
       <div className="tool-actions">

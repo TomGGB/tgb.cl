@@ -31,7 +31,7 @@ export const RELACIONADAS = {
   notas: ['paes', 'calendario-escolar', 'cuenta-regresiva'],
   paes: ['notas', 'calendario-escolar'],
   'calendario-escolar': ['feriados', 'fines-de-semana-largos', 'notas'],
-  'pre-postnatal': ['licencia-medica', 'vacaciones', 'sueldo-liquido'],
+  'pre-postnatal': ['semanas-embarazo', 'licencia-medica', 'vacaciones'],
   'costo-empleador': ['sueldo-liquido', 'datos-legales', 'finiquito'],
   'comparador-afp': ['sueldo-liquido', 'apv', 'datos-legales'],
   'renta-honorarios': ['boleta-honorarios', 'fechas-clave', 'apv'],
@@ -39,6 +39,12 @@ export const RELACIONADAS = {
   'dividir-arriendo': ['reajuste-arriendo', 'dividir-cuenta', 'consumo-electrico'],
   'carta-renuncia': ['finiquito', 'vacaciones', 'dias-habiles'],
   'cuenta-regresiva': ['feriados', 'fines-de-semana-largos', 'calendario-escolar'],
+  'datos-transferencia': ['dividir-cuenta', 'rut', 'dividir-arriendo'],
+  'sueldo-por-hora': ['horas-extra', 'sueldo-liquido', 'datos-legales'],
+  'semanas-embarazo': ['pre-postnatal', 'licencia-medica'],
+  'permiso-circulacion': ['multas-transito', 'fechas-clave', 'bencinas'],
+  contribuciones: ['fechas-clave', 'dividendo', 'reajuste-arriendo'],
+  'contrato-arriendo': ['reajuste-arriendo', 'dividir-arriendo', 'rut'],
 }
 
 export function relacionadas(tool, TOOLS, n = 3) {

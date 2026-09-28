@@ -45,20 +45,20 @@ const wmo = (code, isDay = 1) => {
 
 // Escala de índice UV de la OMS
 function uvInfo(uv) {
-  if (uv < 3) return { label: 'Bajo', color: '#2e7d32', tip: 'No se necesita protección especial.' }
-  if (uv < 6) return { label: 'Moderado', color: '#f9a825', tip: 'Usa bloqueador y lentes de sol si estás mucho rato al aire libre.' }
-  if (uv < 8) return { label: 'Alto', color: '#ef6c00', tip: 'Bloqueador FPS 30+, sombrero y evita el sol entre 11:00 y 16:00.' }
-  if (uv < 11) return { label: 'Muy alto', color: '#c62828', tip: 'Protección extra: bloqueador cada 2 horas, ropa que cubra y sombra.' }
-  return { label: 'Extremo', color: '#6a1b9a', tip: 'Evita exponerte al sol en las horas centrales del día.' }
+  if (uv < 3) return { n: 1, label: 'Bajo', color: 'var(--lv1-bg)', tip: 'No se necesita protección especial.' }
+  if (uv < 6) return { n: 2, label: 'Moderado', color: 'var(--lv2-bg)', tip: 'Usa bloqueador y lentes de sol si estás mucho rato al aire libre.' }
+  if (uv < 8) return { n: 3, label: 'Alto', color: 'var(--lv3-bg)', tip: 'Bloqueador FPS 30+, sombrero y evita el sol entre 11:00 y 16:00.' }
+  if (uv < 11) return { n: 4, label: 'Muy alto', color: 'var(--lv4-bg)', tip: 'Protección extra: bloqueador cada 2 horas, ropa que cubra y sombra.' }
+  return { n: 5, label: 'Extremo', color: 'var(--lv5-bg)', tip: 'Evita exponerte al sol en las horas centrales del día.' }
 }
 
 // Categorías de MP2,5 según la norma chilena (promedio de 24 horas)
 function pmInfo(v) {
-  if (v < 50) return { label: 'Bueno', color: '#2e7d32' }
-  if (v < 80) return { label: 'Regular', color: '#f9a825' }
-  if (v < 110) return { label: 'Nivel de alerta', color: '#ef6c00' }
-  if (v < 170) return { label: 'Nivel de preemergencia', color: '#c62828' }
-  return { label: 'Nivel de emergencia', color: '#6a1b9a' }
+  if (v < 50) return { n: 1, label: 'Bueno' }
+  if (v < 80) return { n: 2, label: 'Regular' }
+  if (v < 110) return { n: 3, label: 'Nivel de alerta' }
+  if (v < 170) return { n: 4, label: 'Nivel de preemergencia' }
+  return { n: 5, label: 'Nivel de emergencia' }
 }
 
 function distanciaKm(a, b) {
@@ -206,10 +206,10 @@ export default function Clima() {
             {data.air?.current && pm24 !== null && (
               <div className="card">
                 <h2>Calidad del aire</h2>
-                <div className="gauge-value" style={{ color: pmInfo(pm24).color }}>
+                <div className={`gauge-value lv-text n${pmInfo(pm24).n}`}>
                   {formatNum(pm24, 0)} <small>µg/m³</small>
                 </div>
-                <p><strong style={{ color: pmInfo(pm24).color }}>{pmInfo(pm24).label}</strong></p>
+                <p><strong className={`lv-text n${pmInfo(pm24).n}`}>{pmInfo(pm24).label}</strong></p>
                 <p className="muted small">
                   Promedio de MP2,5 de las últimas 24 horas (ahora: {formatNum(data.air.current.pm2_5, 0)} µg/m³). Valor
                   estimado por modelo; los episodios críticos oficiales los informa el{' '}
@@ -234,7 +234,7 @@ export default function Clima() {
                       <strong>{formatNum(wx.daily.temperature_2m_max[i], 0)}°</strong>{' '}
                       <span className="muted">{formatNum(wx.daily.temperature_2m_min[i], 0)}°</span>
                     </span>
-                    <span className="fc-uv" style={{ background: uvInfo(wx.daily.uv_index_max[i]).color }} title="Índice UV máximo">
+                    <span className={`fc-uv lv-bg n${uvInfo(wx.daily.uv_index_max[i]).n}`} title="Índice UV máximo">
                       UV {formatNum(wx.daily.uv_index_max[i], 0)}
                     </span>
                   </li>
@@ -260,8 +260,8 @@ function UvCard({ max, horas }) {
   return (
     <div className="card">
       <h2>Índice UV de hoy</h2>
-      <div className="gauge-value" style={{ color: info.color }}>{formatNum(max, 1)}</div>
-      <p><strong style={{ color: info.color }}>{info.label}</strong>. {info.tip}</p>
+      <div className={`gauge-value lv-text n${info.n}`}>{formatNum(max, 1)}</div>
+      <p><strong className={`lv-text n${info.n}`}>{info.label}</strong>. {info.tip}</p>
       {horas.length > 0 && (
         <div className="uv-bars" aria-label="Índice UV por hora">
           {horas.map((h) => (

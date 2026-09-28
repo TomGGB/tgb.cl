@@ -15,7 +15,7 @@
   --ink: #14213d;
   --text: #1c2a44;
   --muted: #5a6780;
-  --faint: #8a95a8;
+  --faint: #687387;
 
   /* Marca */
   --primary: #1f4e8c;
@@ -72,7 +72,7 @@
   --ink: #f1f4f9;
   --text: #dfe6f0;
   --muted: #9aa8bf;
-  --faint: #6f7d95;
+  --faint: #8c9ab1;
   --primary: #7fa8e8;
   --primary-hover: #a3c1f0;
   --primary-soft: #1b2c47;
@@ -114,7 +114,7 @@
     --ink: #f1f4f9;
     --text: #dfe6f0;
     --muted: #9aa8bf;
-    --faint: #6f7d95;
+    --faint: #8c9ab1;
     --primary: #7fa8e8;
     --primary-hover: #a3c1f0;
     --primary-soft: #1b2c47;
@@ -499,7 +499,8 @@ input[type='checkbox'] { min-height: 0; width: 18px; height: 18px; accent-color:
   display: flex; align-items: center; gap: 16px; background: var(--surface);
   border: 1px solid var(--border); border-radius: var(--r-md); padding: 11px 16px;
 }
-.holiday-list li.past { opacity: 0.5; }
+.holiday-list li.past { background: var(--surface-2); }
+.holiday-list li.past .day, .holiday-list li.past strong { color: var(--muted); }
 .holiday-date, .event-date { width: 46px; text-align: center; flex-shrink: 0; display: flex; flex-direction: column; line-height: 1.05; }
 .holiday-date .day, .event-date .day { font-size: 1.5rem; font-weight: 800; color: var(--ink); font-variant-numeric: tabular-nums; }
 .holiday-date .month, .event-date .month { font-size: 0.78rem; color: var(--muted); font-weight: 600; }
@@ -528,7 +529,7 @@ input[type='checkbox'] { min-height: 0; width: 18px; height: 18px; accent-color:
 .month-title::first-letter { text-transform: uppercase; }
 
 .bridge-list { list-style: none; padding: 0; margin: 0; }
-.bridge.past { opacity: 0.55; }
+.bridge.past { background: var(--surface-2); }
 .bridge-head { display: flex; justify-content: space-between; gap: 8px; align-items: flex-start; margin-bottom: 14px; }
 .bridge-head strong { color: var(--ink); }
 .bridge-body { display: flex; gap: 22px; align-items: flex-start; flex-wrap: wrap; }
@@ -540,9 +541,9 @@ input[type='checkbox'] { min-height: 0; width: 18px; height: 18px; accent-color:
 .mini-cal-head { font-size: 0.7rem; text-align: center; color: var(--faint); font-weight: 700; }
 .mini-cal-day { height: 30px; display: grid; place-items: center; font-size: 0.8rem; border-radius: 7px; background: var(--surface-2); color: var(--faint); font-variant-numeric: tabular-nums; }
 .mini-cal-day.free, .legend .free { background: var(--primary-soft); color: var(--primary); font-weight: 700; }
-.mini-cal-day.fer, .legend .fer { background: var(--accent); color: #fff; font-weight: 800; }
+.mini-cal-day.fer, .legend .fer { background: var(--accent); color: var(--on-accent, #fff); font-weight: 800; }
 .mini-cal-day.vac, .legend .vac { background: var(--ok); color: var(--surface); font-weight: 800; }
-.mini-cal-day.out { opacity: 0.45; }
+.mini-cal-day.out { background: none; color: var(--muted); }
 .legend { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--muted); margin: 8px 0 16px; }
 .legend i { display: inline-block; width: 12px; height: 12px; border-radius: 3px; vertical-align: -1px; margin-right: 5px; }
 
@@ -617,7 +618,7 @@ input[type='checkbox'] { min-height: 0; width: 18px; height: 18px; accent-color:
 }
 .quake-list button:hover, .station-list button:hover { border-color: var(--border-strong); }
 .quake-list li.active button, .station-list li.active button { border-color: var(--cat); box-shadow: inset 0 0 0 1px var(--cat); }
-.mag { color: #fff; font-weight: 800; border-radius: 10px; min-width: 48px; height: 42px; display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: 1.05rem; }
+.mag { font-weight: 800; border-radius: 10px; min-width: 48px; height: 42px; display: grid; place-items: center; font-variant-numeric: tabular-nums; font-size: 1.05rem; }
 .quake-info, .station-info { display: flex; flex-direction: column; min-width: 0; flex: 1; }
 .quake-info strong, .station-info strong { color: var(--ink); }
 .quake-info > span, .station-info > span { color: var(--muted); font-size: 0.86rem; }
@@ -649,7 +650,7 @@ input[type='checkbox'] { min-height: 0; width: 18px; height: 18px; accent-color:
 .fc-rain { color: var(--muted); font-size: 0.86rem; display: inline-flex; align-items: center; gap: 4px; font-variant-numeric: tabular-nums; }
 .fc-temp { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .fc-temp strong { color: var(--ink); }
-.fc-uv { color: #fff; font-size: 0.74rem; font-weight: 800; border-radius: 999px; padding: 2px 6px; text-align: center; }
+.fc-uv { font-size: 0.74rem; font-weight: 800; border-radius: 999px; padding: 2px 6px; text-align: center; }
 
 /* ---------- Trámites, comunas, emergencias ---------- */
 .search.inline { margin: 0 0 10px; max-width: 440px; }
@@ -1020,4 +1021,42 @@ textarea:focus { outline: none; border-color: var(--primary); box-shadow: var(--
 .chip-picker button.active { background: var(--cat); border-color: var(--cat); color: var(--surface); }
 .countdown-card .countdown { max-width: 520px; }
 .countdown-card .countdown strong { font-size: clamp(2rem, 8vw, 3rem) !important; }
-.past-event { opacity: 0.55; }
+.past-event { background: var(--surface-2); }
+.past-event .day, .past-event strong { color: var(--muted); }
+
+/* ---------- Niveles de riesgo (UV, aire, sismos, precios) con contraste en ambos temas ---------- */
+:root {
+  --lv1: #1e7a45; --lv2: #8a5a00; --lv3: #b24a00; --lv4: #b3261e; --lv5: #6a1b9a;
+  --lv1-bg: #2e7d32; --lv2-bg: #f2b233; --lv3-bg: #ec7a1c; --lv4-bg: #c62828; --lv5-bg: #6a1b9a;
+  --lv1-on: #fff; --lv2-on: #1f1a0e; --lv3-on: #1f1206; --lv4-on: #fff; --lv5-on: #fff;
+}
+:root[data-theme='dark'] { --on-accent: #1f0a0e; --lv1: #63c48f; --lv2: #f2c14e; --lv3: #f59e4f; --lv4: #f28b82; --lv5: #c79bf0; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) { --on-accent: #1f0a0e; --lv1: #63c48f; --lv2: #f2c14e; --lv3: #f59e4f; --lv4: #f28b82; --lv5: #c79bf0; } }
+.lv-text.n1 { color: var(--lv1); } .lv-text.n2 { color: var(--lv2); } .lv-text.n3 { color: var(--lv3); } .lv-text.n4 { color: var(--lv4); } .lv-text.n5 { color: var(--lv5); }
+.lv-bg.n1 { background: var(--lv1-bg); color: var(--lv1-on); } .lv-bg.n2 { background: var(--lv2-bg); color: var(--lv2-on); }
+.lv-bg.n3 { background: var(--lv3-bg); color: var(--lv3-on); } .lv-bg.n4 { background: var(--lv4-bg); color: var(--lv4-on); }
+.lv-bg.n5 { background: var(--lv5-bg); color: var(--lv5-on); }
+/* Precio de bencina: tono según precio (--h), luminosidad según tema */
+.station-price { color: hsl(var(--h, 130) 70% 28%); }
+:root[data-theme='dark'] .station-price { color: hsl(var(--h, 130) 65% 66%); }
+@media (prefers-color-scheme: dark) { :root:not([data-theme='light']) .station-price { color: hsl(var(--h, 130) 65% 66%); } }
+
+/* Enlaces a la misma herramienta en otras comunas */
+.comuna-links { margin: 24px 0 16px; }
+.comuna-links h2 { font-size: 1.05rem; }
+.comuna-links ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.comuna-links a, .comuna-links strong {
+  display: inline-block; padding: 5px 11px; border-radius: 999px; font-size: 0.86rem; text-decoration: none;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+}
+.comuna-links a:hover { border-color: var(--cat); color: var(--ink); }
+.comuna-links strong { background: var(--cat); border-color: var(--cat); color: var(--surface); }
+
+/* Datos de transferencia, embarazo */
+.transfer-layout { display: flex; gap: 20px; align-items: flex-start; flex-wrap: wrap; }
+.transfer-text { flex: 1; min-width: 220px; margin: 0; font: 600 1rem/1.6 var(--font); color: var(--ink); white-space: pre-wrap; background: var(--surface-2); border-radius: var(--r-md); padding: 14px 16px; }
+.transfer-qr { width: 200px; height: 200px; border-radius: var(--r-sm); background: #fff; padding: 6px; border: 1px solid var(--border); }
+.pregnancy-bar { position: relative; height: 14px; border-radius: 7px; background: var(--surface-2); overflow: hidden; margin: 6px 0 4px; }
+.pregnancy-bar span { position: absolute; inset: 0 auto 0 0; background: var(--cat); border-radius: 7px; }
+.pregnancy-bar i { position: absolute; top: 0; bottom: 0; width: 2px; background: var(--surface); }
+.pregnancy-legend { display: grid; grid-template-columns: 35fr 35fr 30fr; font-size: 0.78rem; color: var(--muted); margin-bottom: 12px; }

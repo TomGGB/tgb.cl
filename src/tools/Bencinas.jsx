@@ -5,21 +5,30 @@ import { formatCLP, formatNum } from '../lib/format'
 import { Field, Segmented, Note } from '../components/ui'
 import { useUrlState } from '../lib/useUrlState'
 import { Icon } from '../components/icons'
+import { useNavigate } from 'react-router-dom'
+import { slugify } from '../lib/slug'
+import { comunaPorSlug, COMUNAS } from '../lib/comunas'
+import ComunaLinks from '../components/ComunaLinks'
+
+const norm = (s) => String(s ?? '').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '')
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 const byName = (a, b) => a.localeCompare(b, 'es')
 
 // verde (barata) → rojo (cara) según la posición del precio en el rango
+const tonoPrecio = (p, min, max) => 145 - (max > min ? (p - min) / (max - min) : 0) * 145
+
 function colorPrecio(p, min, max) {
   const t = max > min ? (p - min) / (max - min) : 0
   const hue = 145 - t * 145
   return `hsl(${hue} 62% 42%)`
 }
 
-export default function Bencinas() {
+export default function Bencinas({ comuna: comunaRuta }) {
+  const navigate = useNavigate()
   const [comb, setComb] = useUrlState('comb', '93')
-  const [region, setRegion] = useUrlState('region', 'Metropolitana de Santiago')
-  const [comuna, setComuna] = useUrlState('comuna', '')
+  const [regionUrl, setRegion] = useUrlState('region', 'Metropolitana de Santiago')
+  const [comunaUrl, setComuna] = useUrlState('comuna', '')
   const [orden, setOrden] = useUrlState('orden', 'precio')
   const [data, setData] = useState({ estaciones: null, error: null })
   const [pos, setPos] = useState(null)
@@ -31,6 +40,29 @@ export default function Bencinas() {
       .then((estaciones) => setData({ estaciones, error: null }))
       .catch((error) => setData({ estaciones: null, error }))
   }, [])
+
+  // En /bencinas/<comuna>/ la comuna viene de la ruta; la región se toma de las estaciones de esa comuna
+  const enRuta = useMemo(
+    () => (comunaRuta && data.estaciones ? data.estaciones.find((e) => norm(e.comuna) === norm(comunaRuta.nombre)) : null),
+    [comunaRuta, data.estaciones],
+  )
+  const region = comunaRuta ? enRuta?.region ?? regionUrl : regionUrl
+  const comuna = comunaRuta ? enRuta?.comuna ?? comunaRuta.nombre : comunaUrl
+  const q = comb !== '93' ? `&comb=${comb}` : ''
+  const elegirRegion = (r) => {
+    if (comunaRuta) navigate(`/bencinas/?region=${encodeURIComponent(r)}${q}`)
+    else {
+      setRegion(r)
+      setComuna('')
+    }
+  }
+  const elegirComuna = (c) => {
+    const slug = COMUNAS.find((x) => norm(x.nombre) === norm(c))?.slug
+    if (c && slug && comunaPorSlug(slug)) navigate(`/bencinas/${slug}/${q ? `?${q.slice(1)}` : ''}`)
+    else if (comunaRuta) navigate(`/bencinas/?region=${encodeURIComponent(region)}${q}`)
+    else setComuna(c)
+  }
+  const actualSlug = comunaRuta?.slug ?? (comuna ? slugify(comuna) : undefined)
 
   const regiones = useMemo(() => [...new Set((data.estaciones ?? []).map((e) => e.region).filter(Boolean))].sort(byName), [data.estaciones])
   const comunas = useMemo(
@@ -88,7 +120,7 @@ export default function Bencinas() {
             <>
               <Field label="Región">
                 {(id) => (
-                  <select id={id} value={region} onChange={(e) => { setRegion(e.target.value); setComuna('') }} disabled={!regiones.length}>
+                  <select id={id} value={region} onChange={(e) => elegirRegion(e.target.value)} disabled={!regiones.length}>
                     {(regiones.length ? regiones : [region]).map((r) => (
                       <option key={r} value={r}>{r}</option>
                     ))}
@@ -97,7 +129,7 @@ export default function Bencinas() {
               </Field>
               <Field label="Comuna">
                 {(id) => (
-                  <select id={id} value={comuna} onChange={(e) => setComuna(e.target.value)} disabled={!comunas.length}>
+                  <select id={id} value={comunas.includes(comuna) ? comuna : ''} onChange={(e) => elegirComuna(e.target.value)} disabled={!comunas.length}>
                     <option value="">Todas las comunas</option>
                     {comunas.map((c) => (
                       <option key={c} value={c}>{c}</option>
@@ -137,7 +169,7 @@ export default function Bencinas() {
           <div className="stats-row">
             <div className="mini-stat">
               <span>Más barata</span>
-              <strong style={{ color: 'hsl(130 70% 35%)' }}>{precios.length ? formatCLP(min) : '—'}</strong>
+              <strong className="lv-text n1">{precios.length ? formatCLP(min) : '—'}</strong>
             </div>
             <div className="mini-stat">
               <span>Precio mediano</span>
@@ -169,7 +201,7 @@ export default function Bencinas() {
                       <span className="muted small">Asistido: {formatCLP(e.precios[comb].asistido)}</span>
                     )}
                   </span>
-                  <span className="station-price" style={{ color: colorPrecio(e.precio, min, max) }}>
+                  <span className="station-price" style={{ '--h': tonoPrecio(e.precio, min, max) }}>
                     {formatCLP(e.precio)}
                     <small>/{e.precios[comb]?.unidad?.replace('$/', '') ?? 'L'}</small>
                   </span>
@@ -180,6 +212,15 @@ export default function Bencinas() {
           {lista.length === 0 && <p className="muted center">No hay estaciones con {combLabel} en esta zona.</p>}
           {lista.length > 60 && <p className="muted small center">Mostrando las 60 primeras de {lista.length} estaciones.</p>}
         </>
+      )}
+
+      {!pos && (
+        <ComunaLinks
+          toolSlug="bencinas"
+          regionId={comunaRuta?.regionId ?? COMUNAS.find((c) => norm(c.nombre) === norm(comuna))?.regionId}
+          region={region}
+          actual={actualSlug}
+        />
       )}
 
       <Note>

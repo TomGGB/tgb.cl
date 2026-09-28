@@ -7,14 +7,35 @@ import { Icon } from '../components/icons'
 import { useUrlState } from '../lib/useUrlState'
 import { useShareText } from '../lib/share'
 import { useLeafletMap, L } from '../lib/useLeafletMap'
+import { useNavigate } from 'react-router-dom'
+import { slugify } from '../lib/slug'
+import { comunaPorSlug } from '../lib/comunas'
+import regionesData from '../data/regiones.json'
+import ComunaLinks from '../components/ComunaLinks'
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 const byName = (a, b) => a.localeCompare(b, 'es')
 const mapsUrl = (f) => `https://www.google.com/maps/dir/?api=1&destination=${f.lat},${f.lon}`
 
-export default function Farmacias() {
-  const [region, setRegion] = useUrlState('region', 'Metropolitana de Santiago')
-  const [comuna, setComuna] = useUrlState('comuna', '')
+export default function Farmacias({ comuna: comunaRuta }) {
+  const navigate = useNavigate()
+  const [regionUrl, setRegion] = useUrlState('region', 'Metropolitana de Santiago')
+  const [comunaUrl, setComuna] = useUrlState('comuna', '')
+  // En /farmacias-de-turno/<comuna>/ la comuna viene de la ruta
+  const region = comunaRuta ? comunaRuta.region : regionUrl
+  const comuna = comunaRuta ? comunaRuta.nombre : comunaUrl
+  const elegirRegion = (r) => {
+    if (comunaRuta) navigate(`/farmacias-de-turno/?region=${encodeURIComponent(r)}`)
+    else {
+      setRegion(r)
+      setComuna('')
+    }
+  }
+  const elegirComuna = (c) => {
+    if (c && comunaPorSlug(slugify(c))) navigate(`/farmacias-de-turno/${slugify(c)}/`)
+    else if (comunaRuta) navigate(`/farmacias-de-turno/?region=${encodeURIComponent(region)}`)
+    else setComuna(c)
+  }
   const [data, setData] = useState({ fecha: null, locales: null, error: null })
   const [pos, setPos] = useState(null)
   const [geoMsg, setGeoMsg] = useState(null)
@@ -40,10 +61,13 @@ export default function Farmacias() {
         .sort((a, b) => a.dist - b.dist)
         .slice(0, 15)
     }
-    return data.locales
-      .filter((f) => f.region === region && (!comuna || f.comuna === comuna))
-      .sort((a, b) => byName(a.comuna, b.comuna))
+    const enRegion = data.locales.filter((f) => f.region === region).sort((a, b) => byName(a.comuna, b.comuna))
+    const enComuna = comuna ? enRegion.filter((f) => f.comuna === comuna) : enRegion
+    // Si la comuna no tiene turnos hoy, se muestran los de la región
+    return enComuna.length || !comuna ? enComuna : enRegion.map((f) => ({ ...f, otraComuna: true }))
   }, [data.locales, region, comuna, pos])
+  const sinTurnoEnComuna = !pos && comuna && lista.length > 0 && lista[0].otraComuna
+  const regionId = regionesData.find((r) => r.nombre === region)?.id
 
   const cercaDeMi = () => {
     if (!navigator.geolocation) return setGeoMsg('Tu navegador no permite obtener la ubicación.')
@@ -72,7 +96,7 @@ export default function Farmacias() {
           <div className="form-grid">
             <Field label="Región">
               {(id) => (
-                <select id={id} value={region} onChange={(e) => { setRegion(e.target.value); setComuna('') }} disabled={!regiones.length}>
+                <select id={id} value={region} onChange={(e) => elegirRegion(e.target.value)} disabled={!regiones.length}>
                   {(regiones.length ? regiones : [region]).map((r) => (
                     <option key={r} value={r}>{r}</option>
                   ))}
@@ -81,7 +105,7 @@ export default function Farmacias() {
             </Field>
             <Field label="Comuna">
               {(id) => (
-                <select id={id} value={comuna} onChange={(e) => setComuna(e.target.value)} disabled={!comunas.length}>
+                <select id={id} value={comunas.includes(comuna) ? comuna : ''} onChange={(e) => elegirComuna(e.target.value)} disabled={!comunas.length}>
                   <option value="">Todas las comunas con turno</option>
                   {comunas.map((c) => (
                     <option key={c} value={c}>{c}</option>
@@ -110,6 +134,12 @@ export default function Farmacias() {
       {data.locales && (
         <>
           <FarmaciaMap farmacias={lista} pos={pos} selected={selected} onSelect={setSelected} />
+          {sinTurnoEnComuna && (
+            <Note>
+              Hoy no hay farmacias de turno informadas en {comuna}. Estas son las de turno en la región {region}, ordenadas por
+              comuna.
+            </Note>
+          )}
           {lista.length === 0 && (
             <Note>No hay farmacias de turno informadas en esta zona hoy. Prueba con “Farmacias de turno cerca de mí” o con otra comuna.</Note>
           )}
@@ -137,6 +167,10 @@ export default function Farmacias() {
             ))}
           </ul>
         </>
+      )}
+
+      {!pos && (regionId || comunaRuta) && (
+        <ComunaLinks toolSlug="farmacias-de-turno" regionId={regionId ?? comunaRuta?.regionId} actual={comunaRuta?.slug} />
       )}
 
       <Note>

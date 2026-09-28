@@ -22,7 +22,8 @@ function traducirLugar(place = '') {
 
 const esc = (t) => String(t).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`)
 
-const magColor = (m) => (m >= 6 ? '#c8102e' : m >= 5 ? '#e0620d' : m >= 4 ? '#e8a317' : '#3a9d6a')
+const magColor = (m) => (m >= 6 ? '#c62828' : m >= 5 ? '#ec7a1c' : m >= 4 ? '#f2b233' : '#2e7d32')
+const magNivel = (m) => (m >= 6 ? 4 : m >= 5 ? 3 : m >= 4 ? 2 : 1)
 
 function tiempoRelativo(ms) {
   const min = Math.round((Date.now() - ms) / 60000)
@@ -124,7 +125,7 @@ export default function Sismos() {
             {mayor && (
               <div className="mini-stat">
                 <span>Mayor magnitud</span>
-                <strong style={{ color: magColor(mayor.mag) }}>{formatNum(mayor.mag, 1)}</strong>
+                <strong className={`lv-text n${magNivel(mayor.mag)}`}>{formatNum(mayor.mag, 1)}</strong>
               </div>
             )}
             <div className="mini-stat">
@@ -139,7 +140,7 @@ export default function Sismos() {
             {sismos.slice(0, 100).map((s) => (
               <li key={s.id} className={selected === s.id ? 'active' : ''}>
                 <button type="button" onClick={() => setSelected(s.id)}>
-                  <span className="mag" style={{ background: magColor(s.mag) }}>{formatNum(s.mag, 1)}</span>
+                  <span className={`mag lv-bg n${magNivel(s.mag)}`}>{formatNum(s.mag, 1)}</span>
                   <span className="quake-info">
                     <strong>{s.lugar}</strong>
                     <span>
